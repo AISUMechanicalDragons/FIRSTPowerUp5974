@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.Joystick; //Controller
 import edu.wpi.first.wpilibj.Timer; //Timer
 import edu.wpi.first.wpilibj.Spark; //Motor Controller
 import edu.wpi.first.wpilibj.*; //everything tbh
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -33,6 +32,7 @@ public class Robot extends IterativeRobot {
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	
 	Joystick remote = new Joystick(0); //I think that's the port it's on? idrk
+	
 	//Motors. We NEED to change these to the actual motors, once electrical makes up its mind
 	Spark motorRB = new Spark(1); //motor right back
 	Spark motorRF = new Spark(2); //motor right front
