@@ -40,6 +40,10 @@ public class Robot extends IterativeRobot {
 	double triggerR;			//right trigger
 	double bumperL;				//left bumper
 	double bumperR;				//right bumper
+	boolean buttonX;			//x button
+	boolean buttonY;			//y button
+	boolean buttonA;			//a button
+	boolean buttonB;			//b button
 
 	/**
 	 * This function is run when the robot is first started up and should be
