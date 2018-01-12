@@ -31,6 +31,15 @@ public class Robot extends IterativeRobot {
 	private static final String kCustomAuto = "My Auto";
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
+	
+	double joystickLXAxis;		//left joystick x-axis
+	double joystickLYAxis;		//left joystick y-axis
+	double joystickRXAxis;		//right joystick x-axis
+	double joystickRYAxis;		//right joystick y-axis
+	double triggerL;			//left trigger
+	double triggerR;			//right trigger
+	double bumperL;				//left bumper
+	double bumperR;				//right bumper
 
 	/**
 	 * This function is run when the robot is first started up and should be
