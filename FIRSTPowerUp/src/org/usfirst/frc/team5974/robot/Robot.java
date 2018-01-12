@@ -120,6 +120,5 @@ public class Robot extends IterativeRobot {
 		} if (joystickLYAxis <= 0.15 && joystickLYAxis <= -0.15) {
 			joystickLYAxis = 0;
 		}
-		
 	}
 }
