@@ -32,6 +32,7 @@ public class Robot extends IterativeRobot {
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	
+	
 	double joystickLXAxis;		//left joystick x-axis
 	double joystickLYAxis;		//left joystick y-axis
 	double joystickRXAxis;		//right joystick x-axis
