@@ -44,7 +44,6 @@ public class Robot extends IterativeRobot {
 	boolean buttonY;			//y button
 	boolean buttonA;			//a button
 	boolean buttonB;			//b button
-
 	
 	/**
 	 * This function is run when the robot is first started up and should be
