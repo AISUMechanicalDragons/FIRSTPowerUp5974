@@ -2,5 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="FIRSTPowerUp/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+<<<<<<< HEAD
 	<classpathentry kind="output" path="FIRSTPowerUp/bin"/>
+=======
+	<classpathentry kind="output" path="bin"/>
+>>>>>>> branch 'master' of https://github.com/AISUMechanicalDragons/FIRSTPowerUp5974.git
 </classpath>

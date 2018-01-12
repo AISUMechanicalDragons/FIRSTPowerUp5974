@@ -14,6 +14,7 @@ package org.usfirst.frc.team5974.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Joystick; //Controller
 
 /**
  * The VM is configured to automatically run this class, and to call the
