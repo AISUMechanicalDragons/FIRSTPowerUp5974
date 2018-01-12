@@ -6,7 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 //Git/Eclipse Integration Test
-//Testing pull...
+//Testing pull... 
 //Success!
 
 package org.usfirst.frc.team5974.robot;
@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick; //Controller
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.Timer; //Timer
+import edu.wpi.first.wpilibj.Spark; //Motor Controller
+import edu.wpi.first.wpilibj.*; //everything tbh
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -36,6 +38,21 @@ public class Robot extends IterativeRobot {
 	Spark motorRF = new Spark(2); //motor right front
 	Spark motorLB = new Spark(3); //motor left back
 	Spark motorLF = new Spark(4); //motor left front
+	
+	//Variables we're using
+	double joystickLXAxis;		//left joystick x-axis
+	double joystickLYAxis;		//left joystick y-axis
+	double joystickRXAxis;		//right joystick x-axis
+	double joystickRYAxis;		//right joystick y-axis
+	double triggerL;			//left trigger
+	double triggerR;			//right trigger
+	double bumperL;				//left bumper
+	double bumperR;				//right bumper
+	boolean buttonX;			//x button
+	boolean buttonY;			//y button
+	boolean buttonA;			//a button
+	boolean buttonB;			//b button
+	
 	
 	/**
 	 * This function is run when the robot is first started up and should be
