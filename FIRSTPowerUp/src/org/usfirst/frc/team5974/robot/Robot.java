@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick; //Controller
+import edu.wpi.first.wpilibj.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,11 +25,18 @@ import edu.wpi.first.wpilibj.Joystick; //Controller
  * project.
  */
 public class Robot extends IterativeRobot {
-	private static final String kDefaultAuto = "Default";
+	private static final String kDefaultAuto = "Default"; //any idea what these are for??
 	private static final String kCustomAuto = "My Auto";
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
-
+	
+	Joystick remote = new Joystick(0); //I think that's the port it's on? idrk
+	//Motors. We NEED to change these to the actual motors, once electrical makes up its mind
+	Spark motorRB = new Spark(1); //motor right back
+	Spark motorRF = new Spark(2); //motor right front
+	Spark motorLB = new Spark(3); //motor left back
+	Spark motorLF = new Spark(4); //motor left front
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
