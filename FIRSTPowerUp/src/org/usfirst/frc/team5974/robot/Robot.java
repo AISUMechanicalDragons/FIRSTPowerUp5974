@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick; //Controller
+import edu.wpi.first.wpilibj.Timer; //Timer
+import edu.wpi.first.wpilibj.Spark; //Motor Controller
+import edu.wpi.first.wpilibj.*; //everything tbh
 
 /**
  * The VM is configured to automatically run this class, and to call the
