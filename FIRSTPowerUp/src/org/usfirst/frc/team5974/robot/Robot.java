@@ -27,12 +27,19 @@ import edu.wpi.first.wpilibj.*; //everything tbh
  * project.
  */
 public class Robot extends IterativeRobot {
-	private static final String kDefaultAuto = "Default";
+	private static final String kDefaultAuto = "Default"; //any idea what these are for??
 	private static final String kCustomAuto = "My Auto";
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	
+	Joystick remote = new Joystick(0); //I think that's the port it's on? idrk
+	//Motors. We NEED to change these to the actual motors, once electrical makes up its mind
+	Spark motorRB = new Spark(1); //motor right back
+	Spark motorRF = new Spark(2); //motor right front
+	Spark motorLB = new Spark(3); //motor left back
+	Spark motorLF = new Spark(4); //motor left front
 	
+	//Variables we're using
 	double joystickLXAxis;		//left joystick x-axis
 	double joystickLYAxis;		//left joystick y-axis
 	double joystickRXAxis;		//right joystick x-axis
