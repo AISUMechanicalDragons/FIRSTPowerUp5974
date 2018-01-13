@@ -117,9 +117,15 @@ public class Robot extends IterativeRobot {
 	boolean buttonB;				//b button
 	double dPad;					//d-pad
 	
+	int portButtonX = 3;
+	int portButtonY = 4;
+	int portButtonA = 1;
+	int portButtonB = 2;
+	
 	double robotSpeed;			//robot speed
 	boolean tankDriveBool = true;		//tank drive boolean: true = tank drive, false = arcade drive
 	boolean fastBool = false;			//fast boolean: true = fast mode, false = slow mode
+	boolean grabberBool = true;			//true = in, false = out
 	
 	
 	/**
@@ -244,16 +250,28 @@ public class Robot extends IterativeRobot {
 		bumperR = controller.getRawButton(6);
 		
 		//button updates
-		buttonX = controller.getRawButton(3);
-		buttonY = controller.getRawButton(4);
-		buttonA = controller.getRawButton(1);
-		buttonB = controller.getRawButton(2);
+		buttonX = controller.getRawButton(portButtonX);
+		buttonY = controller.getRawButton(portButtonY);
+		buttonA = controller.getRawButton(portButtonA);
+		buttonB = controller.getRawButton(portButtonB);
+		
+		tankDriveBool = checkButton(portButtonX, tankDriveBool);
+		fastBool = checkButton(portButtonB,fastBool);
+		grabberBool = checkButton(portButtonY, grabberBool);
 		
 		//d-pad/POV updates
 		dPad = controller.getPOV(0);
 		
+		
 	}
 	
+	public boolean checkButton(int port, boolean toggle) {
+		if (controller.getRawButton(port)) {
+			toggle = !toggle;
+			while (controller.getRawButton(port)) {}
+		}
+		return toggle;
+	}
 	
 	public void joystickDeadZone() { //dead zone for joysticks
 		if (joystickLXAxis <= 0.15 && joystickLXAxis <= -0.15) {
