@@ -122,16 +122,12 @@ public class Robot extends IterativeRobot {
 	boolean buttonStart;			//start button
 	boolean buttonBack;			//back button
 	
-<<<<<<< HEAD
 	int portButtonX = 3;
 	int portButtonY = 4;
 	int portButtonA = 1;
 	int portButtonB = 2;
 	
-	double robotSpeed;			//robot speed
-=======
 	double robotSpeed;			//robot speed (fast/slow mode)
->>>>>>> branch 'master' of http://github.com/AISUMechanicalDragons/FIRSTPowerUp5974.git
 	boolean tankDriveBool = true;		//tank drive boolean: true = tank drive, false = arcade drive
 	boolean fastBool = false;			//fast boolean: true = fast mode, false = slow mode
 	boolean grabberBool = true;			//true = in, false = out
