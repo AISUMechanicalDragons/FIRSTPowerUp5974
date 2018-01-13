@@ -30,6 +30,9 @@ Controls by Action:
 	Toggle Drive Style:
 		-X button
 				
+	Toggle Grabber In/Out:
+		-Y button
+	
 	Climb:
 		-Left trigger:
 			Down
@@ -38,9 +41,9 @@ Controls by Action:
 		
 	Grabber Wheels:
 		-Left bumper:
-			Spin out
+			Spin left side
 		-Right bumper:
-			Spin in
+			Spin right side
 */
 
 /*
@@ -60,7 +63,7 @@ Controls by Action:
  	A Button: None
  	B Button: Toggle speed
  	X Button: Toggle drive style
- 	Y Button: None
+ 	Y Button: Toggle grabber in/out
  	
  	Back Button: None
  	Select Button: None
@@ -242,10 +245,14 @@ public class Robot extends IterativeRobot {
 		bumperR = controller.getRawButton(6);
 		
 		//button updates
-		//buttonX = controller.getRawButton();
-		//buttonY = controller.getRawButton();
-		//buttonA = controller.getRawButton();
-		//buttonB = controller.getRawButton();
+		buttonX = controller.getRawButton(3);
+		buttonY = controller.getRawButton(4);
+		buttonA = controller.getRawButton(1);
+		buttonB = controller.getRawButton(2);
+		
+		//d-pad/POV updates
+		dPad = controller.getPOV(0);
+		
 	}
 	
 	public void joystickDeadZone() { //dead zone for joysticks
