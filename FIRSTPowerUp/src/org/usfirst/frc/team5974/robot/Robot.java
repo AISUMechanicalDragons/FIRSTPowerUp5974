@@ -42,18 +42,19 @@ public class Robot extends IterativeRobot {
 	Spark motorLF = new Spark(4); //motor left front
 
 	//Variables we're using
+	Joystick controller;			//controller
 	double joystickLXAxis;		//left joystick x-axis
 	double joystickLYAxis;		//left joystick y-axis
 	double joystickRXAxis;		//right joystick x-axis
 	double joystickRYAxis;		//right joystick y-axis
-	double triggerL;			//left trigger
-	double triggerR;			//right trigger
+	double triggerL;				//left trigger
+	double triggerR;				//right trigger
 	double bumperL;				//left bumper
 	double bumperR;				//right bumper
-	boolean buttonX;			//x button
-	boolean buttonY;			//y button
-	boolean buttonA;			//a button
-	boolean buttonB;			//b button
+	boolean buttonX;				//x button
+	boolean buttonY;				//y button
+	boolean buttonA;				//a button
+	boolean buttonB;				//b button
 	
 	
 	/**
@@ -114,6 +115,11 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+	}
+	
+	public void update() {
+		joystickLXAxis = controller.getRawAxis(0);
+		joystickLYAxis = controller.getRawAxis(1);
 	}
 	
 	public void joystickDeadZone() { //dead zone for joysticks
