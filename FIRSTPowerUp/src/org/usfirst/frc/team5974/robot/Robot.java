@@ -141,6 +141,24 @@ public class Robot extends IterativeRobot {
 	boolean fastBool = false;			//fast boolean: true = fast mode, false = slow mode
 	boolean grabberBool = true;			//true = in, false = out
 	
+	//position arrays
+	double[] posX;
+	double[] posY;
+	double[] posZ;
+	
+	//velocity arrays
+	double[] velX;
+	double[] velY;
+	double[] velZ;
+	
+	//acceleration arrays
+	double[] accelX;
+	double[] accelY;
+	double[] accelZ;
+	
+	//change in time
+	double dT;
+	
 	String gameData;            //this is the part that gives us switch and scale sides. in format LRL or RRL, etc
 	
 	public boolean checkButton(int port, boolean toggle) {
