@@ -130,7 +130,13 @@ public class Robot extends IterativeRobot {
 		
 		//bumper updates
 		bumperL = controller.getRawButton(5);
-		//bumperR = controller.getRawButton(?????);
+		//bumperR = controller.getRawButton();
+		
+		//button updates
+		//buttonX = controller.getRawButton();
+		//buttonY = controller.getRawButton();
+		//buttonA = controller.getRawButton();
+		//buttonB = controller.getRawButton();
 	}
 	
 	public void joystickDeadZone() { //dead zone for joysticks
