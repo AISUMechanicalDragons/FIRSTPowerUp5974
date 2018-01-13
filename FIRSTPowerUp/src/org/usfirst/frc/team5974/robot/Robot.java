@@ -116,7 +116,7 @@ public class Robot extends IterativeRobot {
 	boolean buttonY;				//y button
 	boolean buttonA;				//a button
 	boolean buttonB;				//b button
-	double dPad;					//d-pad
+	int dPad;					//d-pad
 	boolean joystickLPress;		//left joystick button press
 	boolean joystickRPress;		//right joystick button press
 	boolean buttonStart;			//start button
@@ -132,7 +132,110 @@ public class Robot extends IterativeRobot {
 	boolean fastBool = false;			//fast boolean: true = fast mode, false = slow mode
 	boolean grabberBool = true;			//true = in, false = out
 	
+	boolean checkButton(int port, boolean toggle) {
+		if (controller.getRawButton(port)) {
+			toggle = !toggle;
+			while (controller.getRawButton(port)) {}
+		}
+		return toggle;
+	}
 	
+	public double withIn(double input, double upperBound, double lowerBound) {	//returns the inputed value if inside the bounds. returns the bound it is past if it is past a bound.
+		if (input > 0) {
+			return java.lang.Math.min(upperBound, input);
+		} else if (input < 0) {
+			return java.lang.Math.max(lowerBound, input);
+		} else {
+			return 0;
+		}
+	}
+	
+	
+	
+	public void joystickDeadZone() { //dead zone for joysticks
+		if (joystickLXAxis <= 0.15 && joystickLXAxis <= -0.15) {
+			joystickLXAxis = 0;
+		} if (joystickLYAxis <= 0.15 && joystickLYAxis <= -0.15) {
+			joystickLYAxis = 0;
+		}
+	}
+	
+	public void update() {
+		//left joystick update
+		joystickLXAxis = controller.getRawAxis(0);
+		joystickLYAxis = controller.getRawAxis(1);
+		joystickLPress = controller.getRawButton(9);
+		
+		//right joystick update
+		joystickRXAxis = controller.getRawAxis(4);
+		joystickRYAxis = controller.getRawAxis(5);
+		joystickRPress = controller.getRawButton(10);
+		
+		//trigger updates
+		triggerL = controller.getRawAxis(2);
+		triggerR = controller.getRawAxis(3);
+		
+		//bumper updates
+		bumperL = controller.getRawButton(5);
+		bumperR = controller.getRawButton(6);
+		
+		//button updates
+		buttonX = controller.getRawButton(portButtonX);
+		buttonY = controller.getRawButton(portButtonY);
+		buttonA = controller.getRawButton(portButtonA);
+		buttonB = controller.getRawButton(portButtonB);
+		
+		tankDriveBool = checkButton(portButtonX, tankDriveBool);
+		fastBool = checkButton(portButtonB,fastBool);
+		grabberBool = checkButton(portButtonY, grabberBool);
+		
+		buttonBack = controller.getRawButton(7);
+		buttonStart = controller.getRawButton(8);
+		
+		//d-pad/POV updates
+		dPad = controller.getPOV(0);
+
+		joystickDeadZone();
+	}
+	
+
+	public void dashboardOutput() {	//sends data to dashboard and displays it on dashboard
+		
+	}
+	
+	public void tankDrive() {	//tank drive: left joystick controls left wheels, right joystick controls right wheels
+		//right motors = right joystick y-axis
+		//left motors = left joystick y-axis
+		if (fastBool) {
+			motorRB.set(joystickRYAxis);
+			motorRF.set(joystickRYAxis);
+			motorLB.set(joystickLYAxis);
+			motorLF.set(joystickLYAxis);
+		} else {
+			motorRB.set(joystickRYAxis/2);
+			motorRF.set(joystickRYAxis/2);
+			motorLB.set(joystickLYAxis/2);
+			motorLF.set(joystickLYAxis/2);
+		}
+	}
+	
+	public void arcadeDrive() {	//arcade drive: left joystick controls all driving
+		//right wheels have less power the farther right the left joystick is and more power the farther left
+		//left wheels have less power the farther left the left joystick is and more power the farther right
+		if (fastBool) {
+			motorRB.set(joystickLYAxis - joystickLXAxis);
+			motorRF.set(joystickLYAxis - joystickLXAxis);
+			motorLB.set(joystickLYAxis + joystickLXAxis);
+			motorLF.set(joystickLYAxis + joystickLXAxis);
+		} else {
+			motorRB.set((joystickLYAxis - joystickLXAxis)/2);
+			motorRF.set((joystickLYAxis - joystickLXAxis)/2);
+			motorLB.set((joystickLYAxis + joystickLXAxis)/2);
+			motorLF.set((joystickLYAxis + joystickLXAxis)/2);
+		}
+	}
+	
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -199,95 +302,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-	}
-	
-	public void dashboardOutput() {	//sends data to dashboard and displays it on dashboard
 		
 	}
 	
-	public void tankDrive() {	//tank drive: left joystick controls left wheels, right joystick controls right wheels
-		//right motors = right joystick y-axis
-		//left motors = left joystick y-axis
-		if (fastBool) {
-			motorRB.set(joystickRYAxis);
-			motorRF.set(joystickRYAxis);
-			motorLB.set(joystickLYAxis);
-			motorLF.set(joystickLYAxis);
-		} else {
-			motorRB.set(joystickRYAxis/2);
-			motorRF.set(joystickRYAxis/2);
-			motorLB.set(joystickLYAxis/2);
-			motorLF.set(joystickLYAxis/2);
-		}
-	}
 	
-	public void arcadeDrive() {	//arcade drive: left joystick controls all driving
-		//right wheels have less power the farther right the left joystick is and more power the farther left
-		//left wheels have less power the farther left the left joystick is and more power the farther right
-		if (fastBool) {
-			motorRB.set(joystickLYAxis - joystickLXAxis);
-			motorRF.set(joystickLYAxis - joystickLXAxis);
-			motorLB.set(joystickLYAxis + joystickLXAxis);
-			motorLF.set(joystickLYAxis + joystickLXAxis);
-		} else {
-			motorRB.set((joystickLYAxis - joystickLXAxis)/2);
-			motorRF.set((joystickLYAxis - joystickLXAxis)/2);
-			motorLB.set((joystickLYAxis + joystickLXAxis)/2);
-			motorLF.set((joystickLYAxis + joystickLXAxis)/2);
-		}
-	}
 	
-	public void update() {
-		//left joystick update
-		joystickLXAxis = controller.getRawAxis(0);
-		joystickLYAxis = controller.getRawAxis(1);
-		joystickLPress = controller.getRawButton(9);
-		
-		//right joystick update
-		joystickRXAxis = controller.getRawAxis(4);
-		joystickRYAxis = controller.getRawAxis(5);
-		joystickRPress = controller.getRawButton(10);
-		
-		//trigger updates
-		triggerL = controller.getRawAxis(2);
-		triggerR = controller.getRawAxis(3);
-		
-		//bumper updates
-		bumperL = controller.getRawButton(5);
-		bumperR = controller.getRawButton(6);
-		
-		//button updates
-		buttonX = controller.getRawButton(portButtonX);
-		buttonY = controller.getRawButton(portButtonY);
-		buttonA = controller.getRawButton(portButtonA);
-		buttonB = controller.getRawButton(portButtonB);
-		
-		tankDriveBool = checkButton(portButtonX, tankDriveBool);
-		fastBool = checkButton(portButtonB,fastBool);
-		grabberBool = checkButton(portButtonY, grabberBool);
-		
-		buttonBack = controller.getRawButton(7);
-		buttonStart = controller.getRawButton(8);
-		
-		//d-pad/POV updates
-		dPad = controller.getPOV(0);
-		
-		
-	}
 	
-	public boolean checkButton(int port, boolean toggle) {
-		if (controller.getRawButton(port)) {
-			toggle = !toggle;
-			while (controller.getRawButton(port)) {}
-		}
-		return toggle;
-	}
-
-	public void joystickDeadZone() { //dead zone for joysticks
-		if (joystickLXAxis <= 0.15 && joystickLXAxis <= -0.15) {
-			joystickLXAxis = 0;
-		} if (joystickLYAxis <= 0.15 && joystickLYAxis <= -0.15) {
-			joystickLYAxis = 0;
-		}
-	}
 }
