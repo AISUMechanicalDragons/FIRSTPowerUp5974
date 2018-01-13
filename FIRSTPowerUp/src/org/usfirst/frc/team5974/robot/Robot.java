@@ -92,7 +92,8 @@ public class Robot extends IterativeRobot {
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	
-	//Motors. We NEED to change these to the actual motors, once electrical makes up its mind
+	//Motors. We NEED to change these to the actual motors, once electrical makes up its mind.
+	//Also, sometimes one side is inverted. If it is, we need to change our drive code to reflect that.
 	Spark motorRB = new Spark(1); //motor right back
 	Spark motorRF = new Spark(2); //motor right front
 	Spark motorLB = new Spark(3); //motor left back
@@ -114,7 +115,7 @@ public class Robot extends IterativeRobot {
 	boolean buttonB;				//b button
 	double dPad;					//d-pad
 	
-	double robotSpeed;			//robot speed
+	double robotSpeed;			//robot speed (fast/slow mode)
 	boolean tankDriveBool = true;		//tank drive boolean: true = tank drive, false = arcade drive
 	boolean fastBool = false;			//fast boolean: true = fast mode, false = slow mode
 	
@@ -246,9 +247,6 @@ public class Robot extends IterativeRobot {
 		//buttonA = controller.getRawButton();
 		//buttonB = controller.getRawButton();
 	}
-	/**
-	 * This function is called periodically during test mode.
-	 */
 	
 	public void joystickDeadZone() { //dead zone for joysticks
 		if (joystickLXAxis <= 0.15 && joystickLXAxis <= -0.15) {
