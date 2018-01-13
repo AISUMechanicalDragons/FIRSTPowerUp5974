@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package com.analog.adis16448.frc;
+package org.usfirst.frc.team5974.robot;
 
 import java.nio.ByteOrder;
 import java.nio.ByteBuffer;
@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj.Timer;
 /**
  * This class is for the ADIS16448 IMU that connects to the RoboRIO MXP port.
  */
+@SuppressWarnings("deprecation")
 public class ADIS16448_IMU extends GyroBase implements Gyro, PIDSource, LiveWindowSendable {
   private static final double kTimeout = 0.1;
   private static final double kCalibrationSampleTime = 5.0;
@@ -1097,4 +1098,16 @@ public class ADIS16448_IMU extends GyroBase implements Gyro, PIDSource, LiveWind
       table.putNumber("AngleZ", getAngleZ());
     }
   }
+
+@Override
+public void startLiveWindowMode() {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public void stopLiveWindowMode() {
+	// TODO Auto-generated method stub
+	
+}
 }
