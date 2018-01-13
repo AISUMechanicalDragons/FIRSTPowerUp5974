@@ -116,7 +116,7 @@ public class Robot extends IterativeRobot {
 	boolean buttonY;				//y button
 	boolean buttonA;				//a button
 	boolean buttonB;				//b button
-	double dPad;					//d-pad
+	int dPad;					//d-pad
 	boolean joystickLPress;		//left joystick button press
 	boolean joystickRPress;		//right joystick button press
 	boolean buttonStart;			//start button
