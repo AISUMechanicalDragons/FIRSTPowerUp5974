@@ -143,12 +143,36 @@ public class Robot extends IterativeRobot {
 	
 	String gameData;            //this is the part that gives us switch and scale sides. in format LRL or RRL, etc
 	
-	boolean checkButton(int port, boolean toggle) {
+	public boolean checkButton(int port, boolean toggle) {
 		if (controller.getRawButton(port)) {
 			toggle = !toggle;
 			while (controller.getRawButton(port)) {}
 		}
 		return toggle;
+	}
+	
+	public void rotateTo(int goTo) {
+		//clockwise degrees to goTo angle
+		double cw = (goTo - angleToForward < 0) ? (goTo - angleToForward + 360) : (goTo - angleToForward);
+		
+		//counter-clockwise degrees to goTo angle
+		double ccw = (angleToForward - goTo< 0) ? (angleToForward - goTo + 360) : (angleToForward - goTo);
+		
+		//rotates the fastest way until in +- 5 of goTo angle
+		while (goTo >= angleToForward + 5 && goTo <= angleToForward - 5) {
+			gyroUpdate();
+			if (cw <= ccw) {
+				motorRB.set(-1);
+				motorRF.set(-1);
+				motorLB.set(1);
+				motorLF.set(1);
+			} else {
+				motorRB.set(1);
+				motorRF.set(1);
+				motorLB.set(-1);
+				motorLF.set(-1);
+			}
+		}
 	}
 	
 	public double withIn(double input, double upperBound, double lowerBound) {	//returns the inputed value if inside the bounds. returns the bound it is past if it is past a bound.
@@ -170,6 +194,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void gyroUpdate() {
+		//set non-looping angle
 		angleToForward = IMU.getAngle();
 		if (angleToForward >= 360) {
 			angleToForward -= 360;
@@ -206,6 +231,7 @@ public class Robot extends IterativeRobot {
 		buttonBack = controller.getRawButton(7);
 		buttonStart = controller.getRawButton(8);
 		
+		//toggle checks
 		tankDriveBool = checkButton(portButtonX, tankDriveBool);
 		fastBool = checkButton(portButtonB,fastBool);
 		grabberBool = checkButton(portButtonY, grabberBool);
