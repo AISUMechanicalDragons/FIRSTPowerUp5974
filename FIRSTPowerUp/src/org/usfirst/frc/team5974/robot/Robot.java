@@ -239,6 +239,11 @@ public class Robot extends IterativeRobot {
 		//d-pad/POV updates
 		dPad = controller.getPOV(0);
 
+		//d-pad/POV turns
+		if (dPad != -1) {
+			rotateTo(dPad);
+		}
+		
 		joystickDeadZone();
 		gyroUpdate();
 	}
