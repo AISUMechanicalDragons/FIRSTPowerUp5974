@@ -105,7 +105,7 @@ public class Robot extends IterativeRobot {
 	
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
-	ADIS16448_IMU imu = new ADIS16448_IMU();		//imu: accelerometer and gyro
+	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
 	double joystickLXAxis;			//left joystick x-axis
 	double joystickLYAxis;			//left joystick y-axis
 	double joystickRXAxis;			//right joystick x-axis
@@ -250,6 +250,8 @@ public class Robot extends IterativeRobot {
 		m_chooser.addDefault("Default Auto", kDefaultAuto);
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
+		IMU.calibrate();
+		IMU.reset();
 	}
 
 	/**
