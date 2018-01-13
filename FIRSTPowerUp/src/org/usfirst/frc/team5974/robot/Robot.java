@@ -203,12 +203,12 @@ public class Robot extends IterativeRobot {
 		buttonA = controller.getRawButton(portButtonA);
 		buttonB = controller.getRawButton(portButtonB);
 		
+		buttonBack = controller.getRawButton(7);
+		buttonStart = controller.getRawButton(8);
+		
 		tankDriveBool = checkButton(portButtonX, tankDriveBool);
 		fastBool = checkButton(portButtonB,fastBool);
 		grabberBool = checkButton(portButtonY, grabberBool);
-		
-		buttonBack = controller.getRawButton(7);
-		buttonStart = controller.getRawButton(8);
 		
 		//d-pad/POV updates
 		dPad = controller.getPOV(0);
