@@ -105,8 +105,9 @@ public class Robot extends IterativeRobot {
 	Spark motorLF = new Spark(4); //motor left front
 	
 	//Variables we're using
-	Joystick controller = new Joystick(0);			//controller
+	Joystick controller = new Joystick(0);			//controller  // could be incorrect port
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
+	Timer timer = new Timer();
 	double joystickLXAxis;			//left joystick x-axis
 	double joystickLYAxis;			//left joystick y-axis
 	double joystickRXAxis;			//right joystick x-axis
@@ -130,10 +131,22 @@ public class Robot extends IterativeRobot {
 	int portButtonA = 1;
 	int portButtonB = 2;
 	
+	int portJoystickLPress = 9;
+	int portJoystickRPress = 10;
+	
 	int portJoystickLXAxis = 0;
 	int portJoystickLYAxis = 1;
 	int portJoystickRXAxis = 4;
 	int portJoystickRYAxis = 5;
+	
+	int portTriggerL = 2;
+	int portTriggerR = 3;
+	
+	int portBumperL = 5;
+	int portBumperR = 6;
+	
+	int portButtonBack = 7;
+	int portButtonStart = 8;
 	
 	double angleToForward = 0;
 	
@@ -242,20 +255,20 @@ public class Robot extends IterativeRobot {
 		//left joystick update
 		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);
 		joystickLYAxis = controller.getRawAxis(portJoystickLYAxis);
-		joystickLPress = controller.getRawButton(9);
+		joystickLPress = controller.getRawButton(portJoystickLPress);
 		
 		//right joystick update
 		joystickRXAxis = controller.getRawAxis(portJoystickRXAxis);
 		joystickRYAxis = controller.getRawAxis(portJoystickRYAxis);
-		joystickRPress = controller.getRawButton(10);
+		joystickRPress = controller.getRawButton(portJoystickRPress);
 		
 		//trigger updates
-		triggerL = controller.getRawAxis(2);
-		triggerR = controller.getRawAxis(3);
+		triggerL = controller.getRawAxis(portTriggerL);
+		triggerR = controller.getRawAxis(portTriggerR);
 		
 		//bumper updates
-		bumperL = controller.getRawButton(5);
-		bumperR = controller.getRawButton(6);
+		bumperL = controller.getRawButton(portBumperL);
+		bumperR = controller.getRawButton(portBumperR);
 		
 		//button updates
 		buttonX = controller.getRawButton(portButtonX);
@@ -263,8 +276,8 @@ public class Robot extends IterativeRobot {
 		buttonA = controller.getRawButton(portButtonA);
 		buttonB = controller.getRawButton(portButtonB);
 		
-		buttonBack = controller.getRawButton(7);
-		buttonStart = controller.getRawButton(8);
+		buttonBack = controller.getRawButton(portButtonBack);
+		buttonStart = controller.getRawButton(portButtonStart);
 		
 		//toggle checks
 		tankDriveBool = checkButton(portButtonX, tankDriveBool);
@@ -401,8 +414,5 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		
 	}
-	
-	
-	
 	
 }
