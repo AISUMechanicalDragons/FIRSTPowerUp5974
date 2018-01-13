@@ -78,6 +78,7 @@ import edu.wpi.first.wpilibj.Joystick; //Controller
 import edu.wpi.first.wpilibj.Timer; //Timer
 import edu.wpi.first.wpilibj.Spark; //Motor Controller
 import edu.wpi.first.wpilibj.*; //everything tbh
+import org.usfirst.frc.team5974.robot.ADIS16448_IMU;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -104,6 +105,7 @@ public class Robot extends IterativeRobot {
 	
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
+	ADIS16448_IMU imu = new ADIS16448_IMU();		//imu: accelerometer and gyro
 	double joystickLXAxis;			//left joystick x-axis
 	double joystickLYAxis;			//left joystick y-axis
 	double joystickRXAxis;			//right joystick x-axis
