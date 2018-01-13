@@ -316,7 +316,7 @@ public class Robot extends IterativeRobot {
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + m_autoSelected);
-		gameData = DriverStation.getInstance().getGameSpecificMeassage(); //Gives 3 characters telling your switch and scale sides. The first one is your switch. The second is the scale. The third one is your opponent's switch
+		gameData = DriverStation.getInstance().getGameSpecificMessage(); //Gives 3 characters telling your switch and scale sides. The first one is your switch. The second is the scale. The third one is your opponent's switch
 	}
 
 	/**
