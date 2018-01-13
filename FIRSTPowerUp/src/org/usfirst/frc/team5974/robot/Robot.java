@@ -27,7 +27,7 @@ Controls by Action:
 	Toggle Speed:
 		-B button
 	
-	Toggle Drive Style:
+	Toggle Drive Style: (arcade/tank)
 		-X button
 				
 	Toggle Grabber In/Out:
@@ -117,6 +117,10 @@ public class Robot extends IterativeRobot {
 	boolean buttonA;				//a button
 	boolean buttonB;				//b button
 	double dPad;					//d-pad
+	boolean joystickLPress;		//left joystick button press
+	boolean joystickRPress;		//right joystick button press
+	boolean buttonStart;			//start button
+	boolean buttonBack;			//back button
 	
 	double robotSpeed;			//robot speed (fast/slow mode)
 	boolean tankDriveBool = true;		//tank drive boolean: true = tank drive, false = arcade drive
@@ -231,10 +235,12 @@ public class Robot extends IterativeRobot {
 		//left joystick update
 		joystickLXAxis = controller.getRawAxis(0);
 		joystickLYAxis = controller.getRawAxis(1);
+		joystickLPress = controller.getRawButton(9);
 		
 		//right joystick update
 		joystickRXAxis = controller.getRawAxis(4);
 		joystickRYAxis = controller.getRawAxis(5);
+		joystickRPress = controller.getRawButton(10);
 		
 		//trigger updates
 		triggerL = controller.getRawAxis(2);
@@ -249,6 +255,8 @@ public class Robot extends IterativeRobot {
 		buttonY = controller.getRawButton(4);
 		buttonA = controller.getRawButton(1);
 		buttonB = controller.getRawButton(2);
+		buttonBack = controller.getRawButton(7);
+		buttonStart = controller.getRawButton(8);
 		
 		//d-pad/POV updates
 		dPad = controller.getPOV(0);
