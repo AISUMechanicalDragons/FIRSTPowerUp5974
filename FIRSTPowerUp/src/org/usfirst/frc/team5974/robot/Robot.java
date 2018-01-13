@@ -78,6 +78,7 @@ import edu.wpi.first.wpilibj.Joystick; //Controller
 import edu.wpi.first.wpilibj.Timer; //Timer
 import edu.wpi.first.wpilibj.Spark; //Motor Controller
 import edu.wpi.first.wpilibj.*; //everything tbh
+import org.usfirst.frc.team5974.robot.ADIS16448_IMU;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -104,6 +105,7 @@ public class Robot extends IterativeRobot {
 	
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
+	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
 	double joystickLXAxis;			//left joystick x-axis
 	double joystickLYAxis;			//left joystick y-axis
 	double joystickRXAxis;			//right joystick x-axis
@@ -126,6 +128,11 @@ public class Robot extends IterativeRobot {
 	int portButtonY = 4;
 	int portButtonA = 1;
 	int portButtonB = 2;
+	
+	int portJoystickLXAxis = 0;
+	int portJoystickLYAxis = 1;
+	int portJoystickRXAxis = 4;
+	int portJoystickRYAxis = 5;
 	
 	double robotSpeed;			//robot speed (fast/slow mode)
 	boolean tankDriveBool = true;		//tank drive boolean: true = tank drive, false = arcade drive
@@ -152,8 +159,6 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	
-	
 	public void joystickDeadZone() { //dead zone for joysticks
 		if (joystickLXAxis <= 0.15 && joystickLXAxis <= -0.15) {
 			joystickLXAxis = 0;
@@ -164,13 +169,13 @@ public class Robot extends IterativeRobot {
 	
 	public void update() {
 		//left joystick update
-		joystickLXAxis = controller.getRawAxis(0);
-		joystickLYAxis = controller.getRawAxis(1);
+		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);
+		joystickLYAxis = controller.getRawAxis(portJoystickLYAxis);
 		joystickLPress = controller.getRawButton(9);
 		
 		//right joystick update
-		joystickRXAxis = controller.getRawAxis(4);
-		joystickRYAxis = controller.getRawAxis(5);
+		joystickRXAxis = controller.getRawAxis(portJoystickRXAxis);
+		joystickRYAxis = controller.getRawAxis(portJoystickRYAxis);
 		joystickRPress = controller.getRawButton(10);
 		
 		//trigger updates
@@ -247,6 +252,8 @@ public class Robot extends IterativeRobot {
 		m_chooser.addDefault("Default Auto", kDefaultAuto);
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
+		IMU.calibrate();
+		IMU.reset();
 	}
 
 	/**
