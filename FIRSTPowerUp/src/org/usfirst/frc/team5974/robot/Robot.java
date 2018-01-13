@@ -79,6 +79,7 @@ import edu.wpi.first.wpilibj.Timer; //Timer
 import edu.wpi.first.wpilibj.Spark; //Motor Controller
 import edu.wpi.first.wpilibj.*; //everything tbh
 import org.usfirst.frc.team5974.robot.ADIS16448_IMU;
+import java.util.ArrayList;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -142,22 +143,24 @@ public class Robot extends IterativeRobot {
 	boolean grabberBool = true;			//true = in, false = out
 	
 	//position arrays
-	double[] posX;
-	double[] posY;
-	double[] posZ;
+	ArrayList posX = new ArrayList();
+	ArrayList posY = new ArrayList();
+	ArrayList posZ = new ArrayList();
 	
 	//velocity arrays
-	double[] velX;
-	double[] velY;
-	double[] velZ;
+	ArrayList velX = new ArrayList();
+	ArrayList velY = new ArrayList();
+	ArrayList velZ = new ArrayList();
 	
 	//acceleration arrays
-	double[] accelX;
-	double[] accelY;
-	double[] accelZ;
+	ArrayList accelX = new ArrayList();
+	ArrayList accelY = new ArrayList();
+	ArrayList accelZ = new ArrayList();
 	
 	//change in time
 	double dT;
+	double t0;
+	double t1;
 	
 	String gameData;            //this is the part that gives us switch and scale sides. in format LRL or RRL, etc
 	
@@ -167,6 +170,20 @@ public class Robot extends IterativeRobot {
 			while (controller.getRawButton(port)) {}
 		}
 		return toggle;
+	}
+	
+	public void updateTrifectaArrays() {
+		accelX.add(IMU.getAccelX());
+		accelY.add(IMU.getAccelY());
+		accelZ.add(IMU.getAccelZ());
+		
+		velX.add((double)accelX.get(accelX.size() - 1) * dT);
+		velY.add((double)accelY.get(accelY.size() - 1) * dT);
+		velZ.add((double)accelZ.get(accelZ.size() - 1) * dT);
+		
+		posX.add((double)velX.get(velX.size() - 1) * (dT * dT));
+		posY.add((double)velY.get(velY.size() - 1) * (dT * dT));
+		posZ.add((double)velZ.get(velZ.size() - 1) * (dT * dT));
 	}
 	
 	public void rotateTo(int goTo) {
@@ -368,6 +385,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		update();
 		dashboardOutput();
+		updateTrifectaArrays();
 		
 		if (tankDriveBool) {
 			tankDrive();
