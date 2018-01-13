@@ -140,6 +140,7 @@ public class Robot extends IterativeRobot {
 		
 		//d-pad/POV updates
 		dPad = controller.getPOV(0);
+		
 	}
 	
 	public void joystickDeadZone() { //dead zone for joysticks
