@@ -107,15 +107,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 	}
-
-	/**
-	 * This function is called periodically during test mode.
-	 */
-	@Override
-	public void testPeriodic() {
-	}
-	
 	public void update() {
+		//fyi, this goes in teleopPeriodic
 		//left joystick update
 		joystickLXAxis = controller.getRawAxis(0);
 		joystickLYAxis = controller.getRawAxis(1);
@@ -137,6 +130,12 @@ public class Robot extends IterativeRobot {
 		//buttonY = controller.getRawButton();
 		//buttonA = controller.getRawButton();
 		//buttonB = controller.getRawButton();
+	}
+	/**
+	 * This function is called periodically during test mode.
+	 */
+	@Override
+	public void testPeriodic() {
 	}
 	
 	public void joystickDeadZone() { //dead zone for joysticks
