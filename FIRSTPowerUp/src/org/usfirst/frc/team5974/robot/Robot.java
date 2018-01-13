@@ -5,10 +5,6 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Git/Eclipse Integration Test
-//Testing pull... 
-//Success!
-
 package org.usfirst.frc.team5974.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
