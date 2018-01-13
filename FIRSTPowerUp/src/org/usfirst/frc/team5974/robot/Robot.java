@@ -143,19 +143,19 @@ public class Robot extends IterativeRobot {
 	boolean grabberBool = true;			//true = in, false = out
 	
 	//position arrays
-	ArrayList posX = new ArrayList();
-	ArrayList posY = new ArrayList();
-	ArrayList posZ = new ArrayList();
+	double posX = 0;
+	double posY = 0;
+	double posZ = 0;
 	
 	//velocity arrays
-	ArrayList velX = new ArrayList();
-	ArrayList velY = new ArrayList();
-	ArrayList velZ = new ArrayList();
+	double velX = 0;
+	double velY = 0;
+	double velZ = 0;
 	
 	//acceleration arrays
-	ArrayList accelX = new ArrayList();
-	ArrayList accelY = new ArrayList();
-	ArrayList accelZ = new ArrayList();
+	double accelX = 0;
+	double accelY = 0;
+	double accelZ = 0;
 	
 	//change in time
 	double dT;
@@ -172,21 +172,18 @@ public class Robot extends IterativeRobot {
 		return toggle;
 	}
 	
-	public void updateTrifectaArrays() {
-		accelX.add(IMU.getAccelX());
-		accelY.add(IMU.getAccelY());
-		accelZ.add(IMU.getAccelZ());
+	public void updateTrifecta() {
+		accelX = IMU.getAccelX();
+		accelY = IMU.getAccelY();
+		accelZ = IMU.getAccelZ();
 		
-		velX.add((double)accelX.get(accelX.size() - 1) * dT);
-		velY.add((double)accelY.get(accelY.size() - 1) * dT);
-		velZ.add((double)accelZ.get(accelZ.size() - 1) * dT);
+		velX += accelX * dT;
+		velY += accelY * dT;
+		velZ += accelZ * dT;
 		
-		posX.add((double)velX.get(velX.size() - 1) * dT);
-		posY.add((double)velY.get(velY.size() - 1) * dT);
-		posZ.add((double)velZ.get(velZ.size() - 1) * dT);
-		
-		posX.set(posX.size() - 1, (double)posX.get(posX.size() - 1) * Math.sin(angleToForward*(Math.PI/180.0)));
-		posY.set(posY.size() - 1, (double)posY.get(posY.size() - 1) * Math.cos(angleToForward*(Math.PI/180.0)));
+		posX += velX * dT * Math.sin(angleToForward * (Math.PI / 180.0));
+		posY += velY * dT * Math.cos(angleToForward * (Math.PI / 180.0));
+		posZ += velZ * dT;
 	}
 	
 	public void rotateTo(int goTo) {
@@ -388,7 +385,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		update();
 		dashboardOutput();
-		updateTrifectaArrays();
+		updateTrifecta();
 		
 		if (tankDriveBool) {
 			tankDrive();
