@@ -141,7 +141,7 @@ public class Robot extends IterativeRobot {
 		return toggle;
 	}
 	
-	public double withIn(double input, double upperBound, double lowerBound) {
+	public double withIn(double input, double upperBound, double lowerBound) {	//returns the inputed value if inside the bounds. returns the bound it is past if it is past a bound.
 		if (input > 0) {
 			return java.lang.Math.min(upperBound, input);
 		} else if (input < 0) {
