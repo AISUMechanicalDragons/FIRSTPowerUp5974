@@ -134,6 +134,8 @@ public class Robot extends IterativeRobot {
 	int portJoystickRXAxis = 4;
 	int portJoystickRYAxis = 5;
 	
+	double angleToForward = 0;
+	
 	double robotSpeed;			//robot speed (fast/slow mode)
 	boolean tankDriveBool = true;		//tank drive boolean: true = tank drive, false = arcade drive
 	boolean fastBool = false;			//fast boolean: true = fast mode, false = slow mode
@@ -162,6 +164,15 @@ public class Robot extends IterativeRobot {
 			joystickLXAxis = 0;
 		} if (joystickLYAxis <= 0.15 && joystickLYAxis <= -0.15) {
 			joystickLYAxis = 0;
+		}
+	}
+	
+	public void gyroUpdate() {
+		angleToForward = IMU.getAngle();
+		if (angleToForward >= 360) {
+			angleToForward -= 360;
+		} else if (angleToForward < 0) {
+			angleToForward += 360;
 		}
 	}
 	
@@ -201,6 +212,7 @@ public class Robot extends IterativeRobot {
 		dPad = controller.getPOV(0);
 
 		joystickDeadZone();
+		gyroUpdate();
 	}
 	
 
