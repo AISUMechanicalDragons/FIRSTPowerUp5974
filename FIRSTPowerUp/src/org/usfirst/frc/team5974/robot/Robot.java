@@ -181,9 +181,12 @@ public class Robot extends IterativeRobot {
 		velY.add((double)accelY.get(accelY.size() - 1) * dT);
 		velZ.add((double)accelZ.get(accelZ.size() - 1) * dT);
 		
-		posX.add((double)velX.get(velX.size() - 1) * (dT * dT));
-		posY.add((double)velY.get(velY.size() - 1) * (dT * dT));
-		posZ.add((double)velZ.get(velZ.size() - 1) * (dT * dT));
+		posX.add((double)velX.get(velX.size() - 1) * dT);
+		posY.add((double)velY.get(velY.size() - 1) * dT);
+		posZ.add((double)velZ.get(velZ.size() - 1) * dT);
+		
+		posX.set(posX.size() - 1, (double)posX.get(posX.size() - 1) * Math.sin(angleToForward*(Math.PI/180.0)));
+		posY.set(posY.size() - 1, (double)posY.get(posY.size() - 1) * Math.cos(angleToForward*(Math.PI/180.0)));
 	}
 	
 	public void rotateTo(int goTo) {
