@@ -141,6 +141,8 @@ public class Robot extends IterativeRobot {
 	boolean fastBool = false;			//fast boolean: true = fast mode, false = slow mode
 	boolean grabberBool = true;			//true = in, false = out
 	
+	String gameData;            //this is the part that gives us switch and scale sides. in format LRL or RRL, etc
+	
 	boolean checkButton(int port, boolean toggle) {
 		if (controller.getRawButton(port)) {
 			toggle = !toggle;
@@ -283,6 +285,7 @@ public class Robot extends IterativeRobot {
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + m_autoSelected);
+		gameData = DriverStation.getInstance().getGameSpecificMeassage(); //Gives 3 characters telling your switch and scale sides. The first one is your switch. The second is the scale. The third one is your opponent's switch
 	}
 
 	/**
@@ -299,6 +302,14 @@ public class Robot extends IterativeRobot {
 				// Put default auto code here
 				break;
 		}
+		/*To use gameData,example
+		 * if(gameData.charAt(0) == 'L')     //if switch is on left side at character 0 (The first character)
+		 * { //blah blahblah what to do if switch is on left yeah
+		 * }
+		 * else{
+		 * 		//what to do if switch is on right.
+		 * }
+		 */
 	}
 
 	/**
