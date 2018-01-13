@@ -5,18 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Driver station setup success.
+//Git/Eclipse Integration Test
+//Testing pull... 
+//Success!
 
 package org.usfirst.frc.team5974.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard; //Dashboard
 import edu.wpi.first.wpilibj.Joystick; //Controller
 import edu.wpi.first.wpilibj.Timer; //Timer
 import edu.wpi.first.wpilibj.Spark; //Motor Controller
 import edu.wpi.first.wpilibj.*; //everything tbh
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -24,7 +25,6 @@ import edu.wpi.first.wpilibj.*; //everything tbh
  * creating this project, you must also update the build.properties file in the
  * project.
  */
-
 public class Robot extends IterativeRobot {
 	private static final String kDefaultAuto = "Default"; //any idea what these are for??
 	private static final String kCustomAuto = "My Auto";
@@ -38,7 +38,7 @@ public class Robot extends IterativeRobot {
 	Spark motorRF = new Spark(2); //motor right front
 	Spark motorLB = new Spark(3); //motor left back
 	Spark motorLF = new Spark(4); //motor left front
-
+	
 	//Variables we're using
 	Joystick controller;			//controller
 	double joystickLXAxis;		//left joystick x-axis
@@ -53,7 +53,7 @@ public class Robot extends IterativeRobot {
 	boolean buttonY;				//y button
 	boolean buttonA;				//a button
 	boolean buttonB;				//b button
-	
+	double dPad;					//d-pad
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -73,7 +73,7 @@ public class Robot extends IterativeRobot {
 	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
 	 * getString line to get the auto name from the text box below the Gyro
 	 *
-	 * You can add additional auto modes by adding additional comparisons to
+	 * <p>You can add additional auto modes by adding additional comparisons to
 	 * the switch structure below with additional strings. If using the
 	 * SendableChooser make sure to add them to the chooser code above as well.
 	 */
@@ -107,8 +107,15 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 	}
+
+	/**
+	 * This function is called periodically during test mode.
+	 */
+	@Override
+	public void testPeriodic() {
+	}
+	
 	public void update() {
-		//fyi, this goes in teleopPeriodic
 		//left joystick update
 		joystickLXAxis = controller.getRawAxis(0);
 		joystickLYAxis = controller.getRawAxis(1);
@@ -123,19 +130,16 @@ public class Robot extends IterativeRobot {
 		
 		//bumper updates
 		bumperL = controller.getRawButton(5);
-		//bumperR = controller.getRawButton();
+		bumperR = controller.getRawButton(6);
 		
 		//button updates
-		//buttonX = controller.getRawButton();
-		//buttonY = controller.getRawButton();
-		//buttonA = controller.getRawButton();
-		//buttonB = controller.getRawButton();
-	}
-	/**
-	 * This function is called periodically during test mode.
-	 */
-	@Override
-	public void testPeriodic() {
+		buttonX = controller.getRawButton(3);
+		buttonY = controller.getRawButton(4);
+		buttonA = controller.getRawButton(1);
+		buttonB = controller.getRawButton(2);
+		
+		//d-pad/POV updates
+		dPad = controller.getPOV(0);
 	}
 	
 	public void joystickDeadZone() { //dead zone for joysticks
