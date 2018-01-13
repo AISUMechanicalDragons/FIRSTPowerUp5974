@@ -24,6 +24,9 @@ import edu.wpi.first.wpilibj.*; //everything tbh
  * creating this project, you must also update the build.properties file in the
  * project.
  */
+/*
+ 
+ */
 
 public class Robot extends IterativeRobot {
 	private static final String kDefaultAuto = "Default"; //any idea what these are for??
@@ -41,10 +44,10 @@ public class Robot extends IterativeRobot {
 
 	//Variables we're using
 	Joystick controller;			//controller
-	double joystickLXAxis;		//left joystick x-axis
-	double joystickLYAxis;		//left joystick y-axis
-	double joystickRXAxis;		//right joystick x-axis
-	double joystickRYAxis;		//right joystick y-axis
+	double joystickLXAxis;			//left joystick x-axis
+	double joystickLYAxis;			//left joystick y-axis
+	double joystickRXAxis;			//right joystick x-axis
+	double joystickRYAxis;			//right joystick y-axis
 	double triggerL;				//left trigger
 	double triggerR;				//right trigger
 	boolean bumperL;				//left bumper
