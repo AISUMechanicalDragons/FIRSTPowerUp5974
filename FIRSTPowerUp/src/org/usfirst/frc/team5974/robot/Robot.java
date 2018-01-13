@@ -5,10 +5,6 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Git/Eclipse Integration Test
-//Testing pull... 
-//Success!
-
 /*
 Controls by Action:
 
