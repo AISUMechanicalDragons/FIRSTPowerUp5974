@@ -68,9 +68,9 @@ Controls by Action:
  	Back Button: None
  	Select Button: None
  */
-//
+
 package org.usfirst.frc.team5974.robot;
-//Test edit 
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard; //Dashboard
@@ -225,15 +225,15 @@ public class Robot extends IterativeRobot {
 		//right wheels have less power the farther right the left joystick is and more power the farther left
 		//left wheels have less power the farther left the left joystick is and more power the farther right
 		if (fastBool) {
-			motorRB.set(joystickLYAxis - joystickLXAxis);
-			motorRF.set(joystickLYAxis - joystickLXAxis);
-			motorLB.set(joystickLYAxis + joystickLXAxis);
-			motorLF.set(joystickLYAxis + joystickLXAxis);
+			motorRB.set(withIn((joystickLYAxis - joystickLXAxis), 1, -1));
+			motorRF.set(withIn((joystickLYAxis - joystickLXAxis), 1, -1));
+			motorLB.set(withIn((joystickLYAxis + joystickLXAxis), 1, -1));
+			motorLF.set(withIn((joystickLYAxis + joystickLXAxis), 1, -1));
 		} else {
-			motorRB.set((joystickLYAxis - joystickLXAxis)/2);
-			motorRF.set((joystickLYAxis - joystickLXAxis)/2);
-			motorLB.set((joystickLYAxis + joystickLXAxis)/2);
-			motorLF.set((joystickLYAxis + joystickLXAxis)/2);
+			motorRB.set((withIn((joystickLYAxis - joystickLXAxis), 1, -1))/2);
+			motorRF.set((withIn((joystickLYAxis - joystickLXAxis), 1, -1))/2);
+			motorLB.set((withIn((joystickLYAxis + joystickLXAxis), 1, -1))/2);
+			motorLF.set((withIn((joystickLYAxis + joystickLXAxis), 1, -1))/2);
 		}
 	}
 	
@@ -271,8 +271,6 @@ public class Robot extends IterativeRobot {
 		
 		//d-pad/POV updates
 		dPad = controller.getPOV(0);
-		
-		
 	}
 	
 	public boolean checkButton(int port, boolean toggle) {
@@ -281,6 +279,16 @@ public class Robot extends IterativeRobot {
 			while (controller.getRawButton(port)) {}
 		}
 		return toggle;
+	}
+	
+	public double withIn(double input, double upperBound, double lowerBound) {
+		if (input > 0) {
+			return java.lang.Math.min(upperBound, input);
+		} else if (input < 0) {
+			return java.lang.Math.max(lowerBound, input);
+		} else {
+			return 0;
+		}
 	}
 
 	public void joystickDeadZone() { //dead zone for joysticks
