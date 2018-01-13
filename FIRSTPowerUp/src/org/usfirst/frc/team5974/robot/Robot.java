@@ -35,8 +35,6 @@ public class Robot extends IterativeRobot {
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	
-	Joystick remote = new Joystick(0); //I think that's the port it's on? idrk
-	
 	//Motors. We NEED to change these to the actual motors, once electrical makes up its mind
 	Spark motorRB = new Spark(1); //motor right back
 	Spark motorRF = new Spark(2); //motor right front
@@ -44,7 +42,7 @@ public class Robot extends IterativeRobot {
 	Spark motorLF = new Spark(4); //motor left front
 	
 	//Variables we're using
-	Joystick controller;			//controller
+	Joystick controller = new Joystick(0);			//controller
 	double joystickLXAxis;			//left joystick x-axis
 	double joystickLYAxis;			//left joystick y-axis
 	double joystickRXAxis;			//right joystick x-axis
@@ -58,6 +56,9 @@ public class Robot extends IterativeRobot {
 	boolean buttonA;				//a button
 	boolean buttonB;				//b button
 	double dPad;					//d-pad
+	
+	double motorSpeed;			//motor speed
+	
 	
 	/**
 	 * This function is run when the robot is first started up and should be
