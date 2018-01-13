@@ -122,10 +122,42 @@ public class Robot extends IterativeRobot {
 	boolean buttonStart;			//start button
 	boolean buttonBack;			//back button
 	
+	int portButtonX = 3;
+	int portButtonY = 4;
+	int portButtonA = 1;
+	int portButtonB = 2;
+	
 	double robotSpeed;			//robot speed (fast/slow mode)
 	boolean tankDriveBool = true;		//tank drive boolean: true = tank drive, false = arcade drive
 	boolean fastBool = false;			//fast boolean: true = fast mode, false = slow mode
+	boolean grabberBool = true;			//true = in, false = out
 	
+	
+	public boolean checkButton(int port, boolean toggle) {
+		if (controller.getRawButton(port)) {
+			toggle = !toggle;
+			while (controller.getRawButton(port)) {}
+		}
+		return toggle;
+	}
+	
+	public double withIn(double input, double upperBound, double lowerBound) {
+		if (input > 0) {
+			return java.lang.Math.min(upperBound, input);
+		} else if (input < 0) {
+			return java.lang.Math.max(lowerBound, input);
+		} else {
+			return 0;
+		}
+	}
+	
+	public void joystickDeadZone() { //dead zone for joysticks
+		if (joystickLXAxis <= 0.15 && joystickLXAxis <= -0.15) {
+			joystickLXAxis = 0;
+		} if (joystickLYAxis <= 0.15 && joystickLYAxis <= -0.15) {
+			joystickLYAxis = 0;
+		}
+	}
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -220,15 +252,15 @@ public class Robot extends IterativeRobot {
 		//right wheels have less power the farther right the left joystick is and more power the farther left
 		//left wheels have less power the farther left the left joystick is and more power the farther right
 		if (fastBool) {
-			motorRB.set(joystickLYAxis - joystickLXAxis);
-			motorRF.set(joystickLYAxis - joystickLXAxis);
-			motorLB.set(joystickLYAxis + joystickLXAxis);
-			motorLF.set(joystickLYAxis + joystickLXAxis);
+			motorRB.set(withIn((joystickLYAxis - joystickLXAxis), 1, -1));
+			motorRF.set(withIn((joystickLYAxis - joystickLXAxis), 1, -1));
+			motorLB.set(withIn((joystickLYAxis + joystickLXAxis), 1, -1));
+			motorLF.set(withIn((joystickLYAxis + joystickLXAxis), 1, -1));
 		} else {
-			motorRB.set((joystickLYAxis - joystickLXAxis)/2);
-			motorRF.set((joystickLYAxis - joystickLXAxis)/2);
-			motorLB.set((joystickLYAxis + joystickLXAxis)/2);
-			motorLF.set((joystickLYAxis + joystickLXAxis)/2);
+			motorRB.set((withIn((joystickLYAxis - joystickLXAxis), 1, -1))/2);
+			motorRF.set((withIn((joystickLYAxis - joystickLXAxis), 1, -1))/2);
+			motorLB.set((withIn((joystickLYAxis + joystickLXAxis), 1, -1))/2);
+			motorLF.set((withIn((joystickLYAxis + joystickLXAxis), 1, -1))/2);
 		}
 	}
 	
@@ -252,23 +284,21 @@ public class Robot extends IterativeRobot {
 		bumperR = controller.getRawButton(6);
 		
 		//button updates
-		buttonX = controller.getRawButton(3);
-		buttonY = controller.getRawButton(4);
-		buttonA = controller.getRawButton(1);
-		buttonB = controller.getRawButton(2);
+		buttonX = controller.getRawButton(portButtonX);
+		buttonY = controller.getRawButton(portButtonY);
+		buttonA = controller.getRawButton(portButtonA);
+		buttonB = controller.getRawButton(portButtonB);
+		
+		tankDriveBool = checkButton(portButtonX, tankDriveBool);
+		fastBool = checkButton(portButtonB,fastBool);
+		grabberBool = checkButton(portButtonY, grabberBool);
+		
 		buttonBack = controller.getRawButton(7);
 		buttonStart = controller.getRawButton(8);
 		
 		//d-pad/POV updates
 		dPad = controller.getPOV(0);
-		
 	}
 	
-	public void joystickDeadZone() { //dead zone for joysticks
-		if (joystickLXAxis <= 0.15 && joystickLXAxis <= -0.15) {
-			joystickLXAxis = 0;
-		} if (joystickLYAxis <= 0.15 && joystickLYAxis <= -0.15) {
-			joystickLYAxis = 0;
-		}
-	}
+	
 }
