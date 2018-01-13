@@ -292,7 +292,7 @@ public class Robot extends IterativeRobot {
 		}
 		/*To use gameData,example
 		 * if(gameData.charAt(0) == 'L')     //if switch is on left side at character 0 (The first character)
-		 * { //blah blahblah what to do if switch is on left
+		 * { //blah blahblah what to do if switch is on left yeah
 		 * }
 		 * else{
 		 * 		//what to do if switch is on right.
