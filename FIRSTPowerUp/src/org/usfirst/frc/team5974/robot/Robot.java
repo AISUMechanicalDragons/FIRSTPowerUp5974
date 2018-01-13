@@ -127,6 +127,11 @@ public class Robot extends IterativeRobot {
 	int portButtonA = 1;
 	int portButtonB = 2;
 	
+	int portJoystickLXAxis = 0;
+	int portJoystickLYAxis = 1;
+	int portJoystickRXAxis = 4;
+	int portJoystickRYAxis = 5;
+	
 	double robotSpeed;			//robot speed (fast/slow mode)
 	boolean tankDriveBool = true;		//tank drive boolean: true = tank drive, false = arcade drive
 	boolean fastBool = false;			//fast boolean: true = fast mode, false = slow mode
@@ -162,13 +167,13 @@ public class Robot extends IterativeRobot {
 	
 	public void update() {
 		//left joystick update
-		joystickLXAxis = controller.getRawAxis(0);
-		joystickLYAxis = controller.getRawAxis(1);
+		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);
+		joystickLYAxis = controller.getRawAxis(portJoystickLYAxis);
 		joystickLPress = controller.getRawButton(9);
 		
 		//right joystick update
-		joystickRXAxis = controller.getRawAxis(4);
-		joystickRYAxis = controller.getRawAxis(5);
+		joystickRXAxis = controller.getRawAxis(portJoystickRXAxis);
+		joystickRYAxis = controller.getRawAxis(portJoystickRYAxis);
 		joystickRPress = controller.getRawButton(10);
 		
 		//trigger updates
