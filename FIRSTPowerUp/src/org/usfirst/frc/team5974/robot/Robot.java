@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.Joystick; //Controller
 import edu.wpi.first.wpilibj.Timer; //Timer
 import edu.wpi.first.wpilibj.Spark; //Motor Controller
 import edu.wpi.first.wpilibj.*; //everything tbh
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -25,6 +26,7 @@ import edu.wpi.first.wpilibj.*; //everything tbh
  * creating this project, you must also update the build.properties file in the
  * project.
  */
+
 public class Robot extends IterativeRobot {
 	private static final String kDefaultAuto = "Default"; //any idea what these are for??
 	private static final String kCustomAuto = "My Auto";
@@ -38,7 +40,7 @@ public class Robot extends IterativeRobot {
 	Spark motorRF = new Spark(2); //motor right front
 	Spark motorLB = new Spark(3); //motor left back
 	Spark motorLF = new Spark(4); //motor left front
-	
+
 	//Variables we're using
 	double joystickLXAxis;		//left joystick x-axis
 	double joystickLYAxis;		//left joystick y-axis
@@ -72,7 +74,7 @@ public class Robot extends IterativeRobot {
 	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
 	 * getString line to get the auto name from the text box below the Gyro
 	 *
-	 * <p>You can add additional auto modes by adding additional comparisons to
+	 * You can add additional auto modes by adding additional comparisons to
 	 * the switch structure below with additional strings. If using the
 	 * SendableChooser make sure to add them to the chooser code above as well.
 	 */
