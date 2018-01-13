@@ -5,10 +5,6 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Git/Eclipse Integration Test
-//Testing pull... 
-//Success!
-
 package org.usfirst.frc.team5974.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -49,8 +45,8 @@ public class Robot extends IterativeRobot {
 	double joystickRYAxis;		//right joystick y-axis
 	double triggerL;				//left trigger
 	double triggerR;				//right trigger
-	double bumperL;				//left bumper
-	double bumperR;				//right bumper
+	boolean bumperL;				//left bumper
+	boolean bumperR;				//right bumper
 	boolean buttonX;				//x button
 	boolean buttonY;				//y button
 	boolean buttonA;				//a button
@@ -118,8 +114,27 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void update() {
+		//left joystick update
 		joystickLXAxis = controller.getRawAxis(0);
 		joystickLYAxis = controller.getRawAxis(1);
+		
+		//right joystick update
+		joystickRXAxis = controller.getRawAxis(4);
+		joystickRYAxis = controller.getRawAxis(5);
+		
+		//trigger updates
+		triggerL = controller.getRawAxis(2);
+		triggerR = controller.getRawAxis(3);
+		
+		//bumper updates
+		bumperL = controller.getRawButton(5);
+		//bumperR = controller.getRawButton();
+		
+		//button updates
+		//buttonX = controller.getRawButton();
+		//buttonY = controller.getRawButton();
+		//buttonA = controller.getRawButton();
+		//buttonB = controller.getRawButton();
 	}
 	
 	public void joystickDeadZone() { //dead zone for joysticks
