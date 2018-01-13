@@ -27,7 +27,7 @@ Controls by Action:
 	Toggle Speed:
 		-B button
 	
-	Toggle Drive Style:
+	Toggle Drive Style: (arcade/tank)
 		-X button
 				
 	Toggle Grabber In/Out:
@@ -95,7 +95,8 @@ public class Robot extends IterativeRobot {
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	
-	//Motors. We NEED to change these to the actual motors, once electrical makes up its mind
+	//Motors. We NEED to change these to the actual motors, once electrical makes up its mind.
+	//Also, sometimes one side is inverted. If it is, we need to change our drive code to reflect that.
 	Spark motorRB = new Spark(1); //motor right back
 	Spark motorRF = new Spark(2); //motor right front
 	Spark motorLB = new Spark(3); //motor left back
@@ -116,13 +117,21 @@ public class Robot extends IterativeRobot {
 	boolean buttonA;				//a button
 	boolean buttonB;				//b button
 	double dPad;					//d-pad
+	boolean joystickLPress;		//left joystick button press
+	boolean joystickRPress;		//right joystick button press
+	boolean buttonStart;			//start button
+	boolean buttonBack;			//back button
 	
+<<<<<<< HEAD
 	int portButtonX = 3;
 	int portButtonY = 4;
 	int portButtonA = 1;
 	int portButtonB = 2;
 	
 	double robotSpeed;			//robot speed
+=======
+	double robotSpeed;			//robot speed (fast/slow mode)
+>>>>>>> branch 'master' of http://github.com/AISUMechanicalDragons/FIRSTPowerUp5974.git
 	boolean tankDriveBool = true;		//tank drive boolean: true = tank drive, false = arcade drive
 	boolean fastBool = false;			//fast boolean: true = fast mode, false = slow mode
 	boolean grabberBool = true;			//true = in, false = out
@@ -236,10 +245,12 @@ public class Robot extends IterativeRobot {
 		//left joystick update
 		joystickLXAxis = controller.getRawAxis(0);
 		joystickLYAxis = controller.getRawAxis(1);
+		joystickLPress = controller.getRawButton(9);
 		
 		//right joystick update
 		joystickRXAxis = controller.getRawAxis(4);
 		joystickRYAxis = controller.getRawAxis(5);
+		joystickRPress = controller.getRawButton(10);
 		
 		//trigger updates
 		triggerL = controller.getRawAxis(2);
@@ -259,6 +270,9 @@ public class Robot extends IterativeRobot {
 		fastBool = checkButton(portButtonB,fastBool);
 		grabberBool = checkButton(portButtonY, grabberBool);
 		
+		buttonBack = controller.getRawButton(7);
+		buttonStart = controller.getRawButton(8);
+		
 		//d-pad/POV updates
 		dPad = controller.getPOV(0);
 		
@@ -272,7 +286,7 @@ public class Robot extends IterativeRobot {
 		}
 		return toggle;
 	}
-	
+
 	public void joystickDeadZone() { //dead zone for joysticks
 		if (joystickLXAxis <= 0.15 && joystickLXAxis <= -0.15) {
 			joystickLXAxis = 0;
