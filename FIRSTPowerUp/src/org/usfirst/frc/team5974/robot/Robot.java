@@ -196,6 +196,8 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void tankDrive() {	//tank drive: left joystick controls left wheels, right joystick controls right wheels
+		//right motors = right joystick y-axis
+		//left motors = left joystick y-axis
 		if (fastBool) {
 			motorRB.set(joystickRYAxis);
 			motorRF.set(joystickRYAxis);
@@ -210,6 +212,8 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void arcadeDrive() {	//arcade drive: left joystick controls all driving
+		//right wheels have less power the farther right the left joystick is and more power the farther left
+		//left wheels have less power the farther left the left joystick is and more power the farther right
 		if (fastBool) {
 			motorRB.set(joystickLYAxis - joystickLXAxis);
 			motorRF.set(joystickLYAxis - joystickLXAxis);
