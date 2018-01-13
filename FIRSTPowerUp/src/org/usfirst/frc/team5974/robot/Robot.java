@@ -133,6 +133,32 @@ public class Robot extends IterativeRobot {
 	boolean grabberBool = true;			//true = in, false = out
 	
 	
+	public boolean checkButton(int port, boolean toggle) {
+		if (controller.getRawButton(port)) {
+			toggle = !toggle;
+			while (controller.getRawButton(port)) {}
+		}
+		return toggle;
+	}
+	
+	public double withIn(double input, double upperBound, double lowerBound) {
+		if (input > 0) {
+			return java.lang.Math.min(upperBound, input);
+		} else if (input < 0) {
+			return java.lang.Math.max(lowerBound, input);
+		} else {
+			return 0;
+		}
+	}
+	
+	public void joystickDeadZone() { //dead zone for joysticks
+		if (joystickLXAxis <= 0.15 && joystickLXAxis <= -0.15) {
+			joystickLXAxis = 0;
+		} if (joystickLYAxis <= 0.15 && joystickLYAxis <= -0.15) {
+			joystickLYAxis = 0;
+		}
+	}
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -273,29 +299,5 @@ public class Robot extends IterativeRobot {
 		dPad = controller.getPOV(0);
 	}
 	
-	public boolean checkButton(int port, boolean toggle) {
-		if (controller.getRawButton(port)) {
-			toggle = !toggle;
-			while (controller.getRawButton(port)) {}
-		}
-		return toggle;
-	}
 	
-	public double withIn(double input, double upperBound, double lowerBound) {
-		if (input > 0) {
-			return java.lang.Math.min(upperBound, input);
-		} else if (input < 0) {
-			return java.lang.Math.max(lowerBound, input);
-		} else {
-			return 0;
-		}
-	}
-	
-	public void joystickDeadZone() { //dead zone for joysticks
-		if (joystickLXAxis <= 0.15 && joystickLXAxis <= -0.15) {
-			joystickLXAxis = 0;
-		} if (joystickLYAxis <= 0.15 && joystickLYAxis <= -0.15) {
-			joystickLYAxis = 0;
-		}
-	}
 }
