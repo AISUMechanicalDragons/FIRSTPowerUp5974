@@ -5,6 +5,8 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+//Driver station setup success.
+
 package org.usfirst.frc.team5974.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
