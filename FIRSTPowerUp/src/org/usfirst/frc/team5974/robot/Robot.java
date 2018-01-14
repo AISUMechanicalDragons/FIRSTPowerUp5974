@@ -88,9 +88,6 @@ import org.usfirst.frc.team5974.robot.ADIS16448_IMU;		//IMU
  * creating this project, you must also update the build.properties file in the
  * project.
  */
-/*
- 
- */
 
 public class Robot extends IterativeRobot {
 	private static final String kDefaultAuto = "Default"; //any idea what these are for??
@@ -357,7 +354,6 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
