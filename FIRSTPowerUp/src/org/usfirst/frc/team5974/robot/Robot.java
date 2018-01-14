@@ -193,7 +193,7 @@ public class Robot extends IterativeRobot {
 		
 		//rotates the fastest way until in +- 5 of goTo angle
 		while (goTo >= angleToForward + 5 && goTo <= angleToForward - 5) {
-			angleToForward = updateGyro();
+			updateGyro();
 			if (cw <= ccw) {
 				motorRB.set(-1);
 				motorRF.set(-1);
@@ -226,16 +226,21 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	public double updateGyro() {
+	public void updateGyro() {
 		//set non-looping angle
 		angleToForward = IMU.getAngle();
 		if (angleToForward >= 360) {
-			return (angleToForward -= 360);
+			angleToForward -= 360;
 		} else if (angleToForward < 0) {
-			return (angleToForward += 360);
-		} else {
-			return angleToForward;
+			angleToForward += 360;
 		}
+	}
+	
+	public void updateTimer() {
+		dT = timer.get();
+		timer.stop();
+		timer.reset();
+		timer.start();
 	}
 	
 	public void updateTrifecta() {
@@ -401,16 +406,11 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		//timer update
-		dT = timer.get();
-		timer.stop();
-		timer.reset();
-		timer.start();
-		
 		//updates
 		update();
+		updateTimer();
 		updateTrifecta();
-		angleToForward = updateGyro();
+		updateGyro();
 		
 		//dashboard outputs
 		dashboardOutput();
