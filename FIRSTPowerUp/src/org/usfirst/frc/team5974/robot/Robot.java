@@ -108,7 +108,7 @@ public class Robot extends IterativeRobot {
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller  // could be incorrect port
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
-	Timer timer = new Timer();
+	
 	double joystickLXAxis;			//left joystick x-axis
 	double joystickLYAxis;			//left joystick y-axis
 	double joystickRXAxis;			//right joystick x-axis
@@ -126,6 +126,7 @@ public class Robot extends IterativeRobot {
 	boolean joystickRPress;		//right joystick button press
 	boolean buttonStart;			//start button
 	boolean buttonBack;			//back button
+	
 	
 	int portButtonX = 3;
 	int portButtonY = 4;
@@ -173,7 +174,8 @@ public class Robot extends IterativeRobot {
 	double accelY = 0;
 	double accelZ = 0;
 	
-	//change in time
+	//time variables
+	Timer timer = new Timer();
 	double dT = 0;
 	double t0 = 0;
 	double t1 = 0;
