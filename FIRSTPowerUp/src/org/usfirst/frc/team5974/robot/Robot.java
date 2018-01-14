@@ -193,7 +193,7 @@ public class Robot extends IterativeRobot {
 		
 		//rotates the fastest way until in +- 5 of goTo angle
 		while (goTo >= angleToForward + 5 && goTo <= angleToForward - 5) {
-			gyroUpdate();
+			angleToForward = updateGyro();
 			if (cw <= ccw) {
 				motorRB.set(-1);
 				motorRF.set(-1);
@@ -226,13 +226,15 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	public void gyroUpdate() {
+	public double updateGyro() {
 		//set non-looping angle
 		angleToForward = IMU.getAngle();
 		if (angleToForward >= 360) {
-			angleToForward -= 360;
+			return (angleToForward -= 360);
 		} else if (angleToForward < 0) {
-			angleToForward += 360;
+			return (angleToForward += 360);
+		} else {
+			return angleToForward;
 		}
 	}
 	
@@ -248,13 +250,6 @@ public class Robot extends IterativeRobot {
 		posX += velX * dT * Math.sin(angleToForward * (Math.PI / 180.0));
 		posY += velY * dT * Math.cos(angleToForward * (Math.PI / 180.0));
 		posZ += velZ * dT;
-	}
-	
-	public void updateTimer() {
-		dT = timer.get();
-		timer.stop();
-		timer.reset();
-		timer.start();
 	}
 	
 	public void update() {
@@ -299,7 +294,6 @@ public class Robot extends IterativeRobot {
 		}
 		
 		joystickDeadZone();
-		gyroUpdate();
 	}
 	
 
@@ -407,9 +401,18 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		//timer update
+		dT = timer.get();
+		timer.stop();
+		timer.reset();
+		timer.start();
+		
+		//updates
 		update();
 		updateTrifecta();
-		updateTimer();
+		angleToForward = updateGyro();
+		
+		//dashboard outputs
 		dashboardOutput();
 		
 		if (tankDriveBool) {
