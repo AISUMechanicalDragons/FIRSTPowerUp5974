@@ -177,7 +177,8 @@ public class Robot extends IterativeRobot {
 	double t0 = 0;
 	double t1 = 0;
 	
-	String gameData;            //this is the part that gives us switch and scale sides. in format LRL or RRL, etc
+	//this is the variable that gives us switch and scale sides in format LRL or RRL, etc
+	String gameData;
 	
 	public boolean checkButton(int port, boolean toggle) {		//If the button is pushed, once it is released, its toggle is changed
 		if (controller.getRawButton(port)) {
