@@ -97,13 +97,14 @@ public class Robot extends IterativeRobot {
 	
 	//Motors. We NEED to change these to the actual motors, once electrical makes up its mind.
 	//Also, sometimes one side is inverted. If it is, we need to change our drive code to reflect that.
+	/**Note that we have something along the lines of six VictorSP motor controllers and four Sparks. Also note that the ports start at 0 not 1. - Thomas*/
 	Spark motorRB = new Spark(1); //motor right back
 	Spark motorRF = new Spark(2); //motor right front
 	Spark motorLB = new Spark(3); //motor left back
 	Spark motorLF = new Spark(4); //motor left front
 	
 	//Variables we're using
-	Joystick controller = new Joystick(0);			//controller  // could be incorrect port
+	Joystick controller = new Joystick(0);			//controller  // could be incorrect port //It's not. - Thomas
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
 	
 	double joystickLXAxis;			//left joystick x-axis
@@ -124,7 +125,7 @@ public class Robot extends IterativeRobot {
 	boolean buttonStart;			//start button
 	boolean buttonBack;			//back button
 	
-	
+	/**Button ports, however, do start at 1 with one being the 'A' button. - Thomas*/
 	int portButtonX = 3;
 	int portButtonY = 4;
 	int portButtonA = 1;
@@ -263,6 +264,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void updateController() {		//updates all controller features
+		/**I don't know why you made a whole bunch of port variables when numbers are faster, but hey! You do you. - Thomas*/
 		//left joystick update
 		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);
 		joystickLYAxis = controller.getRawAxis(portJoystickLYAxis);
@@ -361,7 +363,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addDefault("Default Auto", kDefaultAuto);
+		m_chooser.addDefault("Default Auto", kDefaultAuto); //We sould probably figure out what this pregenerated code does at some point - Thomas
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
 		IMU.calibrate();
@@ -408,18 +410,20 @@ public class Robot extends IterativeRobot {
 				break;
 		}
 		/*To use gameData,example
-		 * if(gameData.charAt(0) == 'L')     //if switch is on left side at character 0 (The first character)
+		 * if(gameData.charAt(0) == 'L')     //if alliance switch is on left side at character 0 (The first character)
 		 * { //blah blahblah what to do if switch is on left yeah
 		 * }
 		 * else{
 		 * 		//what to do if switch is on right.
 		 * }
+		 * Repeat for character 1 (scale) and character 2 (opponent's switch) - Thomas
 		 */
 	}
 
 	/**
 	 * This function is called periodically during operator control.
 	 */
+	//We sould put in a teleopInit as well. - Thomas
 	@Override
 	public void teleopPeriodic() {
 		update();
@@ -437,6 +441,7 @@ public class Robot extends IterativeRobot {
 	/**
 	 * This function is called periodically during test mode.
 	 */
+	//This funtion is not in use. We could use it to test individual mechanisms. It functions like a second teleop. - Thomas
 	@Override
 	public void testPeriodic() {
 		
