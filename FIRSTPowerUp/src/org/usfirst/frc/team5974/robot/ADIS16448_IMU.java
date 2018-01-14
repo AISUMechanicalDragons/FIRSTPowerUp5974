@@ -1082,9 +1082,9 @@ public class ADIS16448_IMU extends GyroBase implements Gyro, PIDSource, LiveWind
   /**
    * {@inheritDoc}
    */
-  /*@Override
+  @Override
   public void updateTable() {
-    ITable table = getTable();
+    /*ITable table = getTable();
     if (table != null) {
       table.putNumber("Value", getAngle());
       table.putNumber("Pitch", getPitch());
@@ -1096,8 +1096,8 @@ public class ADIS16448_IMU extends GyroBase implements Gyro, PIDSource, LiveWind
       table.putNumber("AngleX", getAngleX());
       table.putNumber("AngleY", getAngleY());
       table.putNumber("AngleZ", getAngleZ());
-    }
-  }*/
+    }*/
+  }
 
 @Override
 public void startLiveWindowMode() {

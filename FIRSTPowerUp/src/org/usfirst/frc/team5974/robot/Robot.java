@@ -73,13 +73,14 @@ package org.usfirst.frc.team5974.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard; //Dashboard
-import edu.wpi.first.wpilibj.Joystick; //Controller
-import edu.wpi.first.wpilibj.Timer; //Timer
-import edu.wpi.first.wpilibj.Spark; //Motor Controller
-import edu.wpi.first.wpilibj.*; //everything tbh
-import org.usfirst.frc.team5974.robot.ADIS16448_IMU;
-import java.util.ArrayList;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
+import edu.wpi.first.wpilibj.Joystick;		//Controller
+import edu.wpi.first.wpilibj.Timer;		//Timer
+import edu.wpi.first.wpilibj.Spark;		//Motor Controller
+import edu.wpi.first.wpilibj.*;		//everything tbh
+import org.usfirst.frc.team5974.robot.ADIS16448_IMU;		//IMU
+//import java.util.ArrayList;		//arraylist
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -171,9 +172,7 @@ public class Robot extends IterativeRobot {
 	double accelZ = 0;
 	
 	//change in time
-	double dT;
-	double t0;
-	double t1;
+	double dT = 0;
 	
 	String gameData;            //this is the part that gives us switch and scale sides. in format LRL or RRL, etc
 	
@@ -183,20 +182,6 @@ public class Robot extends IterativeRobot {
 			while (controller.getRawButton(port)) {}
 		}
 		return toggle;
-	}
-	
-	public void updateTrifecta() {
-		accelX = IMU.getAccelX();
-		accelY = IMU.getAccelY();
-		accelZ = IMU.getAccelZ();
-		
-		velX += accelX * dT;
-		velY += accelY * dT;
-		velZ += accelZ * dT;
-		
-		posX += velX * dT * Math.sin(angleToForward * (Math.PI / 180.0));
-		posY += velY * dT * Math.cos(angleToForward * (Math.PI / 180.0));
-		posZ += velZ * dT;
 	}
 	
 	public void rotateTo(int goTo) {
@@ -249,6 +234,27 @@ public class Robot extends IterativeRobot {
 		} else if (angleToForward < 0) {
 			angleToForward += 360;
 		}
+	}
+	
+	public void updateTrifecta() {
+		accelX = IMU.getAccelX();
+		accelY = IMU.getAccelY();
+		accelZ = IMU.getAccelZ();
+		
+		velX += accelX * dT;
+		velY += accelY * dT;
+		velZ += accelZ * dT;
+		
+		posX += velX * dT * Math.sin(angleToForward * (Math.PI / 180.0));
+		posY += velY * dT * Math.cos(angleToForward * (Math.PI / 180.0));
+		posZ += velZ * dT;
+	}
+	
+	public void updateTimer() {
+		dT = timer.get();
+		timer.stop();
+		timer.reset();
+		timer.start();
 	}
 	
 	public void update() {
@@ -397,8 +403,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		update();
-		dashboardOutput();
 		updateTrifecta();
+		updateTimer();
+		dashboardOutput();
 		
 		if (tankDriveBool) {
 			tankDrive();
