@@ -154,7 +154,7 @@ public class Robot extends IterativeRobot {
 	double robotSpeed;			//robot speed (fast/slow mode)
 	boolean tankDriveBool = true;		//tank drive boolean: true = tank drive, false = arcade drive
 	boolean fastBool = false;			//fast boolean: true = fast mode, false = slow mode
-	boolean grabberBool = true;			//true = in, false = out
+	boolean grabberInBool = true;			//true = in, false = out
 	
 	//position arrays
 	double posX = 0;
@@ -258,7 +258,7 @@ public class Robot extends IterativeRobot {
 		posZ += velZ * dT;
 	}
 	
-	public void update() {
+	public void updateController() {
 		//left joystick update
 		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);
 		joystickLYAxis = controller.getRawAxis(portJoystickLYAxis);
@@ -289,7 +289,7 @@ public class Robot extends IterativeRobot {
 		//toggle checks
 		tankDriveBool = checkButton(portButtonX, tankDriveBool);
 		fastBool = checkButton(portButtonB,fastBool);
-		grabberBool = checkButton(portButtonY, grabberBool);
+		grabberInBool = checkButton(portButtonY, grabberInBool);
 		
 		//d-pad/POV updates
 		dPad = controller.getPOV(0);
@@ -302,9 +302,22 @@ public class Robot extends IterativeRobot {
 		joystickDeadZone();
 	}
 	
-
+	public void update() {
+		//updates
+		updateController();
+		updateTimer();
+		updateTrifecta();
+		updateGyro();
+	}
+	
 	public void dashboardOutput() {	//sends data to dashboard and displays it on dashboard
-		
+		SmartDashboard.putNumber("x-position", posX);
+		SmartDashboard.putNumber("y-position", posY);
+		SmartDashboard.putNumber("Speed", velY);
+		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
+		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
+		SmartDashboard.putBoolean("Fast Mode", fastBool);
+		SmartDashboard.putBoolean("Grabber In", grabberInBool);
 	}
 	
 	public void tankDrive() {	//tank drive: left joystick controls left wheels, right joystick controls right wheels
@@ -407,11 +420,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		//updates
 		update();
-		updateTimer();
-		updateTrifecta();
-		updateGyro();
 		
 		//dashboard outputs
 		dashboardOutput();
