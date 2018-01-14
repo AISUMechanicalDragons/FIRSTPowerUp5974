@@ -178,7 +178,7 @@ public class Robot extends IterativeRobot {
 	
 	String gameData;            //this is the part that gives us switch and scale sides. in format LRL or RRL, etc
 	
-	public boolean checkButton(int port, boolean toggle) {
+	public boolean checkButton(int port, boolean toggle) {		//If the button is pushed, once it is released, its toggle is changed
 		if (controller.getRawButton(port)) {
 			toggle = !toggle;
 			while (controller.getRawButton(port)) {}
@@ -186,7 +186,7 @@ public class Robot extends IterativeRobot {
 		return toggle;
 	}
 	
-	public void rotateTo(int goTo) {
+	public void rotateTo(int goTo) {		//rotates robot to angle based on IMU and d-pad
 		//clockwise degrees to goTo angle
 		double cw = (goTo - angleToForward < 0) ? (goTo - angleToForward + 360) : (goTo - angleToForward);
 		
@@ -210,8 +210,7 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	public double withIn(double input, double upperBound, double lowerBound) {
-		//returns the inputed value if inside the bounds. returns the bound it is past if it is past a bound.
+	public double withIn(double input, double upperBound, double lowerBound) {		//returns the inputed value if inside the bounds. returns the bound it is past if it is past a bound.
 		if (input > 0) {
 			return java.lang.Math.min(upperBound, input);
 		} else if (input < 0) {
@@ -221,16 +220,15 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	public void joystickDeadZone() { //dead zone for joysticks
-		if (joystickLXAxis <= 0.15 && joystickLXAxis <= -0.15) {
+	public void joystickDeadZone() {		//sets dead zone for joysticks
+		if (joystickLXAxis <= 0.1 && joystickLXAxis <= -0.1) {
 			joystickLXAxis = 0;
-		} if (joystickLYAxis <= 0.15 && joystickLYAxis <= -0.15) {
+		} if (joystickLYAxis <= 0.1 && joystickLYAxis <= -0.1) {
 			joystickLYAxis = 0;
 		}
 	}
 	
-	public void updateGyro() {
-		//set non-looping angle
+	public void updateGyro() {		//set IMU.getAngle() (-inf,inf) output to a non-looping value [0,360)
 		angleToForward = IMU.getAngle();
 		if (angleToForward >= 360) {
 			angleToForward -= 360;
@@ -239,27 +237,30 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	public void updateTimer() {
+	public void updateTimer() {		//sets change in time between the current running of a periodic function and the previous running
 		t0 = t1;
 		t1 = timer.get();
 		dT = t1 - t0;
 	}
 	
-	public void updateTrifecta() {
+	public void updateTrifecta() {	//updates pos, vel, and accel
+		//accel variables updated from IMU
 		accelX = IMU.getAccelX();
 		accelY = IMU.getAccelY();
 		accelZ = IMU.getAccelZ();
 		
+		//vel updated by integral of accel
 		velX += accelX * dT;
 		velY += accelY * dT;
 		velZ += accelZ * dT;
 		
+		//pos updated by integral of vel and adjusted for robot rotation
 		posX += velX * dT * Math.sin(angleToForward * (Math.PI / 180.0));
 		posY += velY * dT * Math.cos(angleToForward * (Math.PI / 180.0));
 		posZ += velZ * dT;
 	}
 	
-	public void updateController() {
+	public void updateController() {		//updates all controller features
 		//left joystick update
 		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);
 		joystickLYAxis = controller.getRawAxis(portJoystickLYAxis);
@@ -303,8 +304,7 @@ public class Robot extends IterativeRobot {
 		joystickDeadZone();
 	}
 	
-	public void update() {
-		//updates
+	public void update() {	//updates all update functions
 		updateController();
 		updateTimer();
 		updateTrifecta();
