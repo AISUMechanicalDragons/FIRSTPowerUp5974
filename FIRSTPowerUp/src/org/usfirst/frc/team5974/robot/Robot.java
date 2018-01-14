@@ -173,6 +173,8 @@ public class Robot extends IterativeRobot {
 	
 	//change in time
 	double dT = 0;
+	double t0 = 0;
+	double t1 = 0;
 	
 	String gameData;            //this is the part that gives us switch and scale sides. in format LRL or RRL, etc
 	
@@ -237,10 +239,9 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void updateTimer() {
-		dT = timer.get();
-		timer.stop();
-		timer.reset();
-		timer.start();
+		t0 = t1;
+		t1 = timer.get();
+		dT = t1 - t0;
 	}
 	
 	public void updateTrifecta() {
