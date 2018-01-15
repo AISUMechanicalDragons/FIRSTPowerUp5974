@@ -114,8 +114,8 @@ public class Robot extends IterativeRobot {
 	/**Note that we have something along the lines of six VictorSP motor controllers and four Sparks. Also note that the ports start at 0 not 1. - Thomas*/
 	//haha good point
 	Spark motorRB = new Spark(0); //motor right back
-	Spark motorRF = new Spark(1); //motor right front
-	Spark motorLB = new Spark(2); //motor left back
+	Spark motorRF = new Spark(2); //motor right front
+	Spark motorLB = new Spark(1); //motor left back
 	Spark motorLF = new Spark(3); //motor left front
 	
 	//Grabber motors
