@@ -164,7 +164,8 @@ public class Robot extends IterativeRobot {
 	
 	double angleToForward = 0;
 	
-	double robotSpeed;			//robot speed (fast/slow mode)
+	double robotSpeed;	//robot speed (fast/slow mode)
+	double GameTime;
 	boolean tankDriveBool = true;		//tank drive boolean: true = tank drive, false = arcade drive
 	boolean fastBool = false;			//fast boolean: true = fast mode, false = slow mode
 	boolean grabberInBool = true;			//true = in, false = out
@@ -257,6 +258,9 @@ public class Robot extends IterativeRobot {
 		t1 = timer.get();
 		dT = t1 - t0;
 	}
+	public void updateGameTime() {   //Sets time remaining in match(approximation)
+		GameTime = getMatchTime();
+	}
 	
 	public void updateTrifecta() {	//updates pos, vel, and accel
 		//accel variables updated from IMU
@@ -328,9 +332,11 @@ public class Robot extends IterativeRobot {
 		updateTimer();
 		updateTrifecta();
 		updateGyro();
+		updateGameTime();
 	}
 	
 	public void dashboardOutput() {	//sends data to dashboard and displays it on dashboard
+		SmartDashboard.putNumber("Time Remaining", GameTime)
 		SmartDashboard.putNumber("x-position", posX);
 		SmartDashboard.putNumber("y-position", posY);
 		SmartDashboard.putNumber("Speed", velY);
