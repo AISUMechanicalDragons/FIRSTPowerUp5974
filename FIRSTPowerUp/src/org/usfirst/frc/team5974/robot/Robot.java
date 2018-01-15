@@ -92,6 +92,7 @@ import edu.wpi.first.wpilibj.Joystick;		//Controller
 import edu.wpi.first.wpilibj.Timer;		//Timer
 import edu.wpi.first.wpilibj.Spark;		//Motor Controller
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.*;		//everything tbh
 import org.usfirst.frc.team5974.robot.ADIS16448_IMU;		//IMU
 //import java.util.ArrayList;		//arraylist
@@ -127,6 +128,7 @@ public class Robot extends IterativeRobot {
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller  // could be incorrect port //It's not. - Thomas //Unless we use two controllers, possibly. - Thomas
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
+
 	
 	double joystickLXAxis;			//left joystick x-axis
 	double joystickLYAxis;			//left joystick y-axis
@@ -268,7 +270,7 @@ public class Robot extends IterativeRobot {
 		dT = t1 - t0;
 	}
 	public void updateGameTime() {   //Sets time remaining in match(approximation)
-		GameTime = getMatchTime();
+		GameTime = Timer.getMatchTime();
 	}
 	
 	public void updateTrifecta() {	//updates pos, vel, and accel
@@ -345,7 +347,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void dashboardOutput() {	//sends data to dashboard and displays it on dashboard
-		SmartDashboard.putNumber("Time Remaining", GameTime)
+		SmartDashboard.putNumber("Time Remaining", GameTime);
 		SmartDashboard.putNumber("x-position", posX);
 		SmartDashboard.putNumber("y-position", posY);
 		SmartDashboard.putNumber("Speed", velY);
