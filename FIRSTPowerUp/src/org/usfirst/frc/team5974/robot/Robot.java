@@ -44,6 +44,10 @@ Controls by Action:
 			Spin left side
 		-Right bumper:
 			Spin right side
+			
+	Quick Turns:
+		-D-pad:
+			Turn to an angle relative to the field
 */
 
 /*
@@ -58,7 +62,7 @@ Controls by Action:
  	Left Joystick: Tank/arcade drive
  	Right Joystick: Tank drive
  	
- 	D-Pad: None
+ 	D-Pad: Quick turns relative to the field
  	
  	A Button: None
  	B Button: Toggle speed
