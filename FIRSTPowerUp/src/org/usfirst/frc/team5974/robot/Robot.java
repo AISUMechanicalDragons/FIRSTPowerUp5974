@@ -77,7 +77,6 @@ package org.usfirst.frc.team5974.robot;
  * Simulation
  * Dashboard
  * Vision
- * Grabber code
  * Lift code
  * AI/Autonomous
  */
