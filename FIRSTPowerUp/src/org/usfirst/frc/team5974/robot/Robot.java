@@ -44,6 +44,10 @@ Controls by Action:
 			Spin left side
 		-Right bumper:
 			Spin right side
+			
+	Quick Turns:
+		-D-pad:
+			Turn to an angle relative to the field
 */
 
 /*
@@ -58,7 +62,7 @@ Controls by Action:
  	Left Joystick: Tank/arcade drive
  	Right Joystick: Tank drive
  	
- 	D-Pad: None
+ 	D-Pad: Quick turns relative to the field
  	
  	A Button: None
  	B Button: Toggle speed
@@ -77,7 +81,6 @@ package org.usfirst.frc.team5974.robot;
  * Simulation
  * Dashboard
  * Vision
- * Grabber code
  * Lift code
  * AI/Autonomous
  */
@@ -111,10 +114,14 @@ public class Robot extends IterativeRobot {
 	/**Note that we have something along the lines of six VictorSP motor controllers and four Sparks. Also note that the ports start at 0 not 1. - Thomas*/
 	//haha good point
 	Spark motorRB = new Spark(0); //motor right back
-	Spark motorRF = new Spark(1); //motor right front
-	Spark motorLB = new Spark(2); //motor left back
+	Spark motorRF = new Spark(2); //motor right front
+	Spark motorLB = new Spark(1); //motor left back
 	Spark motorLF = new Spark(3); //motor left front
 	
+	//Grabber motors
+	Spark motorGL = new Spark(4); //left grabber motor
+	Spark motorGR = new Spark(5); //right grabber motor
+
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller  // could be incorrect port //It's not. - Thomas //Unless we use two controllers, possibly. - Thomas
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
@@ -378,6 +385,30 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
+	public void grab() {		//grabbers in/out based on bumper bools
+		//move left grabber wheels
+		if (bumperL) {
+			if (grabberInBool) {
+				motorGL.set(1);
+			} else {
+				motorGL.set(-1);
+			}
+		} else {
+			motorGL.set(0);
+		}
+		
+		//move right grabber wheels
+		if (bumperR) {
+			if (grabberInBool) {
+				motorGR.set(-1);
+			} else {
+				motorGR.set(1);
+			}
+		} else {
+			motorGR.set(0);
+		}
+	}
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -448,6 +479,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		update();
+		
+		//grab();
 		
 		//dashboard outputs
 		dashboardOutput();
