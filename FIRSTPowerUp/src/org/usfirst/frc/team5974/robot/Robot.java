@@ -71,6 +71,17 @@ Controls by Action:
 
 package org.usfirst.frc.team5974.robot;
 
+/** To-do list:
+ * 
+ * Encoder
+ * Simulation
+ * Dashboard
+ * Vision
+ * Grabber code
+ * Lift code
+ * AI/Autonomous
+ */
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
