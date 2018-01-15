@@ -327,7 +327,7 @@ public class Robot extends IterativeRobot {
 		joystickDeadZone();
 	}
 	
-	public void update() {	//updates all update functions
+	public void update() {	//updates all update functions tee
 		updateController();
 		updateTimer();
 		updateTrifecta();
