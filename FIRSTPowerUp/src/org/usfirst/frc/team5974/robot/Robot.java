@@ -95,16 +95,17 @@ public class Robot extends IterativeRobot {
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	
-	//Motors. We NEED to change these to the actual motors, once electrical makes up its mind.
+	//Drive motors. We NEED to change these to the actual motors, once electrical makes up its mind.
 	//Also, sometimes one side is inverted. If it is, we need to change our drive code to reflect that.
 	/**Note that we have something along the lines of six VictorSP motor controllers and four Sparks. Also note that the ports start at 0 not 1. - Thomas*/
-	Spark motorRB = new Spark(1); //motor right back
-	Spark motorRF = new Spark(2); //motor right front
-	Spark motorLB = new Spark(3); //motor left back
-	Spark motorLF = new Spark(4); //motor left front
+	//haha good point
+	Spark motorRB = new Spark(0); //motor right back
+	Spark motorRF = new Spark(1); //motor right front
+	Spark motorLB = new Spark(2); //motor left back
+	Spark motorLF = new Spark(3); //motor left front
 	
 	//Variables we're using
-	Joystick controller = new Joystick(0);			//controller  // could be incorrect port //It's not. - Thomas
+	Joystick controller = new Joystick(0);			//controller  // could be incorrect port //It's not. - Thomas //Unless we use two controllers, possibly. - Thomas
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
 	
 	double joystickLXAxis;			//left joystick x-axis
@@ -172,11 +173,11 @@ public class Robot extends IterativeRobot {
 	double accelY = 0;
 	double accelZ = 0;
 	
-	//time variables
+	//time variables (see updateTimer())
 	Timer timer = new Timer();
-	double dT = 0;
-	double t0 = 0;
-	double t1 = 0;
+	double dT = 0; //difference time (t1-t0)
+	double t0 = 0; //time before
+	double t1 = 0; //time after
 	
 	//this is the variable that gives us switch and scale sides in format LRL or RRL, etc
 	String gameData;
@@ -261,10 +262,13 @@ public class Robot extends IterativeRobot {
 		posX += velX * dT * Math.sin(angleToForward * (Math.PI / 180.0));
 		posY += velY * dT * Math.cos(angleToForward * (Math.PI / 180.0));
 		posZ += velZ * dT;
+		
+		//haha calculus very good yes
 	}
 	
 	public void updateController() {		//updates all controller features
 		/**I don't know why you made a whole bunch of port variables when numbers are faster, but hey! You do you. - Thomas*/
+		//i concur --Carter
 		//left joystick update
 		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);
 		joystickLYAxis = controller.getRawAxis(portJoystickLYAxis);
