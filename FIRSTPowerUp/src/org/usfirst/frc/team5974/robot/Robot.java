@@ -115,6 +115,10 @@ public class Robot extends IterativeRobot {
 	Spark motorLB = new Spark(2); //motor left back
 	Spark motorLF = new Spark(3); //motor left front
 	
+	//Grabber motors
+	Spark motorGL = new Spark(4); //left grabber motor
+	Spark motorGR = new Spark(5); //right grabber motor
+
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller  // could be incorrect port //It's not. - Thomas //Unless we use two controllers, possibly. - Thomas
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
@@ -372,6 +376,30 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
+	public void grab() {		//grabbers in/out based on bumper bools
+		//move left grabber wheels
+		if (bumperL) {
+			if (grabberInBool) {
+				motorGL.set(1);
+			} else {
+				motorGL.set(-1);
+			}
+		} else {
+			motorGL.set(0);
+		}
+		
+		//move right grabber wheels
+		if (bumperR) {
+			if (grabberInBool) {
+				motorGR.set(-1);
+			} else {
+				motorGR.set(1);
+			}
+		} else {
+			motorGR.set(0);
+		}
+	}
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -442,6 +470,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		update();
+		
+		grab();
 		
 		//dashboard outputs
 		dashboardOutput();
