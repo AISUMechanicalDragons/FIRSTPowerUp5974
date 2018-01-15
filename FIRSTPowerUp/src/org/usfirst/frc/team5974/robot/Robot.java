@@ -474,7 +474,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		update();
 		
-		grab();
+		//grab();
 		
 		//dashboard outputs
 		dashboardOutput();
