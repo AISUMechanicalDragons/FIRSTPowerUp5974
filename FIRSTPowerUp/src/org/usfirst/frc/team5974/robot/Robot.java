@@ -91,6 +91,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
 import edu.wpi.first.wpilibj.Joystick;		//Controller
 import edu.wpi.first.wpilibj.Timer;		//Timer
 import edu.wpi.first.wpilibj.Spark;		//Motor Controller
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.*;		//everything tbh
 import org.usfirst.frc.team5974.robot.ADIS16448_IMU;		//IMU
 //import java.util.ArrayList;		//arraylist
@@ -119,8 +120,9 @@ public class Robot extends IterativeRobot {
 	Spark motorLF = new Spark(3); //motor left front
 	
 	//Grabber motors
-	Spark motorGL = new Spark(4); //left grabber motor
-	Spark motorGR = new Spark(5); //right grabber motor
+	//I changed these to Victors, idk if it matters or not
+	VictorSP motorGL = new VictorSP(4); //left grabber motor
+	VictorSP motorGR = new VictorSP(5); //right grabber motor
 
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller  // could be incorrect port //It's not. - Thomas //Unless we use two controllers, possibly. - Thomas
