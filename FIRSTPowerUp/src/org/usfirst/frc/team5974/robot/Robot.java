@@ -198,6 +198,7 @@ public class Robot extends IterativeRobot {
 	
 	//time variables (see updateTimer())
 	Timer timer = new Timer();
+	Timer timerTest = new Timer();
 	double dT = 0; //difference time (t1-t0)
 	double t0 = 0; //time before
 	double t1 = 0; //time after
@@ -413,6 +414,21 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
+	//this function is to break in the gear box
+	public void gearBoxTest(){
+		timerTest.start();
+		motorRB.set(1);
+		motorRB.set(1);
+		if (timerTest.get() == 5){
+			motorRB.set(1);
+			motorRB.set(1);
+		}
+		if (timerTest.get() == 10){
+			timerTest.reset();
+		}
+		
+	}
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -507,6 +523,6 @@ public class Robot extends IterativeRobot {
 	//This funtion is not in use. We could use it to test individual mechanisms. It functions like a second teleop. - Thomas
 	@Override
 	public void testPeriodic() {
-		
+		gearBoxTest();
 	}	
 }
