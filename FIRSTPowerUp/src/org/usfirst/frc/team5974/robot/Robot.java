@@ -142,11 +142,11 @@ public class Robot extends IterativeRobot {
 	boolean buttonY;				//y button
 	boolean buttonA;				//a button
 	boolean buttonB;				//b button
-	int dPad;					//d-pad
-	boolean joystickLPress;		//left joystick button press
-	boolean joystickRPress;		//right joystick button press
+	int dPad;					    //d-pad
+	boolean joystickLPress;		    //left joystick button press
+	boolean joystickRPress;		    //right joystick button press
 	boolean buttonStart;			//start button
-	boolean buttonBack;			//back button
+	boolean buttonBack;			    //back button
 	
 	/**Button ports, however, do start at 1 with one being the 'A' button. - Thomas*/
 	int portButtonX = 3;
