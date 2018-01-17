@@ -111,7 +111,8 @@ public class Robot extends IterativeRobot {
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	
-	//Drive motors. We NEED to change these to the actual motors, once electrical makes up its mind.
+	//Drive motors. We NEED to change these to the actual motors, once electrical makes up its mind. 
+	//NOTE: As of Jan 17, the motors have been changed to the right values. But that can definitely change 
 	//Also, sometimes one side is inverted. If it is, we need to change our drive code to reflect that.
 	/**Note that we have something along the lines of six VictorSP motor controllers and four Sparks. Also note that the ports start at 0 not 1. - Thomas*/
 	//haha good point
