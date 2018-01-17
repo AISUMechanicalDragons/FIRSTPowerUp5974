@@ -285,8 +285,8 @@ public class Robot extends IterativeRobot {
 		velZ += accelZ * dT;
 		
 		//pos updated by integral of vel and adjusted for robot rotation
-		posX += velX * dT * Math.sin(angleToForward * (Math.PI / 180.0));
-		posY += velY * dT * Math.cos(angleToForward * (Math.PI / 180.0));
+		posX += velX * dT * Math.cos(angleToForward * (Math.PI / 180.0));
+		posY += velX * dT * Math.sin(angleToForward * (Math.PI / 180.0));
 		posZ += velZ * dT;
 		
 		//haha calculus very good yes
