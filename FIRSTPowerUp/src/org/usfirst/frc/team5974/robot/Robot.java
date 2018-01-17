@@ -220,7 +220,7 @@ public class Robot extends IterativeRobot {
 		double cw = (goTo - angleToForward < 0) ? (goTo - angleToForward + 360) : (goTo - angleToForward);
 		
 		//counter-clockwise degrees to goTo angle
-		double ccw = (angleToForward - goTo< 0) ? (angleToForward - goTo + 360) : (angleToForward - goTo);
+		double ccw = (angleToForward - goTo < 0) ? (angleToForward - goTo + 360) : (angleToForward - goTo);
 		
 		//rotates the fastest way until in +- 5 of goTo angle
 		while (goTo >= angleToForward + 5 && goTo <= angleToForward - 5) {
@@ -287,8 +287,8 @@ public class Robot extends IterativeRobot {
 		velZ += accelZ * dT;
 		
 		//pos updated by integral of vel and adjusted for robot rotation
-		posX += velX * dT * Math.cos(angleToForward * (Math.PI / 180.0));
-		posY += velX * dT * Math.sin(angleToForward * (Math.PI / 180.0));
+		posX += (velX * dT * Math.cos(angleToForward * (Math.PI / 180.0))) - (velY * dT * Math.sin(angleToForward * (Math.PI / 180.0)));
+		posY += velX * dT * Math.sin(angleToForward * (Math.PI / 180.0)) + (velY * dT * Math.cos(angleToForward * (Math.PI / 180.0)));
 		posZ += velZ * dT;
 	}
 	
