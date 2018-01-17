@@ -205,10 +205,10 @@ public class Robot extends IterativeRobot {
 	//this is the variable that gives us switch and scale sides in format LRL or RRL, etc
 	String gameData;
 	
-	public boolean checkButton(int port, boolean toggle) {		//If the button is pushed, once it is released, its toggle is changed
-		if (controller.getRawButton(port)) {
+	public boolean checkButton(boolean button, boolean toggle) {		//If the button is pushed, once it is released, its toggle is changed
+		if (button) {
 			toggle = !toggle;
-			while (controller.getRawButton(port)) {}
+			while (button) {}
 		}
 		return toggle;
 	}
@@ -296,39 +296,39 @@ public class Robot extends IterativeRobot {
 		/**I don't know why you made a whole bunch of port variables when numbers are faster, but hey! You do you. - Thomas*/
 		//i concur --Carter
 		//left joystick update
-		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);
-		joystickLYAxis = controller.getRawAxis(portJoystickLYAxis);
-		joystickLPress = controller.getRawButton(portJoystickLPress);
+		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);		//returns a value [-1,1]
+		joystickLYAxis = controller.getRawAxis(portJoystickLYAxis);		//returns a value [-1,1]
+		joystickLPress = controller.getRawButton(portJoystickLPress);		//returns a value {0,1}
 		
 		//right joystick update
-		joystickRXAxis = controller.getRawAxis(portJoystickRXAxis);
-		joystickRYAxis = controller.getRawAxis(portJoystickRYAxis);
-		joystickRPress = controller.getRawButton(portJoystickRPress);
+		joystickRXAxis = controller.getRawAxis(portJoystickRXAxis);		//returns a value [-1,1]
+		joystickRYAxis = controller.getRawAxis(portJoystickRYAxis);		//returns a value [-1,1]
+		joystickRPress = controller.getRawButton(portJoystickRPress);		//returns a value {0,1}
 		
 		//trigger updates
-		triggerL = controller.getRawAxis(portTriggerL);
-		triggerR = controller.getRawAxis(portTriggerR);
+		triggerL = controller.getRawAxis(portTriggerL);		//returns a value [0,1]
+		triggerR = controller.getRawAxis(portTriggerR);		//returns a value [0,1]
 		
 		//bumper updates
-		bumperL = controller.getRawButton(portBumperL);
-		bumperR = controller.getRawButton(portBumperR);
+		bumperL = controller.getRawButton(portBumperL);		//returns a value {0,1}
+		bumperR = controller.getRawButton(portBumperR);		//returns a value {0,1}
 		
 		//button updates
-		buttonX = controller.getRawButton(portButtonX);
-		buttonY = controller.getRawButton(portButtonY);
-		buttonA = controller.getRawButton(portButtonA);
-		buttonB = controller.getRawButton(portButtonB);
+		buttonX = controller.getRawButton(portButtonX);		//returns a value {0,1}
+		buttonY = controller.getRawButton(portButtonY);		//returns a value {0,1}
+		buttonA = controller.getRawButton(portButtonA);		//returns a value {0,1}
+		buttonB = controller.getRawButton(portButtonB);		//returns a value {0,1}
 		
-		buttonBack = controller.getRawButton(portButtonBack);
-		buttonStart = controller.getRawButton(portButtonStart);
+		buttonBack = controller.getRawButton(portButtonBack);		//returns a value {0,1}
+		buttonStart = controller.getRawButton(portButtonStart);		//returns a value {0,1}
 		
 		//toggle checks
-		tankDriveBool = checkButton(portButtonX, tankDriveBool);
-		fastBool = checkButton(portButtonB,fastBool);
-		grabberInBool = checkButton(portButtonY, grabberInBool);
+		tankDriveBool = checkButton(buttonX, tankDriveBool);		//toggles boolean if button is pressed
+		fastBool = checkButton(buttonB,fastBool);		//toggles boolean if button is pressed
+		grabberInBool = checkButton(buttonY, grabberInBool);		//toggles boolean if button is pressed
 		
 		//d-pad/POV updates
-		dPad = controller.getPOV(portDPad);
+		dPad = controller.getPOV(portDPad);		//returns a value {-1,0,45,90,135,180,225,270,315}
 
 		//d-pad/POV turns
 		if (dPad != -1) {
