@@ -266,6 +266,7 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
+	
 	public void updateTimer() {		//sets change in time between the current running of a periodic function and the previous running
 		t0 = t1;
 		t1 = timer.get();
