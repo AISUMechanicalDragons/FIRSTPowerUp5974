@@ -111,7 +111,8 @@ public class Robot extends IterativeRobot {
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	
-	//Drive motors. We NEED to change these to the actual motors, once electrical makes up its mind.
+	//Drive motors. We NEED to change these to the actual motors, once electrical makes up its mind. 
+	//NOTE: As of Jan 17, the motors have been changed to the right values. But that can definitely change 
 	//Also, sometimes one side is inverted. If it is, we need to change our drive code to reflect that.
 	/**Note that we have something along the lines of six VictorSP motor controllers and four Sparks. Also note that the ports start at 0 not 1. - Thomas*/
 	//haha good point
@@ -198,6 +199,7 @@ public class Robot extends IterativeRobot {
 	
 	//time variables (see updateTimer())
 	Timer timer = new Timer();
+	Timer timerTest = new Timer();
 	double dT = 0; //difference time (t1-t0)
 	double t0 = 0; //time before
 	double t1 = 0; //time after
@@ -411,6 +413,21 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
+	//this function is to break in the gear box
+	public void gearBoxTest(){
+		timerTest.start();
+		motorRB.set(1);
+		motorRB.set(1);
+		if (timerTest.get() == 5){
+			motorRB.set(1);
+			motorRB.set(1);
+		}
+		if (timerTest.get() == 10){
+			timerTest.reset();
+		}
+		
+	}
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -511,6 +528,6 @@ public class Robot extends IterativeRobot {
 	//This funtion is not in use. We could use it to test individual mechanisms. It functions like a second teleop. - Thomas
 	@Override
 	public void testPeriodic() {
-		
+		gearBoxTest();
 	}	
 }
