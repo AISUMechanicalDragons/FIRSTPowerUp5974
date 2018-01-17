@@ -288,8 +288,6 @@ public class Robot extends IterativeRobot {
 		posX += velX * dT * Math.cos(angleToForward * (Math.PI / 180.0));
 		posY += velX * dT * Math.sin(angleToForward * (Math.PI / 180.0));
 		posZ += velZ * dT;
-		
-		//haha calculus very good yes
 	}
 	
 	public void updateController() {		//updates all controller features
