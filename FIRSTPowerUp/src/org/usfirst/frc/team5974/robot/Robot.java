@@ -476,15 +476,20 @@ public class Robot extends IterativeRobot {
 		 */
 	}
 
-	/**
-	 * This function is called periodically during operator control.
-	 */
 	//We sould put in a teleopInit as well. - Thomas
 	//Done.
 	public void teleopInit() {
+		controller.setRumble(Joystick.RumbleType.kRightRumble, 0.5);
+		controller.setRumble(Joystick.RumbleType.kLeftRumble, 0.5);
+		Timer.delay(0.5);
+		controller.setRumble(Joystick.RumbleType.kRightRumble, 0);
+		controller.setRumble(Joystick.RumbleType.kLeftRumble, 0);
 		
 	}
 	
+	/**
+	 * This function is called periodically during operator control.
+	 */
 	@Override
 	public void teleopPeriodic() {
 		update();
@@ -496,7 +501,8 @@ public class Robot extends IterativeRobot {
 		
 		if (tankDriveBool) {
 			tankDrive();
-		} else {
+		} 
+		else {
 			arcadeDrive();
 		}
 	}
