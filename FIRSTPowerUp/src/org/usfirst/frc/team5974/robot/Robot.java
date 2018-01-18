@@ -438,6 +438,8 @@ public class Robot extends IterativeRobot {
 		m_chooser.addDefault("Default Auto", kDefaultAuto); //We sould probably figure out what this pregenerated code does at some point - Thomas
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
+		
+		//Our code
 		IMU.calibrate();
 		IMU.reset();
 	}
@@ -495,6 +497,7 @@ public class Robot extends IterativeRobot {
 	//We sould put in a teleopInit as well. - Thomas
 	//Done.
 	public void teleopInit() {
+		//Rumble controller for half a second
 		controller.setRumble(Joystick.RumbleType.kRightRumble, 0.5);
 		controller.setRumble(Joystick.RumbleType.kLeftRumble, 0.5);
 		Timer.delay(0.5);
