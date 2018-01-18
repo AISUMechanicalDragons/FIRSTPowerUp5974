@@ -333,7 +333,7 @@ public class Robot extends IterativeRobot {
 
 		//d-pad/POV turns
 		if (dPad != -1) {
-			dPad = 360 - dPad; //Converts the dPad, a clockwise rotation, into the Gyro, a counterclockwise rotation.
+			dPad = 360 - dPad; //Converts the dPad, a clockwise rotation, into the gyro, a counterclockwise rotation.
 			rotateTo(dPad);
 		}
 		
