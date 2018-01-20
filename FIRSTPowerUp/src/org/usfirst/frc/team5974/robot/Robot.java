@@ -116,15 +116,15 @@ public class Robot extends IterativeRobot {
 	//Also, sometimes one side is inverted. If it is, we need to change our drive code to reflect that.
 	/**Note that we have something along the lines of six VictorSP motor controllers and four Sparks. Also note that the ports start at 0 not 1. - Thomas*/
 	//haha good point
-	Spark motorRB = new Spark(0); //motor right back
-	Spark motorRF = new Spark(2); //motor right front
-	Spark motorLB = new Spark(1); //motor left back
-	Spark motorLF = new Spark(3); //motor left front
+	VictorSP motorRB = new VictorSP(0); //motor right back
+	VictorSP motorRF = new VictorSP(1); //motor right front
+	VictorSP motorLB = new VictorSP(3); //motor left back
+	VictorSP motorLF = new VictorSP(2); //motor left front
 	
 	//Grabber motors
 	//I changed these to Victors, idk if it matters or not
-	VictorSP motorGL = new VictorSP(4); //left grabber motor
-	VictorSP motorGR = new VictorSP(5); //right grabber motor
+	Spark motorGL = new Spark(4); //left grabber motor
+	Spark motorGR = new Spark(5); //right grabber motor
 
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller  // could be incorrect port //It's not. - Thomas //Unless we use two controllers, possibly. - Thomas
@@ -206,6 +206,8 @@ public class Robot extends IterativeRobot {
 	
 	//this is the variable that gives us switch and scale sides in format LRL or RRL, etc
 	String gameData;
+	
+	double counter = 0;
 	
 	public boolean checkButton(boolean button, boolean toggle) {		//If the button is pushed, once it is released, its toggle is changed
 		if (button) {
@@ -417,17 +419,25 @@ public class Robot extends IterativeRobot {
 	
 	//this function is to break in the gear box
 	public void gearBoxTest(){
-		timerTest.start();
-		motorRB.set(1);
-		motorRB.set(1);
-		if (timerTest.get() == 5){
-			motorRB.set(1);
-			motorRB.set(1);
+		while (counter < 6) {
+			timerTest.start();
+			if (480 >= timerTest.get()) {
+				motorRB.set(1);
+				motorRF.set(1);
+				motorLB.set(1);
+				motorLF.set(1);
+			}
+			else if (timerTest.get() > 480 && 600 >= timerTest.get()) {
+				motorRB.set(0);
+				motorRF.set(0);
+				motorLB.set(0);
+				motorLF.set(0);
+			}
+			else if (timerTest.get() > 600) {
+				timerTest.reset();
+				counter++;
+			}
 		}
-		if (timerTest.get() == 10){
-			timerTest.reset();
-		}
-		
 	}
 	
 	/**
