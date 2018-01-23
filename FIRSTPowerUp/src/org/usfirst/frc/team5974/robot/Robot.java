@@ -454,7 +454,7 @@ public class Robot extends IterativeRobot {
 		m_chooser.addDefault("Default Auto", kDefaultAuto); //We sould probably figure out what this pregenerated code does at some point - Thomas
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
-		
+		CameraServer.getInstance().startAutomaticCapture();
 		//Our code
 		IMU.calibrate();
 		IMU.reset();
