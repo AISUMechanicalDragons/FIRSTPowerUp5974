@@ -372,13 +372,13 @@ public class Robot extends IterativeRobot {
 		if (fastBool) {
 			motorRB.set(joystickRYAxis);
 			motorRF.set(joystickRYAxis);
-			motorLB.set(joystickLYAxis);
-			motorLF.set(joystickLYAxis);
+			motorLB.set(-joystickLYAxis);
+			motorLF.set(-joystickLYAxis);
 		} else {
 			motorRB.set(joystickRYAxis/2);
 			motorRF.set(joystickRYAxis/2);
-			motorLB.set(joystickLYAxis/2);
-			motorLF.set(joystickLYAxis/2);
+			motorLB.set(-joystickLYAxis/2);
+			motorLF.set(-joystickLYAxis/2);
 		}
 	}
 	
@@ -388,13 +388,13 @@ public class Robot extends IterativeRobot {
 		if (fastBool) {
 			motorRB.set(joystickLYAxis - joystickLXAxis);
 			motorRF.set(joystickLYAxis - joystickLXAxis);
-			motorLB.set(joystickLYAxis + joystickLXAxis);
-			motorLF.set(joystickLYAxis + joystickLXAxis);
+			motorLB.set(-(joystickLYAxis + joystickLXAxis));
+			motorLF.set(-(joystickLYAxis + joystickLXAxis));
 		} else {
 			motorRB.set((joystickLYAxis - joystickLXAxis)/2);
 			motorRF.set((joystickLYAxis - joystickLXAxis)/2);
-			motorLB.set((joystickLYAxis + joystickLXAxis)/2);
-			motorLF.set((joystickLYAxis + joystickLXAxis)/2);
+			motorLB.set(-(joystickLYAxis + joystickLXAxis)/2);
+			motorLF.set(-(joystickLYAxis + joystickLXAxis)/2);
 		}
 	}
 	
