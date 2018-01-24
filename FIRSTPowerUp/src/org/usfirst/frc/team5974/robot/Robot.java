@@ -400,7 +400,7 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	public void grab() {		//grabbers in/out based on bumper bools
+	public void grab() {		//grabbers in/out based on bumper bools  
 		//move left grabber wheels
 		if (bumperL) {
 			if (grabberInBool) {
