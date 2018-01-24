@@ -209,10 +209,12 @@ public class Robot extends IterativeRobot {
 	
 	double counter = 0;
 	
-	public boolean checkButton(boolean button, boolean toggle) {		//If the button is pushed, once it is released, its toggle is changed
+	public boolean checkButton(boolean button, boolean toggle, int port) {		//If the button is pushed, once it is released, its toggle is changed
 		if (button) {
 			toggle = !toggle;
-			while (button) {}
+			while (button) {
+				button = controller.getRawButton(port);
+			}
 		}
 		return toggle;
 	}
@@ -331,9 +333,9 @@ public class Robot extends IterativeRobot {
 		buttonStart = controller.getRawButton(portButtonStart);		//returns a value {0,1}
 		
 		//toggle checks
-		tankDriveBool = checkButton(buttonX, tankDriveBool);		//toggles boolean if button is pressed
-		fastBool = checkButton(buttonB,fastBool);		//toggles boolean if button is pressed
-		grabberInBool = checkButton(buttonY, grabberInBool);		//toggles boolean if button is pressed
+		tankDriveBool = checkButton(buttonX, tankDriveBool, portButtonX);		//toggles boolean if button is pressed
+		fastBool = checkButton(buttonB, fastBool, portButtonB);		//toggles boolean if button is pressed
+		grabberInBool = checkButton(buttonY, grabberInBool, portButtonY);		//toggles boolean if button is pressed
 		
 		//d-pad/POV updates
 		dPad = controller.getPOV(portDPad);		//returns a value {-1,0,45,90,135,180,225,270,315}
@@ -386,13 +388,13 @@ public class Robot extends IterativeRobot {
 		//right wheels have less power the farther right the left joystick is and more power the farther left
 		//left wheels have less power the farther left the left joystick is and more power the farther right
 		if (fastBool) {
-			motorRB.set(joystickLYAxis - joystickLXAxis);
-			motorRF.set(joystickLYAxis - joystickLXAxis);
+			motorRB.set(-(joystickLYAxis - joystickLXAxis));
+			motorRF.set(-(joystickLYAxis - joystickLXAxis));
 			motorLB.set(-(joystickLYAxis + joystickLXAxis));
 			motorLF.set(-(joystickLYAxis + joystickLXAxis));
 		} else {
-			motorRB.set((joystickLYAxis - joystickLXAxis)/2);
-			motorRF.set((joystickLYAxis - joystickLXAxis)/2);
+			motorRB.set(-(joystickLYAxis - joystickLXAxis)/2);
+			motorRF.set(-(joystickLYAxis - joystickLXAxis)/2);
 			motorLB.set(-(joystickLYAxis + joystickLXAxis)/2);
 			motorLF.set(-(joystickLYAxis + joystickLXAxis)/2);
 		}
