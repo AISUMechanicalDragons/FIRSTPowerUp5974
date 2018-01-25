@@ -176,7 +176,7 @@ public class Robot extends IterativeRobot {
 	
 	double angleToForward = 0;
 	
-	double robotSpeed;	//robot speed (fast/slow mode)
+	//double robotSpeed;	//robot speed (fast/slow mode)
 	double GameTime;
 	boolean tankDriveBool = true;		//tank drive boolean: true = tank drive, false = arcade drive
 	boolean fastBool = false;			//fast boolean: true = fast mode, false = slow mode
@@ -388,15 +388,15 @@ public class Robot extends IterativeRobot {
 		//right wheels have less power the farther right the left joystick is and more power the farther left
 		//left wheels have less power the farther left the left joystick is and more power the farther right
 		if (fastBool) {
-			motorRB.set(-(joystickLYAxis - joystickLXAxis));
-			motorRF.set(-(joystickLYAxis - joystickLXAxis));
-			motorLB.set(-(joystickLYAxis + joystickLXAxis));
-			motorLF.set(-(joystickLYAxis + joystickLXAxis));
+			motorRB.set((joystickLYAxis + joystickLXAxis));
+			motorRF.set((joystickLYAxis + joystickLXAxis));
+			motorLB.set(-(joystickLYAxis - joystickLXAxis));
+			motorLF.set(-(joystickLYAxis - joystickLXAxis));
 		} else {
-			motorRB.set(-(joystickLYAxis - joystickLXAxis)/2);
-			motorRF.set(-(joystickLYAxis - joystickLXAxis)/2);
-			motorLB.set(-(joystickLYAxis + joystickLXAxis)/2);
-			motorLF.set(-(joystickLYAxis + joystickLXAxis)/2);
+			motorRB.set((joystickLYAxis + joystickLXAxis)/2);
+			motorRF.set((joystickLYAxis + joystickLXAxis)/2);
+			motorLB.set(-(joystickLYAxis - joystickLXAxis)/2);
+			motorLF.set(-(joystickLYAxis - joystickLXAxis)/2);
 		}
 	}
 	
