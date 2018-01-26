@@ -390,15 +390,15 @@ public class Robot extends IterativeRobot {
 		//right wheels have less power the farther right the left joystick is and more power the farther left
 		//left wheels have less power the farther left the left joystick is and more power the farther right
 		if (fastBool) {
-			motorRB.set((joystickLYAxis + joystickLXAxis));
-			motorRF.set((joystickLYAxis + joystickLXAxis));
-			motorLB.set(-(joystickLYAxis - joystickLXAxis));
-			motorLF.set(-(joystickLYAxis - joystickLXAxis));
+			motorRB.set((joystickLYAxis + joystickLXAxis/2));
+			motorRF.set((joystickLYAxis + joystickLXAxis/2));
+			motorLB.set(-(joystickLYAxis - joystickLXAxis/2));
+			motorLF.set(-(joystickLYAxis - joystickLXAxis/2));
 		} else {
-			motorRB.set((joystickLYAxis + joystickLXAxis)/2);
-			motorRF.set((joystickLYAxis + joystickLXAxis)/2);
-			motorLB.set(-(joystickLYAxis - joystickLXAxis)/2);
-			motorLF.set(-(joystickLYAxis - joystickLXAxis)/2);
+			motorRB.set((joystickLYAxis + joystickLXAxis/2)/2);
+			motorRF.set((joystickLYAxis + joystickLXAxis/2)/2);
+			motorLB.set(-(joystickLYAxis - joystickLXAxis/2)/2);
+			motorLF.set(-(joystickLYAxis - joystickLXAxis/2)/2);
 		}
 	}
 	
@@ -514,8 +514,7 @@ public class Robot extends IterativeRobot {
 		 */
 	}
 
-	//We sould put in a teleopInit as well. - Thomas
-	//Done.
+	
 	public void teleopInit() {
 		//Rumble controller for half a second
 		controller.setRumble(Joystick.RumbleType.kRightRumble, 0.5);
