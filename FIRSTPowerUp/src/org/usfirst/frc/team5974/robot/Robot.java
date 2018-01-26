@@ -127,7 +127,7 @@ public class Robot extends IterativeRobot {
 	Spark motorGR = new Spark(5); //right grabber motor
 
 	//Variables we're using
-	Joystick controller = new Joystick(0);			//controller  // could be incorrect port //It's not. - Thomas //Unless we use two controllers, possibly. - Thomas
+	Joystick controller = new Joystick(0);			//controller
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
 
 	
@@ -178,9 +178,9 @@ public class Robot extends IterativeRobot {
 	
 	//double robotSpeed;	//robot speed (fast/slow mode)
 	double GameTime;
-	boolean tankDriveBool = true;		//tank drive boolean: true = tank drive, false = arcade drive
-	boolean fastBool = false;			//fast boolean: true = fast mode, false = slow mode
-	boolean grabberInBool = true;			//true = in, false = out
+	boolean tankDriveBool = true;		//drive mode: true = tank drive, false = arcade drive
+	boolean fastBool = false;			//speed mode: true = fast mode, false = slow mode
+	boolean grabberInBool = true;		//grabber: true = in, false = out
 	
 	//position arrays
 	double posX = 0;
@@ -197,19 +197,19 @@ public class Robot extends IterativeRobot {
 	double accelY = 0;
 	double accelZ = 0;
 	
-	//time variables (see updateTimer())
+	//time variables [see updateTimer()]
 	Timer timer = new Timer();
 	Timer timerTest = new Timer();
-	double dT = 0; //difference time (t1-t0)
-	double t0 = 0; //time before
-	double t1 = 0; //time after
+	double dT = 0; //time difference (t1-t0)
+	double t0 = 0; //time start
+	double t1 = 0; //time end
 	
 	//this is the variable that gives us switch and scale sides in format LRL or RRL, etc
 	String gameData;
 	
 	double counter = 0;
 	
-	public boolean checkButton(boolean button, boolean toggle, int port) {		//If the button is pushed, once it is released, its toggle is changed
+	public boolean checkButton(boolean button, boolean toggle, int port) {		//When the button is pushed, once it is released, its toggle is changed
 		if (button) {
 			toggle = !toggle;
 			while (button) {
@@ -305,6 +305,8 @@ public class Robot extends IterativeRobot {
 	public void updateController() {		//updates all controller features
 		/**I don't know why you made a whole bunch of port variables when numbers are faster, but hey! You do you. - Thomas*/
 		//i concur --Carter
+		//should we merge this part with the 'variables we're using' section starting with Thomas' blue comment ("Button ports, however...")? --Muneo
+		
 		//left joystick update
 		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);		//returns a value [-1,1]
 		joystickLYAxis = controller.getRawAxis(portJoystickLYAxis);		//returns a value [-1,1]
@@ -342,7 +344,7 @@ public class Robot extends IterativeRobot {
 
 		//d-pad/POV turns
 		if (dPad != -1) {
-			dPad = 360 - dPad; //Converts the dPad, a clockwise rotation, into the Gyro, a counterclockwise rotation.
+			dPad = 360 - dPad; //Converts the clockwise dPad rotation, into a Gyro-readable counterclockwise rotation.
 			rotateTo(dPad);
 		}
 		
