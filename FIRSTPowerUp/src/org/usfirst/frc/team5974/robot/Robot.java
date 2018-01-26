@@ -180,7 +180,7 @@ public class Robot extends IterativeRobot {
 	double GameTime;
 	boolean tankDriveBool = true;		//drive mode: true = tank drive, false = arcade drive
 	boolean fastBool = false;			//speed mode: true = fast mode, false = slow mode
-	boolean grabberInBool = true;		//grabber: true = in, false = out
+	//boolean grabberInBool = true;		//grabber: true = in, false = out
 	
 	//position arrays
 	double posX = 0;
@@ -367,7 +367,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
-		SmartDashboard.putBoolean("Grabber In", grabberInBool);
+		//SmartDashboard.putBoolean("Grabber In", grabberInBool);
 	}
 	
 	public void tankDrive() {	//tank drive: left joystick controls left wheels, right joystick controls right wheels
