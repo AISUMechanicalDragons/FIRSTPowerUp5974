@@ -179,7 +179,8 @@ public class Robot extends IterativeRobot {
 	//double robotSpeed;	//robot speed (fast/slow mode)
 	double GameTime;
 	boolean tankDriveBool = true;		//drive mode: true = tank drive, false = arcade drive
-	boolean fastBool = false;			//speed mode: true = fast mode, false = slow mode
+	boolean fastBool = false;	//speed mode: true = fast mode, false = slow mode
+	double forkliftHeight;
 	//boolean grabberInBool = true;		//grabber: true = in, false = out
 	
 	//position arrays
