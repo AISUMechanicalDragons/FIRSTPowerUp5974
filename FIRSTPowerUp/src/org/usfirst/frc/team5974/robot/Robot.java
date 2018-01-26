@@ -291,12 +291,12 @@ public class Robot extends IterativeRobot {
 		accelY = IMU.getAccelY();
 		accelZ = IMU.getAccelZ();
 		
-		//vel updated by integral of accel
+		//velocit updated by acceleration integral
 		velX += accelX * dT;
 		velY += accelY * dT;
 		velZ += accelZ * dT;
 		
-		//pos updated by integral of vel and adjusted for robot rotation
+		//position updated by velocity integral and adjusted for robot rotation
 		posX += (velX * dT * Math.cos(angleToForward * (Math.PI / 180.0))) - (velY * dT * Math.sin(angleToForward * (Math.PI / 180.0)));
 		posY += velX * dT * Math.sin(angleToForward * (Math.PI / 180.0)) + (velY * dT * Math.cos(angleToForward * (Math.PI / 180.0)));
 		posZ += velZ * dT;
@@ -336,7 +336,7 @@ public class Robot extends IterativeRobot {
 		
 		//toggle checks
 		tankDriveBool = checkButton(buttonX, tankDriveBool, portButtonX);		//toggles boolean if button is pressed
-		fastBool = checkButton(buttonB, fastBool, portButtonB);		//toggles boolean if button is pressed
+		fastBool = checkButton(buttonB, fastBool, portButtonB);					//toggles boolean if button is pressed
 		grabberInBool = checkButton(buttonY, grabberInBool, portButtonY);		//toggles boolean if button is pressed
 		
 		//d-pad/POV updates
@@ -359,7 +359,7 @@ public class Robot extends IterativeRobot {
 		updateGameTime();
 	}
 	
-	public void dashboardOutput() {	//sends data to dashboard and displays it on dashboard
+	public void dashboardOutput() {	//sends and displays data on dashboard
 		SmartDashboard.putNumber("Time Remaining", GameTime);
 		SmartDashboard.putNumber("x-position", posX);
 		SmartDashboard.putNumber("y-position", posY);
@@ -402,7 +402,7 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	public void grab() {		//grabbers in/out based on bumper bools  
+	public void grab() {	//grabbers in/out based on bumper bools  
 		//move left grabber wheels
 		if (bumperL) {
 			if (grabberInBool) {
