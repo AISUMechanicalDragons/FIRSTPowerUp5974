@@ -253,7 +253,7 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	public void joystickDeadZone() {		//sets dead zone for joysticks
+	public void joystickDeadZone() {		//sets dead zone for joysticks		//TODO test this
 		if (joystickLXAxis <= 0.1 && joystickLXAxis >= -0.1) {
 			joystickLXAxis = 0;
 		} if (joystickLYAxis <= 0.1 && joystickLYAxis >= -0.1) {
