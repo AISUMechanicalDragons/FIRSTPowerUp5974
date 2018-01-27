@@ -225,9 +225,9 @@ public class Robot extends IterativeRobot {
 		//rotates the fastest way until within +- 5 of goTo angle
 		while (goTo >= angleToForward + 5 || goTo <= angleToForward - 5) {
 			updateGyro();
-			if (cw <= ccw) {
+			if (cw >= ccw) {
 				updateGyro();
-				motorRB.set(-0.25); //
+				motorRB.set(-0.25);
 				motorRF.set(-0.25);
 				motorLB.set(-0.25);
 				motorLF.set(-0.25);
@@ -363,14 +363,17 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Time Remaining", GameTime);
 		SmartDashboard.putNumber("x-position", posX);
 		SmartDashboard.putNumber("y-position", posY);
+		SmartDashboard.putNumber("z-position", posZ);
 		SmartDashboard.putNumber("x-vel", velX);
 		SmartDashboard.putNumber("y-vel", velY);
+		SmartDashboard.putNumber("z-vel", velZ);
 		SmartDashboard.putNumber("x-accel", accelX);
 		SmartDashboard.putNumber("y-accel", accelY);
+		SmartDashboard.putNumber("z-accel", accelZ);
 		SmartDashboard.putNumber("dT", dT);
 		SmartDashboard.putNumber("Speed", velY);
 		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
-		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
+		SmartDashboard.putNumber("Angle to Forwards Graph", angleToForward);
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		//SmartDashboard.putBoolean("Grabber In", grabberInBool);
