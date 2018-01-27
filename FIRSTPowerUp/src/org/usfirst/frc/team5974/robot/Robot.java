@@ -230,7 +230,7 @@ public class Robot extends IterativeRobot {
 		while (goTo >= angleToForward + 5 || goTo <= angleToForward - 5) {
 			updateGyro();
 			if (cw <= ccw) {
-				motorRB.set(-0.25);
+				motorRB.set(-0.25); //
 				motorRF.set(-0.25);
 				motorLB.set(-0.25);
 				motorLF.set(-0.25);
