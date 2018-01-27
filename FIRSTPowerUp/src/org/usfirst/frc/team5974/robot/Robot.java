@@ -223,20 +223,20 @@ public class Robot extends IterativeRobot {
 		double ccw = (angleToForward - goTo < 0) ? (angleToForward - goTo + 360) : (angleToForward - goTo);
 		
 		//rotates the fastest way until in +- 5 of goTo angle
-		while (goTo >= angleToForward + 5 && goTo <= angleToForward - 5) {
-			updateGyro();
+		if (goTo >= angleToForward + 5 || goTo <= angleToForward - 5) {
 			if (cw <= ccw) {
-				motorRB.set(-1);
-				motorRF.set(-1);
-				motorLB.set(1);
-				motorLF.set(1);
+				motorRB.set(-0.25); //
+				motorRF.set(-0.25);
+				motorLB.set(-0.25);
+				motorLF.set(-0.25);
 			} else {
-				motorRB.set(1);
-				motorRF.set(1);
-				motorLB.set(-1);
-				motorLF.set(-1);
+				motorRB.set(0.25);
+				motorRF.set(0.25);
+				motorLB.set(0.25);
+				motorLF.set(0.25);
 			}
 		}
+		
 	}
 	
 	public double withIn(double input, double upperBound, double lowerBound) {		//returns the inputed value if inside the bounds. returns the bound it is past if it is past a bound.
@@ -263,7 +263,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void updateGyro() {		//set IMU.getAngle() (-inf,inf) output to a non-looping value [0,360)
-		angleToForward = IMU.getAngle();
+		angleToForward = IMU.getAngleZ();
 		if (angleToForward >= 360) {
 			angleToForward -= 360;
 		} else if (angleToForward < 0) {
@@ -386,15 +386,15 @@ public class Robot extends IterativeRobot {
 		//right wheels have less power the farther right the left joystick is and more power the farther left
 		//left wheels have less power the farther left the left joystick is and more power the farther right
 		if (fastBool) {
-			motorRB.set((joystickLYAxis + joystickLXAxis));
-			motorRF.set((joystickLYAxis + joystickLXAxis));
-			motorLB.set(-(joystickLYAxis - joystickLXAxis));
-			motorLF.set(-(joystickLYAxis - joystickLXAxis));
+			motorRB.set((joystickLYAxis + joystickLXAxis/2));
+			motorRF.set((joystickLYAxis + joystickLXAxis/2));
+			motorLB.set(-(joystickLYAxis - joystickLXAxis/2));
+			motorLF.set(-(joystickLYAxis - joystickLXAxis/2));
 		} else {
-			motorRB.set((joystickLYAxis + joystickLXAxis)/2);
-			motorRF.set((joystickLYAxis + joystickLXAxis)/2);
-			motorLB.set(-(joystickLYAxis - joystickLXAxis)/2);
-			motorLF.set(-(joystickLYAxis - joystickLXAxis)/2);
+			motorRB.set((joystickLYAxis + joystickLXAxis/2)/2);
+			motorRF.set((joystickLYAxis + joystickLXAxis/2)/2);
+			motorLB.set(-(joystickLYAxis - joystickLXAxis/2)/2);
+			motorLF.set(-(joystickLYAxis - joystickLXAxis/2)/2);
 		}
 	}
 	
@@ -510,8 +510,7 @@ public class Robot extends IterativeRobot {
 		 */
 	}
 
-	//We sould put in a teleopInit as well. - Thomas
-	//Done.
+	
 	public void teleopInit() {
 		//Rumble controller for half a second
 		controller.setRumble(Joystick.RumbleType.kRightRumble, 0.5);
