@@ -289,9 +289,9 @@ public class Robot extends IterativeRobot {
 	
 	public void updateTrifecta() {	//updates pos, vel, and accel
 		//accel variables updated from IMU
-		accelX = IMU.getAccelX();
-		accelY = IMU.getAccelY();
-		accelZ = IMU.getAccelZ();
+		accelX = IMU.getAccelX()*9.8;
+		accelY = IMU.getAccelY()*9.8;
+		accelZ = IMU.getAccelZ()*9.8;
 		
 		//velocit updated by acceleration integral
 		velX += accelX * dT;
@@ -365,6 +365,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Time Remaining", GameTime);
 		SmartDashboard.putNumber("x-position", posX);
 		SmartDashboard.putNumber("y-position", posY);
+		SmartDashboard.putNumber("x-accel", accelX);
+		SmartDashboard.putNumber("y-accel", accelY);
 		SmartDashboard.putNumber("Speed", velY);
 		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
