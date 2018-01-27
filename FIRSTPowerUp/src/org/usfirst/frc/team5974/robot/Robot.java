@@ -118,14 +118,10 @@ public class Robot extends IterativeRobot {
 	//haha good point
 	VictorSP motorRB = new VictorSP(0); //motor right back
 	VictorSP motorRF = new VictorSP(1); //motor right front
-	VictorSP motorLB = new VictorSP(3); //motor left back
-	VictorSP motorLF = new VictorSP(2); //motor left front
+	VictorSP motorLB = new VictorSP(3); //motor left back // THIS IS INVERTED USE NEGATIVES TO GO FORWARDS
+	VictorSP motorLF = new VictorSP(2); //motor left front // THIS IS INVERTED USE NEGATIVES TO GO FORWARDS
 	
-	//Grabber motors
-	//I changed these to Victors, idk if it matters or not
-	Spark motorGL = new Spark(4); //left grabber motor
-	Spark motorGR = new Spark(5); //right grabber motor
-
+	
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
@@ -165,7 +161,6 @@ public class Robot extends IterativeRobot {
 	
 	int portTriggerL = 2;
 	int portTriggerR = 3;
-	
 	int portBumperL = 5;
 	int portBumperR = 6;
 	
@@ -179,8 +174,9 @@ public class Robot extends IterativeRobot {
 	//double robotSpeed;	//robot speed (fast/slow mode)
 	double GameTime;
 	boolean tankDriveBool = true;		//drive mode: true = tank drive, false = arcade drive
-	boolean fastBool = false;			//speed mode: true = fast mode, false = slow mode
-	boolean grabberInBool = true;		//grabber: true = in, false = out
+	boolean fastBool = false;	//speed mode: true = fast mode, false = slow mode
+	double forkliftHeight;
+	//boolean grabberInBool = true;		//grabber: true = in, false = out
 	
 	//position arrays
 	double posX = 0;
@@ -371,7 +367,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
-		SmartDashboard.putBoolean("Grabber In", grabberInBool);
+		//SmartDashboard.putBoolean("Grabber In", grabberInBool);
 	}
 	
 	public void tankDrive() {	//tank drive: left joystick controls left wheels, right joystick controls right wheels
