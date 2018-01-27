@@ -267,7 +267,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void updateGyro() {		//set IMU.getAngle() (-inf,inf) output to a non-looping value [0,360)
-		angleToForward = IMU.getAngle();
+		angleToForward = IMU.getAngleZ();
 		if (angleToForward >= 360) {
 			angleToForward -= 360;
 		} else if (angleToForward < 0) {
