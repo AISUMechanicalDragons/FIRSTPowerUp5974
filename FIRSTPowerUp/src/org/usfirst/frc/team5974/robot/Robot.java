@@ -161,7 +161,6 @@ public class Robot extends IterativeRobot {
 	
 	int portTriggerL = 2;
 	int portTriggerR = 3;
-	
 	int portBumperL = 5;
 	int portBumperR = 6;
 	
