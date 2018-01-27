@@ -530,6 +530,7 @@ public class Robot extends IterativeRobot {
 		controller.setRumble(Joystick.RumbleType.kRightRumble, 0);
 		controller.setRumble(Joystick.RumbleType.kLeftRumble, 0);
 		
+		timer.start();
 	}
 	
 	/**
