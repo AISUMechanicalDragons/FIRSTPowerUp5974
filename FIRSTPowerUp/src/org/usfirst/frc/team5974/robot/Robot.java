@@ -121,6 +121,8 @@ public class Robot extends IterativeRobot {
 	VictorSP motorLB = new VictorSP(3); //motor left back // THIS IS INVERTED USE NEGATIVES TO GO FORWARDS
 	VictorSP motorLF = new VictorSP(2); //motor left front // THIS IS INVERTED USE NEGATIVES TO GO FORWARDS
 	
+	Spark motorGL = new Spark(4);
+	Spark motorGR = new Spark(5);
 	
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
@@ -176,7 +178,7 @@ public class Robot extends IterativeRobot {
 	boolean tankDriveBool = true;		//drive mode: true = tank drive, false = arcade drive
 	boolean fastBool = false;	//speed mode: true = fast mode, false = slow mode
 	double forkliftHeight;
-	//boolean grabberInBool = true;		//grabber: true = in, false = out
+	boolean grabberInBool = true;		//grabber: true = in, false = out
 	
 	//position arrays
 	double posX = 0;
