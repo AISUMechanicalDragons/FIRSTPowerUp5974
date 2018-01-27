@@ -217,15 +217,15 @@ public class Robot extends IterativeRobot {
 	
 	public void rotateTo(int goTo) {		//rotates robot to angle based on IMU and d-pad
 		//clockwise degrees to goTo angle
-		double cw = (goTo - angleToForward < 0) ? (goTo - angleToForward + 360) : (goTo - angleToForward);
+		double ccw = (goTo - angleToForward < 0) ? (goTo - angleToForward + 360) : (goTo - angleToForward);
 		
 		//counter-clockwise degrees to goTo angle
-		double ccw = (angleToForward - goTo < 0) ? (angleToForward - goTo + 360) : (angleToForward - goTo);
+		double cw = (angleToForward - goTo < 0) ? (angleToForward - goTo + 360) : (angleToForward - goTo);
 		
 		//rotates the fastest way until within +- 5 of goTo angle
 		while (goTo >= angleToForward + 5 || goTo <= angleToForward - 5) {
 			updateGyro();
-			if (cw >= ccw) {
+			if (cw <= ccw) {
 				updateGyro();
 				motorRB.set(-0.25);
 				motorRF.set(-0.25);
