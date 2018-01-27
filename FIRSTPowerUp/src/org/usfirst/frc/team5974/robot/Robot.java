@@ -227,18 +227,22 @@ public class Robot extends IterativeRobot {
 		double ccw = (angleToForward - goTo < 0) ? (angleToForward - goTo + 360) : (angleToForward - goTo);
 		
 		//rotates the fastest way until in +- 5 of goTo angle
-		if (goTo >= angleToForward + 5 || goTo <= angleToForward - 5) {
+		while (goTo >= angleToForward + 5 || goTo <= angleToForward - 5) {
+			updateGyro();
 			if (cw <= ccw) {
+				updateGyro();
 				motorRB.set(-0.25); //
 				motorRF.set(-0.25);
 				motorLB.set(-0.25);
 				motorLF.set(-0.25);
 			} else {
+				updateGyro();
 				motorRB.set(0.25);
 				motorRF.set(0.25);
 				motorLB.set(0.25);
 				motorLF.set(0.25);
 			}
+			updateGyro();
 		}
 		
 	}
