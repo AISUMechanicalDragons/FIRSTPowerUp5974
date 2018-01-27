@@ -230,15 +230,15 @@ public class Robot extends IterativeRobot {
 		while (goTo >= angleToForward + 5 || goTo <= angleToForward - 5) {
 			updateGyro();
 			if (cw <= ccw) {
-				motorRB.set(-1);
-				motorRF.set(-1);
-				motorLB.set(-1);
-				motorLF.set(-1);
+				motorRB.set(-0.25);
+				motorRF.set(-0.25);
+				motorLB.set(-0.25);
+				motorLF.set(-0.25);
 			} else {
-				motorRB.set(1);
-				motorRF.set(1);
-				motorLB.set(1);
-				motorLF.set(1);
+				motorRB.set(0.25);
+				motorRF.set(0.25);
+				motorLB.set(0.25);
+				motorLF.set(0.25);
 			}
 		}
 	}
