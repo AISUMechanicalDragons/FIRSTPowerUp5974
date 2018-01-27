@@ -365,8 +365,11 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Time Remaining", GameTime);
 		SmartDashboard.putNumber("x-position", posX);
 		SmartDashboard.putNumber("y-position", posY);
+		SmartDashboard.putNumber("x-vel", velX);
+		SmartDashboard.putNumber("y-vel", velY);
 		SmartDashboard.putNumber("x-accel", accelX);
 		SmartDashboard.putNumber("y-accel", accelY);
+		SmartDashboard.putNumber("dT", dT);
 		SmartDashboard.putNumber("Speed", velY);
 		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
