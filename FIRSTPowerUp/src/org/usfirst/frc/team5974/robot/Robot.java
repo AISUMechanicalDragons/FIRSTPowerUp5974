@@ -372,6 +372,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("dT", dT);
 		SmartDashboard.putNumber("Speed", velY);
 		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
+		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		//SmartDashboard.putBoolean("Grabber In", grabberInBool);
