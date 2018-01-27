@@ -289,18 +289,18 @@ public class Robot extends IterativeRobot {
 	
 	public void updateTrifecta() {	//updates pos, vel, and accel
 		//accel variables updated from IMU
-		accelX = IMU.getAccelX()*9.8;
-		accelY = IMU.getAccelY()*9.8;
-		accelZ = IMU.getAccelZ()*9.8;
+		accelX = IMU.getAccelX() * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0));
+		accelY = IMU.getAccelY() * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
+		accelZ = IMU.getAccelZ() * 9.8;
 		
-		//velocit updated by acceleration integral
+		//velocity updated by acceleration integral
 		velX += accelX * dT;
 		velY += accelY * dT;
 		velZ += accelZ * dT;
 		
 		//position updated by velocity integral and adjusted for robot rotation
-		posX += (velX * dT * Math.cos(angleToForward * (Math.PI / 180.0))) - (velY * dT * Math.sin(angleToForward * (Math.PI / 180.0)));
-		posY += velX * dT * Math.sin(angleToForward * (Math.PI / 180.0)) + (velY * dT * Math.cos(angleToForward * (Math.PI / 180.0)));
+		posX += velX * dT;
+		posY += velY * dT;
 		posZ += velZ * dT;
 	}
 	
