@@ -118,14 +118,10 @@ public class Robot extends IterativeRobot {
 	//haha good point
 	VictorSP motorRB = new VictorSP(0); //motor right back
 	VictorSP motorRF = new VictorSP(1); //motor right front
-	VictorSP motorLB = new VictorSP(3); //motor left back
-	VictorSP motorLF = new VictorSP(2); //motor left front
+	VictorSP motorLB = new VictorSP(3); //motor left back // THIS IS INVERTED USE NEGATIVES TO GO FORWARDS
+	VictorSP motorLF = new VictorSP(2); //motor left front // THIS IS INVERTED USE NEGATIVES TO GO FORWARDS
 	
-	//Grabber motors
-	//I changed these to Victors, idk if it matters or not
-	Spark motorGL = new Spark(4); //left grabber motor
-	Spark motorGR = new Spark(5); //right grabber motor
-
+	
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
