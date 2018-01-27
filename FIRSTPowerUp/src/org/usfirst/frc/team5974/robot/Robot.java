@@ -232,13 +232,13 @@ public class Robot extends IterativeRobot {
 			if (cw <= ccw) {
 				motorRB.set(-1);
 				motorRF.set(-1);
-				motorLB.set(1);
-				motorLF.set(1);
+				motorLB.set(-1);
+				motorLF.set(-1);
 			} else {
 				motorRB.set(1);
 				motorRF.set(1);
-				motorLB.set(-1);
-				motorLF.set(-1);
+				motorLB.set(1);
+				motorLF.set(1);
 			}
 		}
 	}
