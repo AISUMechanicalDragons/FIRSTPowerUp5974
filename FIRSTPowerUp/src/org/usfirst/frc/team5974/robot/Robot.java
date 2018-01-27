@@ -208,7 +208,7 @@ public class Robot extends IterativeRobot {
 	public boolean checkButton(boolean button, boolean toggle, int port) {		//When the button is pushed, once it is released, its toggle is changed
 		if (button) {
 			toggle = !toggle;
-			while (button) {
+			while (button) {		//TODO while loop causes problems
 				button = controller.getRawButton(port);
 			}
 		}
