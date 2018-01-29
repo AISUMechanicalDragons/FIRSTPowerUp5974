@@ -465,7 +465,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addDefault("Default Auto", kDefaultAuto); //We sould probably figure out what this pre-generated code does at some point - Thomas
+		m_chooser.addDefault("Default Auto", kDefaultAuto); //We should probably figure out what this pre-generated code does at some point - Thomas
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
 		CameraServer.getInstance().startAutomaticCapture();
