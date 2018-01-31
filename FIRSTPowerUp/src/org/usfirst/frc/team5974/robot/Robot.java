@@ -285,7 +285,7 @@ public class Robot extends IterativeRobot {
 		GameTime = Timer.getMatchTime();
 	}
 	
-	public void updateTrifecta() {	//updates pos, vel, and accel
+	public void updateTrifecta() {	//updates pos, vel, and accel //TODO Makes this actually work
 		//accel variables updated from IMU
 		accelX = IMU.getAccelX() * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
 		accelY = IMU.getAccelY() * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
