@@ -86,8 +86,8 @@ package org.usfirst.frc.team5974.robot;
  */
 
 //import edu.wpi.first.wpilibj.IterativeRobot;
-//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
 //import edu.wpi.first.wpilibj.Joystick;							//Controller
 //import edu.wpi.first.wpilibj.Timer;								//Timer
 //import edu.wpi.first.wpilibj.Spark;								//Motor Controller
@@ -308,9 +308,9 @@ public class Robot extends IterativeRobot {
 		check = checkButton(buttonA, check, portButtonA);
 		
 		if (check) {
-			accelX = IMU.getAccelX()
-			accelY = IMU.getAccelY()
-			accelZ = IMU.getAccelZ()
+			accelX = IMU.getAccelX();
+			accelY = IMU.getAccelY();
+			accelZ = IMU.getAccelZ();
 		
 			SmartDashboard.putNumber("x-accel", accelX);
 			SmartDashboard.putNumber("y-accel", accelY);
