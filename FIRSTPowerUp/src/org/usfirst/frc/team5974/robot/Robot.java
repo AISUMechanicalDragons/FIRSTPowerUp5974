@@ -177,6 +177,7 @@ public class Robot extends IterativeRobot {
 	boolean fastBool = false;		//speed mode: true = fast mode, false = slow mode
 	double forkliftHeight;
 	boolean grabberInBool = true;	//grabber: true = in, false = out
+	int autoStep = 0; //which step of the process we're on in autonomous
 	
 	//position arrays
 	double posX = 0;
@@ -513,6 +514,24 @@ public class Robot extends IterativeRobot {
 		 *The second is the scale.
 		 *The third one is your opponent's switch
 		*/
+		
+		if(autoStep==0) {
+			motorRB.set(0.5);
+			motorRF.set(0.5);
+			motorLB.set(-0.5);
+			motorLF.set(-0.5);
+			Timer.delay(1);
+			motorRB.set(0);
+			motorRF.set(0);
+			motorLB.set(0);
+			motorLF.set(0);
+			autoStep++;
+		}
+		if(autoStep==1) {
+			rotateTo(90);
+			autoStep=0;
+		}
+		
 	}
 
 	/**
@@ -538,6 +557,7 @@ public class Robot extends IterativeRobot {
 		 * }
 		 * Repeat for character 1 (scale) and character 2 (opponent's switch) - Thomas
 		 */
+		
 	}
 
 	
