@@ -515,7 +515,8 @@ public class Robot extends IterativeRobot {
 		 *The third one is your opponent's switch
 		*/
 		
-		if(autoStep==0) {
+		//going in a square just for fun
+		if(autoStep%2==0 && autoStep<8) {
 			motorRB.set(0.5);
 			motorRF.set(0.5);
 			motorLB.set(-0.5);
@@ -527,9 +528,10 @@ public class Robot extends IterativeRobot {
 			motorLF.set(0);
 			autoStep++;
 		}
-		if(autoStep==1) {
+		if(autoStep%2==1 && autoStep<8) {
+			//should this go 90,180,270,360? or can I just say "go another 90 degrees" each time?
 			rotateTo(90);
-			autoStep=0;
+			autoStep++;
 		}
 		
 	}
