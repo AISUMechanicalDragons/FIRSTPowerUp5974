@@ -287,7 +287,7 @@ public class Robot extends IterativeRobot {
 	
 	public void updateTrifecta() {	//updates pos, vel, and accel
 		//accel variables updated from IMU
-		accelX = IMU.getAccelX() * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0));
+		accelX = IMU.getAccelX() * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
 		accelY = IMU.getAccelY() * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
 		accelZ = IMU.getAccelZ() * 9.8;
 		
@@ -331,8 +331,8 @@ public class Robot extends IterativeRobot {
 		buttonA = controller.getRawButton(portButtonA);		//returns a value {0,1}
 		buttonB = controller.getRawButton(portButtonB);		//returns a value {0,1}
 		
-		buttonBack = controller.getRawButton(portButtonBack);		//returns a value {0,1}
-		buttonStart = controller.getRawButton(portButtonStart);		//returns a value {0,1}
+		buttonBack = controller.getRawButton(portButtonBack);	//returns a value {0,1}
+		buttonStart = controller.getRawButton(portButtonStart);	//returns a value {0,1}
 		
 		//toggle checks
 		tankDriveBool = checkButton(buttonX, tankDriveBool, portButtonX);		//toggles boolean if button is pressed
