@@ -370,7 +370,7 @@ public class Robot extends IterativeRobot {
 	public void update() {	//updates all update functions tee
 		updateController();
 		updateTimer();
-		updateTrifecta();
+		//updateTrifecta();
 		updateGyro();
 		updateGameTime();
 	}
@@ -558,7 +558,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		update();
-		
+		sensorTest();
 		//grab();
 		
 		//dashboard outputs
