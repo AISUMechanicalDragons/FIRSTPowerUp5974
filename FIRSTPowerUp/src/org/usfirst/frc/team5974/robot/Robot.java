@@ -85,14 +85,14 @@ package org.usfirst.frc.team5974.robot;
  * AI/Autonomous
  */
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
-import edu.wpi.first.wpilibj.Joystick;							//Controller
-import edu.wpi.first.wpilibj.Timer;								//Timer
-import edu.wpi.first.wpilibj.Spark;								//Motor Controller
-import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.DriverStation;
+//import edu.wpi.first.wpilibj.IterativeRobot;
+//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
+//import edu.wpi.first.wpilibj.Joystick;							//Controller
+//import edu.wpi.first.wpilibj.Timer;								//Timer
+//import edu.wpi.first.wpilibj.Spark;								//Motor Controller
+//import edu.wpi.first.wpilibj.VictorSP;
+//import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.*;									//everything tbh
 import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
 //import java.util.ArrayList;		//arraylist
@@ -192,6 +192,8 @@ public class Robot extends IterativeRobot {
 	double accelX = 0;
 	double accelY = 0;
 	double accelZ = 0;
+	
+	boolean check = false;				//this should be deleted once the tests have been conducted
 	
 	//time variables [see updateTimer()]
 	Timer timer = new Timer();
@@ -300,6 +302,20 @@ public class Robot extends IterativeRobot {
 		posX += velX * dT;
 		posY += velY * dT;
 		posZ += velZ * dT;
+	}
+	
+	public void sensorTest() {
+		check = checkButton(buttonA, check, portButtonA);
+		
+		if (check) {
+			accelX = IMU.getAccelX()
+			accelY = IMU.getAccelY()
+			accelZ = IMU.getAccelZ()
+		
+			SmartDashboard.putNumber("x-accel", accelX);
+			SmartDashboard.putNumber("y-accel", accelY);
+			SmartDashboard.putNumber("z-accel", accelZ);
+		}
 	}
 	
 	public void updateController() {		//updates all controller features
@@ -562,6 +578,6 @@ public class Robot extends IterativeRobot {
 	//This funtion is not in use. We could use it to test individual mechanisms. It functions like a second teleop. - Thomas
 	@Override
 	public void testPeriodic() {
-		gearBoxTest();
+		sensorTest();
 	}	
 }
