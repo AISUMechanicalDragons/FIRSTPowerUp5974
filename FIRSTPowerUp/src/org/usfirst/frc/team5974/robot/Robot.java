@@ -88,13 +88,13 @@ package org.usfirst.frc.team5974.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
-import edu.wpi.first.wpilibj.Joystick;		//Controller
-import edu.wpi.first.wpilibj.Timer;		//Timer
-import edu.wpi.first.wpilibj.Spark;		//Motor Controller
+import edu.wpi.first.wpilibj.Joystick;							//Controller
+import edu.wpi.first.wpilibj.Timer;								//Timer
+import edu.wpi.first.wpilibj.Spark;								//Motor Controller
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.*;		//everything tbh
-import org.usfirst.frc.team5974.robot.ADIS16448_IMU;		//IMU
+import edu.wpi.first.wpilibj.*;									//everything tbh
+import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
 //import java.util.ArrayList;		//arraylist
 
 /**
@@ -116,8 +116,8 @@ public class Robot extends IterativeRobot {
 	/**Note that we have something along the lines of six VictorSP motor controllers and four Sparks. Also note that the ports start at 0 not 1. - Thomas*/
 	VictorSP motorRB = new VictorSP(0); //motor right back
 	VictorSP motorRF = new VictorSP(1); //motor right front
-	VictorSP motorLB = new VictorSP(3); //motor left back // THIS IS INVERTED USE NEGATIVES TO GO FORWARDS
-	VictorSP motorLF = new VictorSP(2); //motor left front // THIS IS INVERTED USE NEGATIVES TO GO FORWARDS
+	VictorSP motorLB = new VictorSP(3); //motor left back // THIS IS INVERTED; USE NEGATIVES TO GO FORWARDS
+	VictorSP motorLF = new VictorSP(2); //motor left front // THIS IS INVERTED; USE NEGATIVES TO GO FORWARDS
 	
 	Spark motorGL = new Spark(4);
 	Spark motorGR = new Spark(5);
@@ -285,7 +285,7 @@ public class Robot extends IterativeRobot {
 		GameTime = Timer.getMatchTime();
 	}
 	
-	public void updateTrifecta() {	//updates pos, vel, and accel //TODO Makes this actually work
+	public void updateTrifecta() {	//updates pos, vel, and accel //TODO Make this actually work
 		//accel variables updated from IMU
 		accelX = IMU.getAccelX() * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
 		accelY = IMU.getAccelY() * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
