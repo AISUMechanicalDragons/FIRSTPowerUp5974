@@ -208,7 +208,7 @@ public class Robot extends IterativeRobot {
 	public boolean checkButton(boolean button, boolean toggle, int port) {		//When the button is pushed, once it is released, its toggle is changed
 		if (button) {
 			toggle = !toggle;
-			while (button) {
+			while (button) {		//TODO while loop causes problems
 				button = controller.getRawButton(port);
 			}
 		}
@@ -217,17 +217,17 @@ public class Robot extends IterativeRobot {
 	
 	public void rotateTo(int goTo) {		//rotates robot to angle based on IMU and d-pad
 		//clockwise degrees to goTo angle
-		double cw = (goTo - angleToForward < 0) ? (goTo - angleToForward + 360) : (goTo - angleToForward);
+		double ccw = (goTo - angleToForward < 0) ? (goTo - angleToForward + 360) : (goTo - angleToForward);
 		
 		//counter-clockwise degrees to goTo angle
-		double ccw = (angleToForward - goTo < 0) ? (angleToForward - goTo + 360) : (angleToForward - goTo);
+		double cw = (angleToForward - goTo < 0) ? (angleToForward - goTo + 360) : (angleToForward - goTo);
 		
 		//rotates the fastest way until within +- 5 of goTo angle
 		while (goTo >= angleToForward + 5 || goTo <= angleToForward - 5) {
 			updateGyro();
 			if (cw <= ccw) {
 				updateGyro();
-				motorRB.set(-0.25); //
+				motorRB.set(-0.25);
 				motorRF.set(-0.25);
 				motorLB.set(-0.25);
 				motorLF.set(-0.25);
@@ -253,15 +253,15 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	public void joystickDeadZone() {		//sets dead zone for joysticks
-		if (joystickLXAxis <= 0.1 && joystickLXAxis >= -0.1) {
+	public void joystickDeadZone() {		//sets dead zone for joysticks		//TODO test this
+		if (joystickLXAxis <= 0.075 && joystickLXAxis >= -0.075) {
 			joystickLXAxis = 0;
-		} if (joystickLYAxis <= 0.1 && joystickLYAxis >= -0.1) {
+		} if (joystickLYAxis <= 0.075 && joystickLYAxis >= -0.075) {
 			joystickLYAxis = 0;
 		}
-		if (joystickRXAxis <= 0.1 && joystickRXAxis >= -0.1) {
+		if (joystickRXAxis <= 0.075 && joystickRXAxis >= -0.075) {
 			joystickRXAxis = 0;
-		} if (joystickRYAxis <= 0.1 && joystickRYAxis >= -0.1) {
+		} if (joystickRYAxis <= 0.075 && joystickRYAxis >= -0.075) {
 			joystickRYAxis = 0;
 		}
 	}
@@ -363,14 +363,17 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Time Remaining", GameTime);
 		SmartDashboard.putNumber("x-position", posX);
 		SmartDashboard.putNumber("y-position", posY);
+		SmartDashboard.putNumber("z-position", posZ);
 		SmartDashboard.putNumber("x-vel", velX);
 		SmartDashboard.putNumber("y-vel", velY);
+		SmartDashboard.putNumber("z-vel", velZ);
 		SmartDashboard.putNumber("x-accel", accelX);
 		SmartDashboard.putNumber("y-accel", accelY);
+		SmartDashboard.putNumber("z-accel", accelZ);
 		SmartDashboard.putNumber("dT", dT);
 		SmartDashboard.putNumber("Speed", velY);
 		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
-		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
+		SmartDashboard.putNumber("Angle to Forwards Graph", angleToForward);
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		//SmartDashboard.putBoolean("Grabber In", grabberInBool);
@@ -462,7 +465,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addDefault("Default Auto", kDefaultAuto); //We sould probably figure out what this pre-generated code does at some point - Thomas
+		m_chooser.addDefault("Default Auto", kDefaultAuto); //We should probably figure out what this pre-generated code does at some point - Thomas
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
 		CameraServer.getInstance().startAutomaticCapture();
