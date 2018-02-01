@@ -486,7 +486,7 @@ public class Robot extends IterativeRobot {
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
 		//Our code
-		CameraServer.getInstance().startAutomaticCapture(); //camera
+		CameraServer.getInstance().startAutomaticCapture().setResolution(800, 600); //camera
 		IMU.calibrate();
 		IMU.reset();
 	}
