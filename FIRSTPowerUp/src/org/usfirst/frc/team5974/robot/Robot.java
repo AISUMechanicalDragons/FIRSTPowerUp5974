@@ -95,6 +95,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
 //import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.*;									//everything tbh
 import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
+import edu.wpi.first.wpilibj.CameraServer;
 //import java.util.ArrayList;		//arraylist
 
 /**
