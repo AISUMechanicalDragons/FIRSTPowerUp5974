@@ -521,7 +521,7 @@ public class Robot extends IterativeRobot {
 			motorRF.set(0.5);
 			motorLB.set(-0.5);
 			motorLF.set(-0.5);
-			Timer.delay(1);
+			Timer.delay(0.5);
 			motorRB.set(0);
 			motorRF.set(0);
 			motorLB.set(0);
@@ -533,6 +533,24 @@ public class Robot extends IterativeRobot {
 			rotateTo(90);
 			autoStep++;
 		}
+		/* Alternate - 90,180,270,360
+		if(autoStep%2==0){
+			motorRB.set(0.5);
+			motorRF.set(0.5);
+			motorLB.set(-0.5);
+			motorLF.set(-0.5);
+			Timer.delay(0.5);
+			motorRB.set(0);
+			motorRF.set(0);
+			motorLB.set(0);
+			motorLF.set(0);
+			autoStep++;
+		}
+		if(autoStep%2==1){
+			rotateTo(90*(autoStep/2)+(1/2)) //this goes 90,180,270,360 for autoStep of 1,3,5,7
+			autoStep++;
+		}
+		 */
 		
 	}
 
