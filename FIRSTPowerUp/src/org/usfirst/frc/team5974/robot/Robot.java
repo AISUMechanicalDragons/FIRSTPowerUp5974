@@ -355,6 +355,7 @@ public class Robot extends IterativeRobot {
 		if (dPad != -1) {
 			dPad = 360 - dPad; //Converts the clockwise dPad rotation into a Gyro-readable counterclockwise rotation.
 			angleCache = dPad;
+			rotateTo();
 		}
 		
 		joystickDeadZone();
@@ -560,6 +561,7 @@ public class Robot extends IterativeRobot {
 				}
 				if(autoStep%2==1){
 					angleCache = (90*(autoStep/2)+(1/2)); //this goes 90,180,270,360 for autoStep of 1,3,5,7
+					rotateTo();
 					autoStep++;
 				}
 				 
