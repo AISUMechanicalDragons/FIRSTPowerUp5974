@@ -521,6 +521,7 @@ public class Robot extends IterativeRobot {
 				// Put default auto code here
 				
 				//going in a square hopefully
+				/*
 				if(autoStep%2==0 && autoStep<8) {
 					motorRB.set(0.5);
 					motorRF.set(0.5);
@@ -538,7 +539,8 @@ public class Robot extends IterativeRobot {
 					rotateTo(90);
 					autoStep++;
 				}
-				/* Alternate - 90,180,270,360
+				*/ 
+				// Alternate - 90,180,270,360
 				if(autoStep%2==0){
 					motorRB.set(0.5);
 					motorRF.set(0.5);
@@ -552,10 +554,10 @@ public class Robot extends IterativeRobot {
 					autoStep++;
 				}
 				if(autoStep%2==1){
-					rotateTo(90*(autoStep/2)+(1/2)) //this goes 90,180,270,360 for autoStep of 1,3,5,7
+					rotateTo(90*(autoStep/2)+(1/2)); //this goes 90,180,270,360 for autoStep of 1,3,5,7
 					autoStep++;
 				}
-				 */
+				 
 				break;
 		}
 		/*To use gameData,example
