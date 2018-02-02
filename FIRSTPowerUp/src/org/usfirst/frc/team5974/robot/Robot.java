@@ -94,8 +94,9 @@ import edu.wpi.first.wpilibj.CameraServer;
  */
 
 public class Robot extends IterativeRobot {
-	private static final String kDefaultAuto = "Default"; //any idea what these are for??
-	private static final String kCustomAuto = "My Auto";
+	private static final String startL = "Start L";
+	private static final String startM = "Start M";
+	private static final String startR = "Start R";
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	
@@ -193,6 +194,12 @@ public class Robot extends IterativeRobot {
 	
 	//this is the variable that gives us switch and scale sides in format LRL or RRL, etc
 	String gameData;
+	String robotStartPosition;
+	/* robot starting position
+	 * L: left-most robot
+	 * M: middle robot
+	 * R: right-most robot
+	 */
 	
 	double counter = 0;
 	
@@ -471,8 +478,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addDefault("Default Auto", kDefaultAuto); //We should probably figure out what this pre-generated code does at some point - Thomas
-		m_chooser.addObject("My Auto", kCustomAuto);
+		m_chooser.addObject("Start Left", startL); //We should probably figure out what this pre-generated code does at some point - Thomas
+		m_chooser.addObject("Start Middle", startM);
+		m_chooser.addObject("Start Right", startR);
 		SmartDashboard.putData("Auto choices", m_chooser);
 		//Our code
 		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
@@ -512,14 +520,39 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		switch (m_autoSelected) {
-			case kCustomAuto:
-				// Put custom auto code here
-				break;
-			case kDefaultAuto:
+		switch (m_autoSelected){
+			case startL:
+				switch (gameData.substring(0,1)) {
+					case "L":
+						// Put custom auto code here
+						break;
+					case "R":
+						break;
+					default:
+						break;
+				}
+			case startM:
+				switch (gameData.substring(0,1)) {
+					case "L":
+						// Put custom auto code here
+						break;
+					case "R":
+						break;
+					default:
+						break;
+				}
+			case startR:
+				switch (gameData.substring(0,1)) {
+					case "L":
+						// Put custom auto code here
+						break;
+					case "R":
+						break;
+					default:
+						break;
+				}
+					
 			default:
-				// Put default auto code here
-				
 				//going in a square hopefully
 				if(autoStep%2==0 && autoStep<8) {
 					motorRB.set(0.5);
@@ -558,6 +591,8 @@ public class Robot extends IterativeRobot {
 				 */
 				break;
 		}
+					
+		}
 		/*To use gameData,example
 		 * if(gameData.charAt(0) == 'L')     //if alliance switch is on left side at character 0 (The first character)
 		 * { //blah blahblah what to do if switch is on left yeah
@@ -568,7 +603,6 @@ public class Robot extends IterativeRobot {
 		 * Repeat for character 1 (scale) and character 2 (opponent's switch) - Thomas
 		 */
 		
-	}
 
 	
 	public void teleopInit() {
