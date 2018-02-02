@@ -85,16 +85,17 @@ package org.usfirst.frc.team5974.robot;
  * AI/Autonomous
  */
 
-import edu.wpi.first.wpilibj.IterativeRobot;
+//import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
-import edu.wpi.first.wpilibj.Joystick;		//Controller
-import edu.wpi.first.wpilibj.Timer;		//Timer
-import edu.wpi.first.wpilibj.Spark;		//Motor Controller
-import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.*;		//everything tbh
-import org.usfirst.frc.team5974.robot.ADIS16448_IMU;		//IMU
+//import edu.wpi.first.wpilibj.Joystick;							//Controller
+//import edu.wpi.first.wpilibj.Timer;								//Timer
+//import edu.wpi.first.wpilibj.Spark;								//Motor Controller
+//import edu.wpi.first.wpilibj.VictorSP;
+//import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.*;									//everything tbh
+import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
+import edu.wpi.first.wpilibj.CameraServer;
 //import java.util.ArrayList;		//arraylist
 
 /**
@@ -116,8 +117,8 @@ public class Robot extends IterativeRobot {
 	/**Note that we have something along the lines of six VictorSP motor controllers and four Sparks. Also note that the ports start at 0 not 1. - Thomas*/
 	VictorSP motorRB = new VictorSP(0); //motor right back
 	VictorSP motorRF = new VictorSP(1); //motor right front
-	VictorSP motorLB = new VictorSP(3); //motor left back // THIS IS INVERTED USE NEGATIVES TO GO FORWARDS
-	VictorSP motorLF = new VictorSP(2); //motor left front // THIS IS INVERTED USE NEGATIVES TO GO FORWARDS
+	VictorSP motorLB = new VictorSP(3); //motor left back // THIS IS INVERTED; USE NEGATIVES TO GO FORWARDS
+	VictorSP motorLF = new VictorSP(2); //motor left front // THIS IS INVERTED; USE NEGATIVES TO GO FORWARDS
 	
 	Spark motorGL = new Spark(4);
 	Spark motorGR = new Spark(5);
@@ -177,6 +178,7 @@ public class Robot extends IterativeRobot {
 	boolean fastBool = false;		//speed mode: true = fast mode, false = slow mode
 	double forkliftHeight;
 	boolean grabberInBool = true;	//grabber: true = in, false = out
+	int autoStep = 0; //which step of the process we're on in autonomous
 	
 	//position arrays
 	double posX = 0;
@@ -192,6 +194,8 @@ public class Robot extends IterativeRobot {
 	double accelX = 0;
 	double accelY = 0;
 	double accelZ = 0;
+	
+	boolean check = false;				//this should be deleted once the tests have been conducted
 	
 	//time variables [see updateTimer()]
 	Timer timer = new Timer();
@@ -285,7 +289,7 @@ public class Robot extends IterativeRobot {
 		GameTime = Timer.getMatchTime();
 	}
 	
-	public void updateTrifecta() {	//updates pos, vel, and accel //TODO Makes this actually work
+	public void updateTrifecta() {	//updates pos, vel, and accel //TODO Make this actually work
 		//accel variables updated from IMU
 		accelX = IMU.getAccelX() * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
 		accelY = IMU.getAccelY() * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
@@ -300,6 +304,20 @@ public class Robot extends IterativeRobot {
 		posX += velX * dT;
 		posY += velY * dT;
 		posZ += velZ * dT;
+	}
+	
+	public void sensorTest() {
+		check = checkButton(buttonA, check, portButtonA);
+		
+		if (check) {
+			accelX = IMU.getAccelX();
+			accelY = IMU.getAccelY();
+			accelZ = IMU.getAccelZ();
+		
+			SmartDashboard.putNumber("x-accel", accelX);
+			SmartDashboard.putNumber("y-accel", accelY);
+			SmartDashboard.putNumber("z-accel", accelZ);
+		}
 	}
 	
 	public void updateController() {		//updates all controller features
@@ -354,7 +372,7 @@ public class Robot extends IterativeRobot {
 	public void update() {	//updates all update functions tee
 		updateController();
 		updateTimer();
-		updateTrifecta();
+		//updateTrifecta();
 		updateGyro();
 		updateGameTime();
 	}
@@ -468,8 +486,8 @@ public class Robot extends IterativeRobot {
 		m_chooser.addDefault("Default Auto", kDefaultAuto); //We should probably figure out what this pre-generated code does at some point - Thomas
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
-		CameraServer.getInstance().startAutomaticCapture();
 		//Our code
+		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
 		IMU.reset();
 	}
@@ -497,6 +515,8 @@ public class Robot extends IterativeRobot {
 		 *The second is the scale.
 		 *The third one is your opponent's switch
 		*/
+
+		
 	}
 
 	/**
@@ -511,6 +531,43 @@ public class Robot extends IterativeRobot {
 			case kDefaultAuto:
 			default:
 				// Put default auto code here
+				
+				//going in a square hopefully
+				if(autoStep%2==0 && autoStep<8) {
+					motorRB.set(0.5);
+					motorRF.set(0.5);
+					motorLB.set(-0.5);
+					motorLF.set(-0.5);
+					Timer.delay(0.5);
+					motorRB.set(0);
+					motorRF.set(0);
+					motorLB.set(0);
+					motorLF.set(0);
+					autoStep++;
+				}
+				if(autoStep%2==1 && autoStep<8) {
+					//should this go 90,180,270,360? or can I just say "go another 90 degrees" each time?
+					rotateTo(90);
+					autoStep++;
+				}
+				/* Alternate - 90,180,270,360
+				if(autoStep%2==0){
+					motorRB.set(0.5);
+					motorRF.set(0.5);
+					motorLB.set(-0.5);
+					motorLF.set(-0.5);
+					Timer.delay(0.5);
+					motorRB.set(0);
+					motorRF.set(0);
+					motorLB.set(0);
+					motorLF.set(0);
+					autoStep++;
+				}
+				if(autoStep%2==1){
+					rotateTo(90*(autoStep/2)+(1/2)) //this goes 90,180,270,360 for autoStep of 1,3,5,7
+					autoStep++;
+				}
+				 */
 				break;
 		}
 		/*To use gameData,example
@@ -522,6 +579,7 @@ public class Robot extends IterativeRobot {
 		 * }
 		 * Repeat for character 1 (scale) and character 2 (opponent's switch) - Thomas
 		 */
+		
 	}
 
 	
@@ -542,7 +600,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		update();
-		
+		sensorTest();
 		//grab();
 		
 		//dashboard outputs
@@ -562,6 +620,6 @@ public class Robot extends IterativeRobot {
 	//This funtion is not in use. We could use it to test individual mechanisms. It functions like a second teleop. - Thomas
 	@Override
 	public void testPeriodic() {
-		gearBoxTest();
+		sensorTest();
 	}	
 }
