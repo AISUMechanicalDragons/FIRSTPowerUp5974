@@ -159,6 +159,8 @@ public class Robot extends IterativeRobot {
 	
 	double angleToForward = 0;
 	
+	int angleCache = 0;
+	
 	//double robotSpeed;	//robot speed (fast/slow mode)
 	double GameTime;
 	boolean tankDriveBool = true;	//drive mode: true = tank drive, false = arcade drive
@@ -206,7 +208,8 @@ public class Robot extends IterativeRobot {
 		return toggle;
 	}
 	
-	public void rotateTo(int goTo) {		//rotates robot to angle based on IMU and d-pad
+	public void rotateTo() {		//rotates robot to angle based on IMU and d-pad
+		int goTo = angleCache;
 		//clockwise degrees to goTo angle
 		double ccw = (goTo - angleToForward < 0) ? (goTo - angleToForward + 360) : (goTo - angleToForward);
 		
@@ -214,7 +217,8 @@ public class Robot extends IterativeRobot {
 		double cw = (angleToForward - goTo < 0) ? (angleToForward - goTo + 360) : (angleToForward - goTo);
 		
 		//rotates the fastest way until within +- 5 of goTo angle
-		while (goTo >= angleToForward + 5 || goTo <= angleToForward - 5) {
+		
+		if (goTo >= angleToForward + 5 || goTo <= angleToForward - 5) { //TODO Breaks when any button is pressed (continues spinning indefinitely)
 			updateGyro();
 			if (cw <= ccw) {
 				updateGyro();
@@ -350,7 +354,7 @@ public class Robot extends IterativeRobot {
 		//d-pad/POV turns
 		if (dPad != -1) {
 			dPad = 360 - dPad; //Converts the clockwise dPad rotation into a Gyro-readable counterclockwise rotation.
-			rotateTo(dPad);
+			angleCache = dPad;
 		}
 		
 		joystickDeadZone();
@@ -554,7 +558,7 @@ public class Robot extends IterativeRobot {
 					autoStep++;
 				}
 				if(autoStep%2==1){
-					rotateTo(90*(autoStep/2)+(1/2)); //this goes 90,180,270,360 for autoStep of 1,3,5,7
+					angleCache = (90*(autoStep/2)+(1/2)); //this goes 90,180,270,360 for autoStep of 1,3,5,7
 					autoStep++;
 				}
 				 
@@ -607,7 +611,7 @@ public class Robot extends IterativeRobot {
 	/**
 	 * This function is called periodically during test mode.
 	 */
-	//This funtion is not in use. We could use it to test individual mechanisms. It functions like a second teleop. - Thomas
+	//This function is not in use. We could use it to test individual mechanisms. It functions like a second teleop. - Thomas
 	@Override
 	public void testPeriodic() {
 		sensorTest();
