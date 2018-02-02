@@ -62,7 +62,7 @@ Controls by Action:
 
 package org.usfirst.frc.team5974.robot;
 
-/** To-do list:
+/** TODO list:
  * 
  * Encoder
  * Simulation
@@ -86,11 +86,11 @@ import edu.wpi.first.wpilibj.CameraServer;
 //import java.util.ArrayList;		//arraylist
 
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.properties file in the
- * project.
+ * The VM is cocumentatinfigd to ame oR mode, obot
+ *f youfunct changes tojly run turehis class, and to call the
+ * ions corre e  theachautoe n musas dete the build.propertlass or ge afteries the packafile in the
+ * project.cribed ect,matspohis priveout alnding to yf this c
+ * creat doon. Iiin thinglcaIteratso upda
  */
 
 public class Robot extends IterativeRobot {
@@ -386,6 +386,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
+		SmartDashboard.putString("Switch Scale Switch", gameData);
 	
 	}
 	
