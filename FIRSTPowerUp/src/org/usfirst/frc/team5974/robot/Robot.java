@@ -30,20 +30,7 @@ Controls by Action:
 	Toggle Drive Style: (arcade/tank)
 		-X button
 				
-	Toggle Grabber In/Out:
-		-Y button
-	
-	Climb:
-		-Left trigger:
-			Down
-		-Right trigger:
-			Up
-		
-	Grabber Wheels:
-		-Left bumper:
-			Spin left side
-		-Right bumper:
-			Spin right side
+
 			
 	Quick Turns:
 		-D-pad:
@@ -333,7 +320,7 @@ public class Robot extends IterativeRobot {
 		//toggle checks
 		tankDriveBool = checkButton(buttonX, tankDriveBool, portButtonX);		//toggles boolean if button is pressed
 		fastBool = checkButton(buttonB, fastBool, portButtonB);					//toggles boolean if button is pressed
-		grabberInBool = checkButton(buttonY, grabberInBool, portButtonY);		//toggles boolean if button is pressed
+		
 		
 		//d-pad/POV updates
 		dPad = controller.getPOV(portDPad);		//returns a value {-1,0,45,90,135,180,225,270,315}
@@ -363,7 +350,9 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
-		//SmartDashboard.putBoolean("Grabber In", grabberInBool);
+		SmartDashboard.putNumber("Team Number", 5974)
+		SmartDashboard
+	
 	}
 	
 	public void tankDrive() {	//tank drive: left joystick controls left wheels, right joystick controls right wheels
@@ -528,7 +517,6 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		update();
 		
-		//grab();
 		
 		//dashboard outputs
 		dashboardOutput();
