@@ -72,16 +72,17 @@ package org.usfirst.frc.team5974.robot;
  * AI/Autonomous
  */
 
-import edu.wpi.first.wpilibj.IterativeRobot;
+//import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
-import edu.wpi.first.wpilibj.Joystick;		//Controller
-import edu.wpi.first.wpilibj.Timer;		//Timer
-import edu.wpi.first.wpilibj.Spark;		//Motor Controller
-import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.*;		//everything tbh
-import org.usfirst.frc.team5974.robot.ADIS16448_IMU;		//IMU
+//import edu.wpi.first.wpilibj.Joystick;							//Controller
+//import edu.wpi.first.wpilibj.Timer;								//Timer
+//import edu.wpi.first.wpilibj.Spark;								//Motor Controller
+//import edu.wpi.first.wpilibj.VictorSP;
+//import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.*;									//everything tbh
+import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
+import edu.wpi.first.wpilibj.CameraServer;
 //import java.util.ArrayList;		//arraylist
 
 /**
@@ -98,16 +99,16 @@ public class Robot extends IterativeRobot {
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	
-	//Drive motors. We NEED to change these to the actual motors, once electrical makes up its mind. 
-	//NOTE: As of Jan 17, the motors have been changed to the right values. But that can definitely change 
+
 	//Also, sometimes one side is inverted. If it is, we need to change our drive code to reflect that.
 	/**Note that we have something along the lines of six VictorSP motor controllers and four Sparks. Also note that the ports start at 0 not 1. - Thomas*/
-	//haha good point
 	VictorSP motorRB = new VictorSP(0); //motor right back
 	VictorSP motorRF = new VictorSP(1); //motor right front
-	VictorSP motorLB = new VictorSP(3); //motor left back // THIS IS INVERTED USE NEGATIVES TO GO FORWARDS
-	VictorSP motorLF = new VictorSP(2); //motor left front // THIS IS INVERTED USE NEGATIVES TO GO FORWARDS
+	VictorSP motorLB = new VictorSP(3); //motor left back // THIS IS INVERTED; USE NEGATIVES TO GO FORWARDS
+	VictorSP motorLF = new VictorSP(2); //motor left front // THIS IS INVERTED; USE NEGATIVES TO GO FORWARDS
 	
+	Spark motorGL = new Spark(4);
+	Spark motorGR = new Spark(5);
 	
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
@@ -160,10 +161,11 @@ public class Robot extends IterativeRobot {
 	
 	//double robotSpeed;	//robot speed (fast/slow mode)
 	double GameTime;
-	boolean tankDriveBool = true;		//drive mode: true = tank drive, false = arcade drive
-	boolean fastBool = false;	//speed mode: true = fast mode, false = slow mode
+	boolean tankDriveBool = true;	//drive mode: true = tank drive, false = arcade drive
+	boolean fastBool = false;		//speed mode: true = fast mode, false = slow mode
 	double forkliftHeight;
-	//boolean grabberInBool = true;		//grabber: true = in, false = out
+	boolean grabberInBool = true;	//grabber: true = in, false = out
+	int autoStep = 0; //which step of the process we're on in autonomous
 	
 	//position arrays
 	double posX = 0;
@@ -180,6 +182,8 @@ public class Robot extends IterativeRobot {
 	double accelY = 0;
 	double accelZ = 0;
 	
+	boolean check = false;				//this should be deleted once the tests have been conducted
+	
 	//time variables [see updateTimer()]
 	Timer timer = new Timer();
 	Timer timerTest = new Timer();
@@ -195,7 +199,7 @@ public class Robot extends IterativeRobot {
 	public boolean checkButton(boolean button, boolean toggle, int port) {		//When the button is pushed, once it is released, its toggle is changed
 		if (button) {
 			toggle = !toggle;
-			while (button) {
+			while (button) {		//TODO while loop causes problems
 				button = controller.getRawButton(port);
 			}
 		}
@@ -204,29 +208,33 @@ public class Robot extends IterativeRobot {
 	
 	public void rotateTo(int goTo) {		//rotates robot to angle based on IMU and d-pad
 		//clockwise degrees to goTo angle
-		double cw = (goTo - angleToForward < 0) ? (goTo - angleToForward + 360) : (goTo - angleToForward);
+		double ccw = (goTo - angleToForward < 0) ? (goTo - angleToForward + 360) : (goTo - angleToForward);
 		
 		//counter-clockwise degrees to goTo angle
-		double ccw = (angleToForward - goTo < 0) ? (angleToForward - goTo + 360) : (angleToForward - goTo);
+		double cw = (angleToForward - goTo < 0) ? (angleToForward - goTo + 360) : (angleToForward - goTo);
 		
-		//rotates the fastest way until in +- 5 of goTo angle
-		if (goTo >= angleToForward + 5 || goTo <= angleToForward - 5) {
+		//rotates the fastest way until within +- 5 of goTo angle
+		while (goTo >= angleToForward + 5 || goTo <= angleToForward - 5) {
+			updateGyro();
 			if (cw <= ccw) {
-				motorRB.set(-0.25); //
+				updateGyro();
+				motorRB.set(-0.25);
 				motorRF.set(-0.25);
 				motorLB.set(-0.25);
 				motorLF.set(-0.25);
 			} else {
+				updateGyro();
 				motorRB.set(0.25);
 				motorRF.set(0.25);
 				motorLB.set(0.25);
 				motorLF.set(0.25);
 			}
+			updateGyro();
 		}
 		
 	}
 	
-	public double withIn(double input, double upperBound, double lowerBound) {		//returns the inputed value if inside the bounds. returns the bound it is past if it is past a bound.
+	public double withIn(double input, double upperBound, double lowerBound) {		//returns the inputed value if inside the bounds. If it is past a bound, returns that bound
 		if (input > 0) {
 			return java.lang.Math.min(upperBound, input);
 		} else if (input < 0) {
@@ -236,15 +244,15 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	public void joystickDeadZone() {		//sets dead zone for joysticks
-		if (joystickLXAxis <= 0.1 && joystickLXAxis >= -0.1) {
+	public void joystickDeadZone() {		//sets dead zone for joysticks		//TODO test this
+		if (joystickLXAxis <= 0.075 && joystickLXAxis >= -0.075) {
 			joystickLXAxis = 0;
-		} if (joystickLYAxis <= 0.1 && joystickLYAxis >= -0.1) {
+		} if (joystickLYAxis <= 0.075 && joystickLYAxis >= -0.075) {
 			joystickLYAxis = 0;
 		}
-		if (joystickRXAxis <= 0.1 && joystickRXAxis >= -0.1) {
+		if (joystickRXAxis <= 0.075 && joystickRXAxis >= -0.075) {
 			joystickRXAxis = 0;
-		} if (joystickRYAxis <= 0.1 && joystickRYAxis >= -0.1) {
+		} if (joystickRYAxis <= 0.075 && joystickRYAxis >= -0.075) {
 			joystickRYAxis = 0;
 		}
 	}
@@ -268,21 +276,35 @@ public class Robot extends IterativeRobot {
 		GameTime = Timer.getMatchTime();
 	}
 	
-	public void updateTrifecta() {	//updates pos, vel, and accel
+	public void updateTrifecta() {	//updates pos, vel, and accel //TODO Make this actually work
 		//accel variables updated from IMU
-		accelX = IMU.getAccelX();
-		accelY = IMU.getAccelY();
-		accelZ = IMU.getAccelZ();
+		accelX = IMU.getAccelX() * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
+		accelY = IMU.getAccelY() * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
+		accelZ = IMU.getAccelZ() * 9.8;
 		
-		//velocit updated by acceleration integral
+		//velocity updated by acceleration integral
 		velX += accelX * dT;
 		velY += accelY * dT;
 		velZ += accelZ * dT;
 		
 		//position updated by velocity integral and adjusted for robot rotation
-		posX += (velX * dT * Math.cos(angleToForward * (Math.PI / 180.0))) - (velY * dT * Math.sin(angleToForward * (Math.PI / 180.0)));
-		posY += velX * dT * Math.sin(angleToForward * (Math.PI / 180.0)) + (velY * dT * Math.cos(angleToForward * (Math.PI / 180.0)));
+		posX += velX * dT;
+		posY += velY * dT;
 		posZ += velZ * dT;
+	}
+	
+	public void sensorTest() {
+		check = checkButton(buttonA, check, portButtonA);
+		
+		if (check) {
+			accelX = IMU.getAccelX();
+			accelY = IMU.getAccelY();
+			accelZ = IMU.getAccelZ();
+		
+			SmartDashboard.putNumber("x-accel", accelX);
+			SmartDashboard.putNumber("y-accel", accelY);
+			SmartDashboard.putNumber("z-accel", accelZ);
+		}
 	}
 	
 	public void updateController() {		//updates all controller features
@@ -293,12 +315,12 @@ public class Robot extends IterativeRobot {
 		//left joystick update
 		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);		//returns a value [-1,1]
 		joystickLYAxis = controller.getRawAxis(portJoystickLYAxis);		//returns a value [-1,1]
-		joystickLPress = controller.getRawButton(portJoystickLPress);		//returns a value {0,1}
+		joystickLPress = controller.getRawButton(portJoystickLPress);	//returns a value {0,1}
 		
 		//right joystick update
 		joystickRXAxis = controller.getRawAxis(portJoystickRXAxis);		//returns a value [-1,1]
 		joystickRYAxis = controller.getRawAxis(portJoystickRYAxis);		//returns a value [-1,1]
-		joystickRPress = controller.getRawButton(portJoystickRPress);		//returns a value {0,1}
+		joystickRPress = controller.getRawButton(portJoystickRPress);	//returns a value {0,1}
 		
 		//trigger updates
 		triggerL = controller.getRawAxis(portTriggerL);		//returns a value [0,1]
@@ -314,8 +336,8 @@ public class Robot extends IterativeRobot {
 		buttonA = controller.getRawButton(portButtonA);		//returns a value {0,1}
 		buttonB = controller.getRawButton(portButtonB);		//returns a value {0,1}
 		
-		buttonBack = controller.getRawButton(portButtonBack);		//returns a value {0,1}
-		buttonStart = controller.getRawButton(portButtonStart);		//returns a value {0,1}
+		buttonBack = controller.getRawButton(portButtonBack);	//returns a value {0,1}
+		buttonStart = controller.getRawButton(portButtonStart);	//returns a value {0,1}
 		
 		//toggle checks
 		tankDriveBool = checkButton(buttonX, tankDriveBool, portButtonX);		//toggles boolean if button is pressed
@@ -327,7 +349,7 @@ public class Robot extends IterativeRobot {
 
 		//d-pad/POV turns
 		if (dPad != -1) {
-			dPad = 360 - dPad; //Converts the clockwise dPad rotation, into a Gyro-readable counterclockwise rotation.
+			dPad = 360 - dPad; //Converts the clockwise dPad rotation into a Gyro-readable counterclockwise rotation.
 			rotateTo(dPad);
 		}
 		
@@ -337,17 +359,26 @@ public class Robot extends IterativeRobot {
 	public void update() {	//updates all update functions tee
 		updateController();
 		updateTimer();
-		updateTrifecta();
+		//updateTrifecta();
 		updateGyro();
 		updateGameTime();
 	}
 	
-	public void dashboardOutput() {	//sends and displays data on dashboard
+	public void dashboardOutput() {			//sends and displays data on dashboard
 		SmartDashboard.putNumber("Time Remaining", GameTime);
 		SmartDashboard.putNumber("x-position", posX);
 		SmartDashboard.putNumber("y-position", posY);
+		SmartDashboard.putNumber("z-position", posZ);
+		SmartDashboard.putNumber("x-vel", velX);
+		SmartDashboard.putNumber("y-vel", velY);
+		SmartDashboard.putNumber("z-vel", velZ);
+		SmartDashboard.putNumber("x-accel", accelX);
+		SmartDashboard.putNumber("y-accel", accelY);
+		SmartDashboard.putNumber("z-accel", accelZ);
+		SmartDashboard.putNumber("dT", dT);
 		SmartDashboard.putNumber("Speed", velY);
 		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
+		SmartDashboard.putNumber("Angle to Forwards Graph", angleToForward);
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		SmartDashboard.putNumber("Team Number", 5974)
@@ -374,6 +405,7 @@ public class Robot extends IterativeRobot {
 	public void arcadeDrive() {	//arcade drive: left joystick controls all driving
 		//right wheels have less power the farther right the left joystick is and more power the farther left
 		//left wheels have less power the farther left the left joystick is and more power the farther right
+		//X-axis input is halved
 		if (fastBool) {
 			motorRB.set((joystickLYAxis + joystickLXAxis/2));
 			motorRF.set((joystickLYAxis + joystickLXAxis/2));
@@ -440,11 +472,11 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addDefault("Default Auto", kDefaultAuto); //We sould probably figure out what this pregenerated code does at some point - Thomas
+		m_chooser.addDefault("Default Auto", kDefaultAuto); //We should probably figure out what this pre-generated code does at some point - Thomas
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
-		CameraServer.getInstance().startAutomaticCapture();
 		//Our code
+		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
 		IMU.reset();
 	}
@@ -472,6 +504,8 @@ public class Robot extends IterativeRobot {
 		 *The second is the scale.
 		 *The third one is your opponent's switch
 		*/
+
+		
 	}
 
 	/**
@@ -486,6 +520,43 @@ public class Robot extends IterativeRobot {
 			case kDefaultAuto:
 			default:
 				// Put default auto code here
+				
+				//going in a square hopefully
+				if(autoStep%2==0 && autoStep<8) {
+					motorRB.set(0.5);
+					motorRF.set(0.5);
+					motorLB.set(-0.5);
+					motorLF.set(-0.5);
+					Timer.delay(0.5);
+					motorRB.set(0);
+					motorRF.set(0);
+					motorLB.set(0);
+					motorLF.set(0);
+					autoStep++;
+				}
+				if(autoStep%2==1 && autoStep<8) {
+					//should this go 90,180,270,360? or can I just say "go another 90 degrees" each time?
+					rotateTo(90);
+					autoStep++;
+				}
+				/* Alternate - 90,180,270,360
+				if(autoStep%2==0){
+					motorRB.set(0.5);
+					motorRF.set(0.5);
+					motorLB.set(-0.5);
+					motorLF.set(-0.5);
+					Timer.delay(0.5);
+					motorRB.set(0);
+					motorRF.set(0);
+					motorLB.set(0);
+					motorLF.set(0);
+					autoStep++;
+				}
+				if(autoStep%2==1){
+					rotateTo(90*(autoStep/2)+(1/2)) //this goes 90,180,270,360 for autoStep of 1,3,5,7
+					autoStep++;
+				}
+				 */
 				break;
 		}
 		/*To use gameData,example
@@ -497,6 +568,7 @@ public class Robot extends IterativeRobot {
 		 * }
 		 * Repeat for character 1 (scale) and character 2 (opponent's switch) - Thomas
 		 */
+		
 	}
 
 	
@@ -508,6 +580,7 @@ public class Robot extends IterativeRobot {
 		controller.setRumble(Joystick.RumbleType.kRightRumble, 0);
 		controller.setRumble(Joystick.RumbleType.kLeftRumble, 0);
 		
+		timer.start();
 	}
 	
 	/**
@@ -516,7 +589,12 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		update();
+<<<<<<< HEAD
 		
+=======
+		sensorTest();
+		//grab();
+>>>>>>> branch 'master' of https://github.com/AISUMechanicalDragons/FIRSTPowerUp5974.git
 		
 		//dashboard outputs
 		dashboardOutput();
@@ -535,6 +613,6 @@ public class Robot extends IterativeRobot {
 	//This funtion is not in use. We could use it to test individual mechanisms. It functions like a second teleop. - Thomas
 	@Override
 	public void testPeriodic() {
-		gearBoxTest();
+		sensorTest();
 	}	
 }
