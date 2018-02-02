@@ -86,11 +86,11 @@ import edu.wpi.first.wpilibj.CameraServer;
 //import java.util.ArrayList;		//arraylist
 
 /**
- * The VM is cocumentatinfigd to ame oR mode, obot
- *f youfunct changes tojly run turehis class, and to call the
- * ions corre e  theachautoe n musas dete the build.propertlass or ge afteries the packafile in the
- * project.cribed ect,matspohis priveout alnding to yf this c
- * creat doon. Iiin thinglcaIteratso upda
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the IterativeRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the build.properties file in the
+ * project.
  */
 
 public class Robot extends IterativeRobot {
