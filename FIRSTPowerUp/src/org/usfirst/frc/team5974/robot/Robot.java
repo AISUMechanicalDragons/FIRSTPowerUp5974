@@ -381,8 +381,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Angle to Forwards Graph", angleToForward);
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
-		SmartDashboard.putNumber("Team Number", 5974)
-		SmartDashboard
+		SmartDashboard.putNumber("Team Number", 5974);
 	
 	}
 	
@@ -589,12 +588,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		update();
-<<<<<<< HEAD
-		
-=======
 		sensorTest();
 		//grab();
->>>>>>> branch 'master' of https://github.com/AISUMechanicalDragons/FIRSTPowerUp5974.git
 		
 		//dashboard outputs
 		dashboardOutput();
