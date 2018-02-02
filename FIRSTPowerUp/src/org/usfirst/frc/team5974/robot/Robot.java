@@ -487,7 +487,7 @@ public class Robot extends IterativeRobot {
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
 		//Our code
-		CameraServer.getInstance().startAutomaticCapture().setResolution(800, 600); //camera
+		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
 		IMU.reset();
 	}
@@ -515,43 +515,7 @@ public class Robot extends IterativeRobot {
 		 *The second is the scale.
 		 *The third one is your opponent's switch
 		*/
-		
-		//going in a square just for fun
-		if(autoStep%2==0 && autoStep<8) {
-			motorRB.set(0.5);
-			motorRF.set(0.5);
-			motorLB.set(-0.5);
-			motorLF.set(-0.5);
-			Timer.delay(0.5);
-			motorRB.set(0);
-			motorRF.set(0);
-			motorLB.set(0);
-			motorLF.set(0);
-			autoStep++;
-		}
-		if(autoStep%2==1 && autoStep<8) {
-			//should this go 90,180,270,360? or can I just say "go another 90 degrees" each time?
-			rotateTo(90);
-			autoStep++;
-		}
-		/* Alternate - 90,180,270,360
-		if(autoStep%2==0){
-			motorRB.set(0.5);
-			motorRF.set(0.5);
-			motorLB.set(-0.5);
-			motorLF.set(-0.5);
-			Timer.delay(0.5);
-			motorRB.set(0);
-			motorRF.set(0);
-			motorLB.set(0);
-			motorLF.set(0);
-			autoStep++;
-		}
-		if(autoStep%2==1){
-			rotateTo(90*(autoStep/2)+(1/2)) //this goes 90,180,270,360 for autoStep of 1,3,5,7
-			autoStep++;
-		}
-		 */
+
 		
 	}
 
@@ -567,6 +531,43 @@ public class Robot extends IterativeRobot {
 			case kDefaultAuto:
 			default:
 				// Put default auto code here
+				
+				//going in a square hopefully
+				if(autoStep%2==0 && autoStep<8) {
+					motorRB.set(0.5);
+					motorRF.set(0.5);
+					motorLB.set(-0.5);
+					motorLF.set(-0.5);
+					Timer.delay(0.5);
+					motorRB.set(0);
+					motorRF.set(0);
+					motorLB.set(0);
+					motorLF.set(0);
+					autoStep++;
+				}
+				if(autoStep%2==1 && autoStep<8) {
+					//should this go 90,180,270,360? or can I just say "go another 90 degrees" each time?
+					rotateTo(90);
+					autoStep++;
+				}
+				/* Alternate - 90,180,270,360
+				if(autoStep%2==0){
+					motorRB.set(0.5);
+					motorRF.set(0.5);
+					motorLB.set(-0.5);
+					motorLF.set(-0.5);
+					Timer.delay(0.5);
+					motorRB.set(0);
+					motorRF.set(0);
+					motorLB.set(0);
+					motorLF.set(0);
+					autoStep++;
+				}
+				if(autoStep%2==1){
+					rotateTo(90*(autoStep/2)+(1/2)) //this goes 90,180,270,360 for autoStep of 1,3,5,7
+					autoStep++;
+				}
+				 */
 				break;
 		}
 		/*To use gameData,example
