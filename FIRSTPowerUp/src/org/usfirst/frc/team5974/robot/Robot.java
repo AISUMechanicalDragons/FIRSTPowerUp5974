@@ -66,7 +66,7 @@ package org.usfirst.frc.team5974.robot;
  * 
  * Encoder
  * Simulation
- * Dashboard
+ * **Dashboard
  * Vision
  * Lift code
  * AI/Autonomous
@@ -450,7 +450,7 @@ public class Robot extends IterativeRobot {
 	
 	//this function is to break in the gear box
 	public void gearBoxTest(){
-		while (counter < 6) {
+		if (counter < 6) {
 			timerTest.start();
 			if (480 >= timerTest.get()) {
 				motorRB.set(1);
@@ -618,5 +618,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 		sensorTest();
+		gearBoxTest();
 	}	
 }
