@@ -248,6 +248,31 @@ public class Robot extends IterativeRobot {
 		
 	}
 	
+	public void moveDistance(double distance, double angle) {		// move "distance" pointing along "angle" (in respect to forward)
+		double startX = posX;
+		double startY = posY;
+		rotateTo(angle);
+		while(Math.sqrt((startX * startX) + (startY * startY)) < distance) {
+			if (angleToForward < angle) {
+				//right greater
+				motorRB.set(1);
+				motorRF.set(1);
+				motorLB.set(-0.75);
+				motorLF.set(-0.75);
+			} else if (angleToForward > angle) {
+				motorRB.set(0.75);
+				motorRF.set(0.75);
+				motorLB.set(-1);
+				motorLF.set(-1);
+			} else {
+				motorRB.set(1);
+				motorRF.set(1);
+				motorLB.set(-1);
+				motorLF.set(-1);
+			}
+		}
+	}
+	
 	public double withIn(double input, double upperBound, double lowerBound) {		//returns the inputed value if inside the bounds. If it is past a bound, returns that bound
 		if (input > 0) {
 			return java.lang.Math.min(upperBound, input);
