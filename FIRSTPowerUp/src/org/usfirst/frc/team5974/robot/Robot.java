@@ -160,7 +160,7 @@ public class Robot extends IterativeRobot {
 	
 	double angleToForward = 0;
 	
-	int angleCache = 0;
+	double angleCache = 0;
 	
 	//double robotSpeed;	//robot speed (fast/slow mode)
 	double GameTime;
@@ -215,7 +215,10 @@ public class Robot extends IterativeRobot {
 		return toggle;
 	}
 	
-	public void rotateTo() {		//rotates robot to angle based on IMU and d-pad
+	public void rotateTo(double angle) {		//rotates robot to angle based on IMU and d-pad
+		
+		angleCache = angle;
+		
 		//int goTo = angleCache; //lazy programming at its finest lmao //okay yeah no I'm fixing this
 		//clockwise degrees to goTo angle
 		double ccw = (angleCache - angleToForward < 0) ? (angleCache - angleToForward + 360) : (angleCache - angleToForward);
@@ -361,8 +364,7 @@ public class Robot extends IterativeRobot {
 		//d-pad/POV turns
 		if (dPad != -1) {
 			dPad = 360 - dPad; //Converts the clockwise dPad rotation into a Gyro-readable counterclockwise rotation.
-			angleCache = dPad;
-			rotateTo();
+			rotateTo(dPad);
 		}
 		
 		joystickDeadZone();
@@ -667,9 +669,9 @@ public class Robot extends IterativeRobot {
 					autoStep++;
 				}
 				if(autoStep%2==1){
-					angleCache = (90*(autoStep/2)+(1/2)); //this goes 90,180,270,360 for autoStep of 1,3,5,7
-					rotateTo();
+					rotateTo(90*(autoStep/2)+(1/2)); //this goes 90,180,270,360 for autoStep of 1,3,5,7
 					autoStep++;
+					angleCache = 72;
 				}
 				 
 				break;
