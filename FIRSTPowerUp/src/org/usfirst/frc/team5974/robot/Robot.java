@@ -585,43 +585,16 @@ public class Robot extends IterativeRobot {
 			case startL:
 				switch (gameData.substring(0,1)) {
 					case "L":
-						//Move forward
-						motorRB.set(0.5);
-						motorRF.set(0.5);
-						motorLB.set(-0.5);
-						motorLF.set(-0.5);
-						Timer.delay(3);
-						//Turn right 90 degrees
-						motorRB.set(-0.5);
-						motorRF.set(-0.5);
-						motorLB.set(-0.5);
-						motorLF.set(-0.5);
-						if (angleToForward >= angleToForward+90){
-							//Move forward
-							motorRB.set(0.5);
-							motorRF.set(0.5);
-							motorLB.set(-0.5);
-							motorLF.set(-0.5);
-							Timer.delay(1);
-							//Stop
-							motorRB.set(0);
-							motorRF.set(0);
-							motorLB.set(0);
-							motorLF.set(0);
-						}
+						//move forward
+						moveDistance(2.5146,0);
+						//turn right
+						moveDistance(1.4732,-90);
+						//turn left
+						moveDistance(0.254,90);
 						break;
 					case "R":
-						//Move forward
-						motorRB.set(0.5);
-						motorRF.set(0.5);
-						motorLB.set(-0.5);
-						motorLF.set(-0.5);
-						Timer.delay(3);
-						//Stop
-						motorRB.set(0);
-						motorRF.set(0);
-						motorLB.set(0);
-						motorLF.set(0);
+						//move forward
+						moveDistance(3.048,0);
 						break;
 					default:
 						break;
@@ -630,46 +603,11 @@ public class Robot extends IterativeRobot {
 				switch (gameData.substring(0,1)) {
 					case "L":
 						//Move forward
-						motorRB.set(0.5);
-						motorRF.set(0.5);
-						motorLB.set(-0.5);
-						motorLF.set(-0.5);
-						Timer.delay(1);
-						//Turn left
-						motorRB.set(0.5);
-						motorRF.set(0.5);
-						motorLB.set(0.5);
-						motorLF.set(0.5);
-						if (angleToForward <= angleToForward-90){
-							//Move forward
-							motorRB.set(0.5);
-							motorRF.set(0.5);
-							motorLB.set(-0.5);
-							motorLF.set(-0.5);
-							Timer.delay(1);
-							//Turn right 90 degrees
-							motorRB.set(-0.5);
-							motorRF.set(-0.5);
-							motorLB.set(-0.5);
-							motorLF.set(-0.5);
-							if (angleToForward >= angleToForward+90){
-								motorRB.set(0.5);
-								motorRF.set(0.5);
-								motorLB.set(-0.5);
-								motorLF.set(-0.5);
-								Timer.delay(1);
-								//Turn 90 degrees
-								motorRB.set(0.5);
-								motorRF.set(0.5);
-								motorLB.set(-0.5);
-								motorLF.set(-0.5);
-								Timer.delay(3);
-								motorRB.set(0);
-								motorRF.set(0);
-								motorLB.set(0);
-								motorLF.set(0);
-							}
-						}
+						moveDistance(1.524,0);
+						//Turn left 90 degrees and move
+						moveDistance(2.413,90);
+						//Turn right 90 degrees and move
+						moveDistance(1.778, -90);
 						break;
 					case "R":
 						break;
