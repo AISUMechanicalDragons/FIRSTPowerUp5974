@@ -367,9 +367,9 @@ public class Robot extends IterativeRobot {
 		if (check) {
 			calibrate(10);
 		
-			SmartDashboard.putNumber("test x", exX);
-			SmartDashboard.putNumber("test y", exY);
-			SmartDashboard.putNumber("test z", exZ);
+			SmartDashboard.putNumber("test x", exX * 9.8);
+			SmartDashboard.putNumber("test y", exY * 9.8);
+			SmartDashboard.putNumber("test z", exZ * 9.8);
 		}
 	}
 	
