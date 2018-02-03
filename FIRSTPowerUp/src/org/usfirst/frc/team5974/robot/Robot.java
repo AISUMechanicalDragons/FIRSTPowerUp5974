@@ -83,7 +83,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
 import edu.wpi.first.wpilibj.*;									//everything tbh
 import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
 import edu.wpi.first.wpilibj.CameraServer;
-//import java.util.ArrayList;		//arraylist
+import java.util.ArrayList;		//arraylist
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -187,6 +187,18 @@ public class Robot extends IterativeRobot {
 	
 	boolean check = false;				//this should be deleted once the tests have been conducted
 	
+	ArrayList avgX = new ArrayList();	//List of X accelerations to be averaged
+	ArrayList avgY = new ArrayList();	//List of Y accelerations to be averaged
+	ArrayList avgZ = new ArrayList();	//List of Z accelerations to be averaged
+	
+	int sumX = 0;	//Sum of avgX
+	int sumY = 0;	//Sum of avgY
+	int sumZ = 0;	//Sum of avgZ
+	
+	double exX = 0;	//Excess X acceleration
+	double exY = 0;	//Excess X acceleration
+	double exZ = 0;	//Excess X acceleration
+
 	//time variables [see updateTimer()]
 	Timer timer = new Timer();
 	Timer timerTest = new Timer();
@@ -315,11 +327,11 @@ public class Robot extends IterativeRobot {
 		GameTime = Timer.getMatchTime();
 	}
 	
-	public void updateTrifecta() {	//updates pos, vel, and accel //TODO Make this actually work
+	public void updateTrifecta() {	//updates pos, vel, and accel
 		//accel variables updated from IMU
-		accelX = IMU.getAccelX() * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
-		accelY = IMU.getAccelY() * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
-		accelZ = IMU.getAccelZ() * 9.8;
+		accelX = (IMU.getAccelX() - exX) * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
+		accelY = (IMU.getAccelY() - exY) * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
+		accelZ = (IMU.getAccelZ() - exZ) * 9.8;
 		
 		//velocity updated by acceleration integral
 		velX += accelX * dT;
@@ -331,18 +343,33 @@ public class Robot extends IterativeRobot {
 		posY += velY * dT;
 		posZ += velZ * dT;
 	}
+	public void calibrate(int num) { //Calibrates gyro and creates excess acceleration values
+		updateGyro();
+		for (int i=0; i < num; i++) {
+			avgX.add(IMU.getAccelX());
+			avgY.add(IMU.getAccelY());
+			avgZ.add(IMU.getAccelZ());
+		}
+		
+		for (int i=0; i < avgX.size(); i++) {
+			sumX += (double)avgX.get(i);
+			sumY += (double)avgY.get(i);
+			sumZ += (double)avgZ.get(i);
+		}
+		exX = sumX / avgX.size();
+		exY = sumY / avgY.size();
+		exZ = sumZ / avgZ.size();
+	}
 	
 	public void sensorTest() {
 		check = checkButton(buttonA, check, portButtonA);
 		
 		if (check) {
-			accelX = IMU.getAccelX();
-			accelY = IMU.getAccelY();
-			accelZ = IMU.getAccelZ();
+			calibrate(10)
 		
-			SmartDashboard.putNumber("x-accel", accelX);
-			SmartDashboard.putNumber("y-accel", accelY);
-			SmartDashboard.putNumber("z-accel", accelZ);
+			SmartDashboard.putNumber("x-accel", exX);
+			SmartDashboard.putNumber("y-accel", exY);
+			SmartDashboard.putNumber("z-accel", exZ);
 		}
 	}
 	
@@ -519,6 +546,7 @@ public class Robot extends IterativeRobot {
 		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
 		IMU.reset();
+		calibrate(10);
 	}
 
 	/**
@@ -589,9 +617,11 @@ public class Robot extends IterativeRobot {
 			case startR:
 				switch (gameData.substring(0,1)) {
 					case "L":
-						// Put custom auto code here
+						moveDistance(4.3, 0);		//move forward 4.3 m
 						break;
 					case "R":
+						moveDistance(4.3, 0);		//move forward 4.3 m
+						moveDistance(0.78, 90);			//rotate towards switch and move .78 m towards it
 						break;
 					default:
 						break;
