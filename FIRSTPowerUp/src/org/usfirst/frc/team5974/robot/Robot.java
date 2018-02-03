@@ -365,13 +365,11 @@ public class Robot extends IterativeRobot {
 		check = checkButton(buttonA, check, portButtonA);
 		
 		if (check) {
-			accelX = IMU.getAccelX();
-			accelY = IMU.getAccelY();
-			accelZ = IMU.getAccelZ();
+			calibrate(10)
 		
-			SmartDashboard.putNumber("x-accel", accelX);
-			SmartDashboard.putNumber("y-accel", accelY);
-			SmartDashboard.putNumber("z-accel", accelZ);
+			SmartDashboard.putNumber("x-accel", exX);
+			SmartDashboard.putNumber("y-accel", exY);
+			SmartDashboard.putNumber("z-accel", exZ);
 		}
 	}
 	
@@ -427,7 +425,7 @@ public class Robot extends IterativeRobot {
 	public void update() {	//updates all update functions tee
 		updateController();
 		updateTimer();
-		updateTrifecta();
+		//updateTrifecta();
 		updateGyro();
 		updateGameTime();
 	}
