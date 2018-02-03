@@ -365,7 +365,7 @@ public class Robot extends IterativeRobot {
 		check = checkButton(buttonA, check, portButtonA);
 		
 		if (check) {
-			calibrate(10)
+			calibrate(10);
 		
 			SmartDashboard.putNumber("x-accel", exX);
 			SmartDashboard.putNumber("y-accel", exY);
