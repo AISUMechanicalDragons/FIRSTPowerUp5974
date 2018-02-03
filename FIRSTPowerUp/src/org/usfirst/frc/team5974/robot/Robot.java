@@ -359,18 +359,10 @@ public class Robot extends IterativeRobot {
 		exX = sumX / avgX.size();
 		exY = sumY / avgY.size();
 		exZ = sumZ / avgZ.size();
-	}
-	
-	public void sensorTest() {
-		check = checkButton(buttonA, check, portButtonA);
 		
-		if (check) {
-			calibrate(10);
-		
-			SmartDashboard.putNumber("test x", exX * 9.8);
-			SmartDashboard.putNumber("test y", exY * 9.8);
-			SmartDashboard.putNumber("test z", exZ * 9.8);
-		}
+		SmartDashboard.putNumber("test x", exX * 9.8);
+		SmartDashboard.putNumber("test y", exY * 9.8);
+		SmartDashboard.putNumber("test z", exZ * 9.8);
 	}
 	
 	public void updateController() {		//updates all controller features
@@ -700,7 +692,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		update();
-		sensorTest();
 		//grab();
 		
 		//dashboard outputs
@@ -720,7 +711,6 @@ public class Robot extends IterativeRobot {
 	//This function is not in use. We could use it to test individual mechanisms. It functions like a second teleop. - Thomas
 	@Override
 	public void testPeriodic() {
-		sensorTest();
 		gearBoxTest();
 	}	
 }
