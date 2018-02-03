@@ -681,9 +681,11 @@ public class Robot extends IterativeRobot {
 			case startR:
 				switch (gameData.substring(0,1)) {
 					case "L":
-						// Put custom auto code here
+						moveDistance(4.3, 0);		//move forward 4.3 m
 						break;
 					case "R":
+						moveDistance(4.3, 0);		//move forward 4.3 m
+						moveDistance(0.78, 90);			//rotate towards switch and move .78 m towards it
 						break;
 					default:
 						break;
