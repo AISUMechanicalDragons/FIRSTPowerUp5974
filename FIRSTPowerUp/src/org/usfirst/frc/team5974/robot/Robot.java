@@ -216,16 +216,16 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void rotateTo() {		//rotates robot to angle based on IMU and d-pad
-		int goTo = angleCache;
+		//int goTo = angleCache; //lazy programming at its finest lmao //okay yeah no I'm fixing this
 		//clockwise degrees to goTo angle
-		double ccw = (goTo - angleToForward < 0) ? (goTo - angleToForward + 360) : (goTo - angleToForward);
+		double ccw = (angleCache - angleToForward < 0) ? (angleCache - angleToForward + 360) : (angleCache - angleToForward);
 		
 		//counter-clockwise degrees to goTo angle
-		double cw = (angleToForward - goTo < 0) ? (angleToForward - goTo + 360) : (angleToForward - goTo);
+		double cw = (angleToForward - angleCache < 0) ? (angleToForward - angleCache + 360) : (angleToForward - angleCache);
 		
 		//rotates the fastest way until within +- 5 of goTo angle
 		
-		if (goTo >= angleToForward + 5 || goTo <= angleToForward - 5) { //TODO Breaks when any button is pressed (continues spinning indefinitely)
+		if (angleCache >= angleToForward + 5 || angleCache <= angleToForward - 5) { //TODO Breaks when any button is pressed (continues spinning indefinitely)
 			updateGyro();
 			if (cw <= ccw) {
 				updateGyro();
