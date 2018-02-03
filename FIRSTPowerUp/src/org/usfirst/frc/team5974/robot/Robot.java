@@ -264,7 +264,8 @@ public class Robot extends IterativeRobot {
 		double startX = posX;
 		double startY = posY;
 		rotateTo(angle);
-		while(Math.sqrt((startX * startX) + (startY * startY)) < distance) {
+		while(Math.sqrt((startX * startX) + (startY * startY)) < distance) {	
+		//I thought while loops broke things? Do we need to fix this?
 			if (angleToForward < angle) {
 				//right greater
 				motorRB.set(1);
@@ -360,15 +361,15 @@ public class Robot extends IterativeRobot {
 		exY = sumY / avgY.size();
 		exZ = sumZ / avgZ.size();
 		
-		SmartDashboard.putNumber("test x", exX * 9.8);
-		SmartDashboard.putNumber("test y", exY * 9.8);
-		SmartDashboard.putNumber("test z", exZ * 9.8);
+		//I moved your SmartDashboard outputs to the dashboardOutput() function. --Carter
+
 	}
 	
 	public void updateController() {		//updates all controller features
 		/**I don't know why you made a whole bunch of port variables when numbers are faster, but hey! You do you. - Thomas*/
 		//i concur --Carter
 		//should we merge this part with the 'variables we're using' section starting with Thomas' blue comment ("Button ports, however...")? --Muneo
+		//@Muneo no, the "variables we're using" section defines the global variables. This function actually gives numbers to those variables. I can explain it on Monday. --Carter
 		
 		//left joystick update
 		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);		//returns a value [-1,1]
@@ -441,6 +442,10 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
 		//SmartDashboard.putString("Switch Scale Switch", gameData);
+		//Data from calibrate()
+		SmartDashboard.putNumber("test x", exX * 9.8);
+		SmartDashboard.putNumber("test y", exY * 9.8);
+		SmartDashboard.putNumber("test z", exZ * 9.8);
 	
 	}
 	
