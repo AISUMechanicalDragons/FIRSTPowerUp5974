@@ -610,6 +610,9 @@ public class Robot extends IterativeRobot {
 						moveDistance(1.778, -90);
 						break;
 					case "R":
+						moveDistance(1.63, 0);			//move forward 1.63 m
+						moveDistance(0.91, 315);			//move at a 315 degree for 1.63 m
+						moveDistance(0.76, 0);
 						break;
 					default:
 						break;
