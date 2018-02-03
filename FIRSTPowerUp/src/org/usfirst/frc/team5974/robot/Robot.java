@@ -30,20 +30,7 @@ Controls by Action:
 	Toggle Drive Style: (arcade/tank)
 		-X button
 				
-	Toggle Grabber In/Out:
-		-Y button
-	
-	Climb:
-		-Left trigger:
-			Down
-		-Right trigger:
-			Up
-		
-	Grabber Wheels:
-		-Left bumper:
-			Spin left side
-		-Right bumper:
-			Spin right side
+
 			
 	Quick Turns:
 		-D-pad:
@@ -75,11 +62,11 @@ Controls by Action:
 
 package org.usfirst.frc.team5974.robot;
 
-/** To-do list:
+/** TODO list:
  * 
  * Encoder
  * Simulation
- * Dashboard
+ * **Dashboard
  * Vision
  * Lift code
  * AI/Autonomous
@@ -102,13 +89,14 @@ import edu.wpi.first.wpilibj.CameraServer;
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
  * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.properties file in the
+ * creating this project, you must also update th-e build.properties file in the
  * project.
  */
 
 public class Robot extends IterativeRobot {
-	private static final String kDefaultAuto = "Default"; //any idea what these are for??
-	private static final String kCustomAuto = "My Auto";
+	private static final String startL = "Start L";
+	private static final String startM = "Start M";
+	private static final String startR = "Start R";
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	
@@ -172,6 +160,8 @@ public class Robot extends IterativeRobot {
 	
 	double angleToForward = 0;
 	
+	double angleCache = 0;
+	
 	//double robotSpeed;	//robot speed (fast/slow mode)
 	double GameTime;
 	boolean tankDriveBool = true;	//drive mode: true = tank drive, false = arcade drive
@@ -206,6 +196,12 @@ public class Robot extends IterativeRobot {
 	
 	//this is the variable that gives us switch and scale sides in format LRL or RRL, etc
 	String gameData;
+	String robotStartPosition;
+	/* robot starting position
+	 * L: left-most robot
+	 * M: middle robot
+	 * R: right-most robot
+	 */
 	
 	double counter = 0;
 	
@@ -219,15 +215,20 @@ public class Robot extends IterativeRobot {
 		return toggle;
 	}
 	
-	public void rotateTo(int goTo) {		//rotates robot to angle based on IMU and d-pad
+	public void rotateTo(double angle) {		//rotates robot to angle based on IMU and d-pad
+		
+		angleCache = angle;
+		
+		//int goTo = angleCache; //lazy programming at its finest lmao //okay yeah no I'm fixing this
 		//clockwise degrees to goTo angle
-		double ccw = (goTo - angleToForward < 0) ? (goTo - angleToForward + 360) : (goTo - angleToForward);
+		double ccw = (angleCache - angleToForward < 0) ? (angleCache - angleToForward + 360) : (angleCache - angleToForward);
 		
 		//counter-clockwise degrees to goTo angle
-		double cw = (angleToForward - goTo < 0) ? (angleToForward - goTo + 360) : (angleToForward - goTo);
+		double cw = (angleToForward - angleCache < 0) ? (angleToForward - angleCache + 360) : (angleToForward - angleCache);
 		
 		//rotates the fastest way until within +- 5 of goTo angle
-		while (goTo >= angleToForward + 5 || goTo <= angleToForward - 5) {
+		
+		if (angleCache >= angleToForward + 5 || angleCache <= angleToForward - 5) { //TODO Breaks when any button is pressed (continues spinning indefinitely)
 			updateGyro();
 			if (cw <= ccw) {
 				updateGyro();
@@ -355,7 +356,7 @@ public class Robot extends IterativeRobot {
 		//toggle checks
 		tankDriveBool = checkButton(buttonX, tankDriveBool, portButtonX);		//toggles boolean if button is pressed
 		fastBool = checkButton(buttonB, fastBool, portButtonB);					//toggles boolean if button is pressed
-		grabberInBool = checkButton(buttonY, grabberInBool, portButtonY);		//toggles boolean if button is pressed
+		
 		
 		//d-pad/POV updates
 		dPad = controller.getPOV(portDPad);		//returns a value {-1,0,45,90,135,180,225,270,315}
@@ -394,7 +395,9 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Angle to Forwards Graph", angleToForward);
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
-		//SmartDashboard.putBoolean("Grabber In", grabberInBool);
+		SmartDashboard.putNumber("Team Number", 5974);
+		SmartDashboard.putString("Switch Scale Switch", gameData);
+	
 	}
 	
 	public void tankDrive() {	//tank drive: left joystick controls left wheels, right joystick controls right wheels
@@ -456,7 +459,7 @@ public class Robot extends IterativeRobot {
 	
 	//this function is to break in the gear box
 	public void gearBoxTest(){
-		while (counter < 6) {
+		if (counter < 6) {
 			timerTest.start();
 			if (480 >= timerTest.get()) {
 				motorRB.set(1);
@@ -483,11 +486,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addDefault("Default Auto", kDefaultAuto); //We should probably figure out what this pre-generated code does at some point - Thomas
-		m_chooser.addObject("My Auto", kCustomAuto);
+		m_chooser.addObject("Start Left", startL); //We should probably figure out what this pre-generated code does at some point - Thomas
+		m_chooser.addObject("Start Middle", startM);
+		m_chooser.addObject("Start Right", startR);
 		SmartDashboard.putData("Auto choices", m_chooser);
 		//Our code
-		CameraServer.getInstance().startAutomaticCapture().setResolution(800, 600); //camera
+		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
 		IMU.reset();
 	}
@@ -515,43 +519,7 @@ public class Robot extends IterativeRobot {
 		 *The second is the scale.
 		 *The third one is your opponent's switch
 		*/
-		
-		//going in a square just for fun
-		if(autoStep%2==0 && autoStep<8) {
-			motorRB.set(0.5);
-			motorRF.set(0.5);
-			motorLB.set(-0.5);
-			motorLF.set(-0.5);
-			Timer.delay(0.5);
-			motorRB.set(0);
-			motorRF.set(0);
-			motorLB.set(0);
-			motorLF.set(0);
-			autoStep++;
-		}
-		if(autoStep%2==1 && autoStep<8) {
-			//should this go 90,180,270,360? or can I just say "go another 90 degrees" each time?
-			rotateTo(90);
-			autoStep++;
-		}
-		/* Alternate - 90,180,270,360
-		if(autoStep%2==0){
-			motorRB.set(0.5);
-			motorRF.set(0.5);
-			motorLB.set(-0.5);
-			motorLF.set(-0.5);
-			Timer.delay(0.5);
-			motorRB.set(0);
-			motorRF.set(0);
-			motorLB.set(0);
-			motorLF.set(0);
-			autoStep++;
-		}
-		if(autoStep%2==1){
-			rotateTo(90*(autoStep/2)+(1/2)) //this goes 90,180,270,360 for autoStep of 1,3,5,7
-			autoStep++;
-		}
-		 */
+
 		
 	}
 
@@ -560,14 +528,155 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		switch (m_autoSelected) {
-			case kCustomAuto:
-				// Put custom auto code here
-				break;
-			case kDefaultAuto:
+		switch (m_autoSelected){
+			case startL:
+				switch (gameData.substring(0,1)) {
+					case "L":
+						//Move forward
+						motorRB.set(0.5);
+						motorRF.set(0.5);
+						motorLB.set(-0.5);
+						motorLF.set(-0.5);
+						Timer.delay(3);
+						//Turn right 90 degrees
+						motorRB.set(-0.5);
+						motorRF.set(-0.5);
+						motorLB.set(-0.5);
+						motorLF.set(-0.5);
+						if (angleToForward >= angleToForward+90){
+							//Move forward
+							motorRB.set(0.5);
+							motorRF.set(0.5);
+							motorLB.set(-0.5);
+							motorLF.set(-0.5);
+							Timer.delay(1);
+							//Stop
+							motorRB.set(0);
+							motorRF.set(0);
+							motorLB.set(0);
+							motorLF.set(0);
+						}
+						break;
+					case "R":
+						//Move forward
+						motorRB.set(0.5);
+						motorRF.set(0.5);
+						motorLB.set(-0.5);
+						motorLF.set(-0.5);
+						Timer.delay(3);
+						//Stop
+						motorRB.set(0);
+						motorRF.set(0);
+						motorLB.set(0);
+						motorLF.set(0);
+						break;
+					default:
+						break;
+				}
+			case startM:
+				switch (gameData.substring(0,1)) {
+					case "L":
+						//Move forward
+						motorRB.set(0.5);
+						motorRF.set(0.5);
+						motorLB.set(-0.5);
+						motorLF.set(-0.5);
+						Timer.delay(1);
+						//Turn left
+						motorRB.set(0.5);
+						motorRF.set(0.5);
+						motorLB.set(0.5);
+						motorLF.set(0.5);
+						if (angleToForward <= angleToForward-90){
+							//Move forward
+							motorRB.set(0.5);
+							motorRF.set(0.5);
+							motorLB.set(-0.5);
+							motorLF.set(-0.5);
+							Timer.delay(1);
+							//Turn right 90 degrees
+							motorRB.set(-0.5);
+							motorRF.set(-0.5);
+							motorLB.set(-0.5);
+							motorLF.set(-0.5);
+							if (angleToForward >= angleToForward+90){
+								motorRB.set(0.5);
+								motorRF.set(0.5);
+								motorLB.set(-0.5);
+								motorLF.set(-0.5);
+								Timer.delay(1);
+								//Turn 90 degrees
+								motorRB.set(0.5);
+								motorRF.set(0.5);
+								motorLB.set(-0.5);
+								motorLF.set(-0.5);
+								Timer.delay(3);
+								motorRB.set(0);
+								motorRF.set(0);
+								motorLB.set(0);
+								motorLF.set(0);
+							}
+						}
+						break;
+					case "R":
+						break;
+					default:
+						break;
+				}
+			case startR:
+				switch (gameData.substring(0,1)) {
+					case "L":
+						// Put custom auto code here
+						break;
+					case "R":
+						break;
+					default:
+						break;
+				}
+					
 			default:
-				// Put default auto code here
+				//going in a square hopefully
+				/*
+				if(autoStep%2==0 && autoStep<8) {
+					motorRB.set(0.5);
+					motorRF.set(0.5);
+					motorLB.set(-0.5);
+					motorLF.set(-0.5);
+					Timer.delay(0.5);
+					motorRB.set(0);
+					motorRF.set(0);
+					motorLB.set(0);
+					motorLF.set(0);
+					autoStep++;
+				}
+				if(autoStep%2==1 && autoStep<8) {
+					//should this go 90,180,270,360? or can I just say "go another 90 degrees" each time?
+					rotateTo(90);
+					autoStep++;
+				}
+				*/ 
+				// Alternate - 90,180,270,360
+				if(autoStep%2==0){
+					motorRB.set(0.5);
+					motorRF.set(0.5);
+					motorLB.set(-0.5);
+					motorLF.set(-0.5);
+					Timer.delay(0.5);
+					motorRB.set(0);
+					motorRF.set(0);
+					motorLB.set(0);
+					motorLF.set(0);
+					autoStep++;
+				}
+				if(autoStep%2==1){
+					rotateTo(90*(autoStep/2)+(1/2)); //this goes 90,180,270,360 for autoStep of 1,3,5,7
+					autoStep++;
+					angleCache = 72;
+				}
+				 
 				break;
+		}
+					
 		}
 		/*To use gameData,example
 		 * if(gameData.charAt(0) == 'L')     //if alliance switch is on left side at character 0 (The first character)
@@ -579,7 +688,6 @@ public class Robot extends IterativeRobot {
 		 * Repeat for character 1 (scale) and character 2 (opponent's switch) - Thomas
 		 */
 		
-	}
 
 	
 	public void teleopInit() {
@@ -616,9 +724,10 @@ public class Robot extends IterativeRobot {
 	/**
 	 * This function is called periodically during test mode.
 	 */
-	//This funtion is not in use. We could use it to test individual mechanisms. It functions like a second teleop. - Thomas
+	//This function is not in use. We could use it to test individual mechanisms. It functions like a second teleop. - Thomas
 	@Override
 	public void testPeriodic() {
 		sensorTest();
+		gearBoxTest();
 	}	
 }
