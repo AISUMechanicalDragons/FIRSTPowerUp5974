@@ -329,9 +329,9 @@ public class Robot extends IterativeRobot {
 	
 	public void updateTrifecta() {	//updates pos, vel, and accel
 		//accel variables updated from IMU
-		accelX = (IMU.getAccelX() - exX) * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
-		accelY = (IMU.getAccelY() - exY) * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
-		accelZ = (IMU.getAccelZ() - exZ) * 9.8;
+		accelX = (IMU.getAccelX()) * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
+		accelY = (IMU.getAccelY()) * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
+		accelZ = (IMU.getAccelZ()) * 9.8;
 		
 		//velocity updated by acceleration integral
 		velX += accelX * dT;
@@ -359,18 +359,10 @@ public class Robot extends IterativeRobot {
 		exX = sumX / avgX.size();
 		exY = sumY / avgY.size();
 		exZ = sumZ / avgZ.size();
-	}
-	
-	public void sensorTest() {
-		check = checkButton(buttonA, check, portButtonA);
 		
-		if (check) {
-			calibrate(10)
-		
-			SmartDashboard.putNumber("x-accel", exX);
-			SmartDashboard.putNumber("y-accel", exY);
-			SmartDashboard.putNumber("z-accel", exZ);
-		}
+		SmartDashboard.putNumber("test x", exX * 9.8);
+		SmartDashboard.putNumber("test y", exY * 9.8);
+		SmartDashboard.putNumber("test z", exZ * 9.8);
 	}
 	
 	public void updateController() {		//updates all controller features
@@ -425,7 +417,7 @@ public class Robot extends IterativeRobot {
 	public void update() {	//updates all update functions tee
 		updateController();
 		updateTimer();
-		//updateTrifecta();
+		updateTrifecta();
 		updateGyro();
 		updateGameTime();
 	}
@@ -448,7 +440,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
-		SmartDashboard.putString("Switch Scale Switch", gameData);
+		//SmartDashboard.putString("Switch Scale Switch", gameData);
 	
 	}
 	
@@ -703,7 +695,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		update();
-		sensorTest();
 		//grab();
 		
 		//dashboard outputs
@@ -723,7 +714,6 @@ public class Robot extends IterativeRobot {
 	//This function is not in use. We could use it to test individual mechanisms. It functions like a second teleop. - Thomas
 	@Override
 	public void testPeriodic() {
-		sensorTest();
 		gearBoxTest();
 	}	
 }
