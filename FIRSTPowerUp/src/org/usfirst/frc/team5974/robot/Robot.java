@@ -187,6 +187,18 @@ public class Robot extends IterativeRobot {
 	
 	boolean check = false;				//this should be deleted once the tests have been conducted
 	
+	ArrayList avgX = new ArrayList();	//List of X accelerations to be averaged
+	ArrayList avgY = new ArrayList();	//List of Y accelerations to be averaged
+	ArrayList avgZ = new ArrayList();	//List of Z accelerations to be averaged
+	
+	int sumX = 0;	//Sum of avgX
+	int sumY = 0;	//Sum of avgY
+	int sumZ = 0;	//Sum of avgZ
+	
+	double exX = 0;	//Excess X acceleration
+	double exY = 0;	//Excess X acceleration
+	double exZ = 0;	//Excess X acceleration
+
 	//time variables [see updateTimer()]
 	Timer timer = new Timer();
 	Timer timerTest = new Timer();
@@ -290,11 +302,11 @@ public class Robot extends IterativeRobot {
 		GameTime = Timer.getMatchTime();
 	}
 	
-	public void updateTrifecta() {	//updates pos, vel, and accel //TODO Make this actually work
+	public void updateTrifecta() {	//updates pos, vel, and accel
 		//accel variables updated from IMU
-		accelX = IMU.getAccelX() * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
-		accelY = IMU.getAccelY() * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
-		accelZ = IMU.getAccelZ() * 9.8;
+		accelX = (IMU.getAccelX() - exX) * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
+		accelY = (IMU.getAccelY() - exY) * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
+		accelZ = (IMU.getAccelZ() - exZ) * 9.8;
 		
 		//velocity updated by acceleration integral
 		velX += accelX * dT;
@@ -305,6 +317,23 @@ public class Robot extends IterativeRobot {
 		posX += velX * dT;
 		posY += velY * dT;
 		posZ += velZ * dT;
+	}
+	public void calibrate(int num) { //Calibrates gyro and creates excess acceleration values
+		updateGyro();
+		for (int i=0, i < num, i++) {
+			avgX.add(IMU.getAccelX();)
+			avgY.add(IMU.getAccelY();)
+			avgZ.add(IMU.getAccelZ();)
+		}
+		
+		for (int i=0, i < avgX.size();, i++) {
+			sumX += avgX.get(i);;
+			sumY += avgY.get(i);;
+			sumZ += avgZ.get(i);;
+		}
+		exX = sumX / avgX.size();
+		exY = sumY / avgY.size();
+		exZ = sumZ / avgZ.size();
 	}
 	
 	public void sensorTest() {
@@ -373,7 +402,7 @@ public class Robot extends IterativeRobot {
 	public void update() {	//updates all update functions tee
 		updateController();
 		updateTimer();
-		//updateTrifecta();
+		updateTrifecta();
 		updateGyro();
 		updateGameTime();
 	}
@@ -494,6 +523,7 @@ public class Robot extends IterativeRobot {
 		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
 		IMU.reset();
+		calibrate(10);
 	}
 
 	/**
