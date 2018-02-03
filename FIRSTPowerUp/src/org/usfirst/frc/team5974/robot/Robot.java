@@ -369,7 +369,7 @@ public class Robot extends IterativeRobot {
 		
 			SmartDashboard.putNumber("test x", exX);
 			SmartDashboard.putNumber("test y", exY);
-			SmartDashboard.putNumber("test z", IMU.getAccelZ());
+			SmartDashboard.putNumber("test z", exZ);
 		}
 	}
 	
