@@ -530,9 +530,43 @@ public class Robot extends IterativeRobot {
 			case startL:
 				switch (gameData.substring(0,1)) {
 					case "L":
-						// Put custom auto code here
+						//Move forward
+						motorRB.set(0.5);
+						motorRF.set(0.5);
+						motorLB.set(-0.5);
+						motorLF.set(-0.5);
+						Timer.delay(3);
+						//Turn right 90 degrees
+						motorRB.set(-0.5);
+						motorRF.set(-0.5);
+						motorLB.set(-0.5);
+						motorLF.set(-0.5);
+						if (angleToForward >= angleToForward+90){
+							//Move forward
+							motorRB.set(0.5);
+							motorRF.set(0.5);
+							motorLB.set(-0.5);
+							motorLF.set(-0.5);
+							Timer.delay(1);
+							//Stop
+							motorRB.set(0);
+							motorRF.set(0);
+							motorLB.set(0);
+							motorLF.set(0);
+						}
 						break;
 					case "R":
+						//Move forward
+						motorRB.set(0.5);
+						motorRF.set(0.5);
+						motorLB.set(-0.5);
+						motorLF.set(-0.5);
+						Timer.delay(3);
+						//Stop
+						motorRB.set(0);
+						motorRF.set(0);
+						motorLB.set(0);
+						motorLF.set(0);
 						break;
 					default:
 						break;
@@ -540,7 +574,47 @@ public class Robot extends IterativeRobot {
 			case startM:
 				switch (gameData.substring(0,1)) {
 					case "L":
-						// Put custom auto code here
+						//Move forward
+						motorRB.set(0.5);
+						motorRF.set(0.5);
+						motorLB.set(-0.5);
+						motorLF.set(-0.5);
+						Timer.delay(1);
+						//Turn left
+						motorRB.set(0.5);
+						motorRF.set(0.5);
+						motorLB.set(0.5);
+						motorLF.set(0.5);
+						if (angleToForward <= angleToForward-90){
+							//Move forward
+							motorRB.set(0.5);
+							motorRF.set(0.5);
+							motorLB.set(-0.5);
+							motorLF.set(-0.5);
+							Timer.delay(1);
+							//Turn right 90 degrees
+							motorRB.set(-0.5);
+							motorRF.set(-0.5);
+							motorLB.set(-0.5);
+							motorLF.set(-0.5);
+							if (angleToForward >= angleToForward+90){
+								motorRB.set(0.5);
+								motorRF.set(0.5);
+								motorLB.set(-0.5);
+								motorLF.set(-0.5);
+								Timer.delay(1);
+								//Turn 90 degrees
+								motorRB.set(0.5);
+								motorRF.set(0.5);
+								motorLB.set(-0.5);
+								motorLF.set(-0.5);
+								Timer.delay(3);
+								motorRB.set(0);
+								motorRF.set(0);
+								motorLB.set(0);
+								motorLF.set(0);
+							}
+						}
 						break;
 					case "R":
 						break;
