@@ -83,7 +83,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
 import edu.wpi.first.wpilibj.*;									//everything tbh
 import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
 import edu.wpi.first.wpilibj.CameraServer;
-//import java.util.ArrayList;		//arraylist
+import java.util.ArrayList;		//arraylist
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -345,16 +345,16 @@ public class Robot extends IterativeRobot {
 	}
 	public void calibrate(int num) { //Calibrates gyro and creates excess acceleration values
 		updateGyro();
-		for (int i=0, i < num, i++) {
-			avgX.add(IMU.getAccelX();)
-			avgY.add(IMU.getAccelY();)
-			avgZ.add(IMU.getAccelZ();)
+		for (int i=0; i < num; i++) {
+			avgX.add(IMU.getAccelX());
+			avgY.add(IMU.getAccelY());
+			avgZ.add(IMU.getAccelZ());
 		}
 		
-		for (int i=0, i < avgX.size();, i++) {
-			sumX += avgX.get(i);;
-			sumY += avgY.get(i);;
-			sumZ += avgZ.get(i);;
+		for (int i=0; i < avgX.size(); i++) {
+			sumX += (double)avgX.get(i);
+			sumY += (double)avgY.get(i);
+			sumZ += (double)avgZ.get(i);
 		}
 		exX = sumX / avgX.size();
 		exY = sumY / avgY.size();
