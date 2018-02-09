@@ -536,7 +536,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addObject("Start Left", startL); //We should probably figure out what this pre-generated code does at some point - Thomas
+		m_chooser.addObject("Start Left", startL); //This lets us choose which auto mode we're doing
 		m_chooser.addObject("Start Middle", startM);
 		m_chooser.addObject("Start Right", startR);
 		SmartDashboard.putData("Auto choices", m_chooser);
@@ -561,7 +561,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		m_autoSelected = m_chooser.getSelected();
-		// autoSelected = SmartDashboard.getString("Auto Selector",
+		// autoSelected = SmartDashboard.getString("Auto Selector"),
 		// defaultAuto);
 		System.out.println("Auto selected: " + m_autoSelected);
 		gameData = DriverStation.getInstance().getGameSpecificMessage(); 
@@ -583,13 +583,13 @@ public class Robot extends IterativeRobot {
 			case startL:
 				switch (gameData.substring(0,1)) {
 					case "L":
-						//move forward
-						moveDistance(2.5146,0);
-						//turn right
-						moveDistance(1.4732,-90);
-						//turn left
-						moveDistance(0.254,90);
-						break;
+							//move forward
+							moveDistance(2.5146,0);
+							//turn right
+							moveDistance(1.4732,-90);
+							//turn left
+							moveDistance(0.254,90);
+							break;
 					case "R":
 						//move forward
 						moveDistance(3.048,0);
