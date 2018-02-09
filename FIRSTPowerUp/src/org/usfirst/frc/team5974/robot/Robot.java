@@ -268,20 +268,20 @@ public class Robot extends IterativeRobot {
 		//I thought while loops broke things? Do we need to fix this? [Yes. -Thomas]
 			if (angleToForward < angle) {
 				//right greater
-				motorRB.set(1);
-				motorRF.set(1);
-				motorLB.set(-0.75);
-				motorLF.set(-0.75);
+				motorRB.set(0.25);
+				motorRF.set(0.25);
+				motorLB.set(-0.1);
+				motorLF.set(-0.1);
 			} else if (angleToForward > angle) {
-				motorRB.set(0.75);
-				motorRF.set(0.75);
-				motorLB.set(-1);
-				motorLF.set(-1);
+				motorRB.set(0.1);
+				motorRF.set(0.1);
+				motorLB.set(-0.25);
+				motorLF.set(-0.25);
 			} else {
-				motorRB.set(1);
-				motorRF.set(1);
-				motorLB.set(-1);
-				motorLF.set(-1);
+				motorRB.set(0.25);
+				motorRF.set(0.25);
+				motorLB.set(-0.25);
+				motorLF.set(-0.25);
 			}
 		}
 	}
