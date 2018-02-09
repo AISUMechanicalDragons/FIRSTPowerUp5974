@@ -265,7 +265,7 @@ public class Robot extends IterativeRobot {
 		double startY = posY;
 		rotateTo(angle);
 		while(Math.sqrt((startX * startX) + (startY * startY)) < distance) {	
-		//I thought while loops broke things? Do we need to fix this?
+		//I thought while loops broke things? Do we need to fix this? [Yes. -Thomas]
 			if (angleToForward < angle) {
 				//right greater
 				motorRB.set(1);
