@@ -357,6 +357,7 @@ public class Robot extends IterativeRobot {
 			sumY += (double)avgY.get(i);
 			sumZ += (double)avgZ.get(i);
 		}
+		
 		exX = sumX / avgX.size();
 		exY = sumY / avgY.size();
 		exZ = sumZ / avgZ.size();
@@ -628,7 +629,8 @@ public class Robot extends IterativeRobot {
 				}
 					
 			default:
-				//going in a square hopefully
+				//going in a square hopefully, to test IMU (gyro/accel)
+				
 				/*
 				if(autoStep%2==0 && autoStep<8) {
 					motorRB.set(0.5);
