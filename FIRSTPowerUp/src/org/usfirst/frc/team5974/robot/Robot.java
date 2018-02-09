@@ -264,7 +264,8 @@ public class Robot extends IterativeRobot {
 		double startX = posX;
 		double startY = posY;
 		rotateTo(angle);
-		while(Math.sqrt((startX * startX) + (startY * startY)) < distance) {
+		while(Math.sqrt((startX * startX) + (startY * startY)) < distance) {	
+		//I thought while loops broke things? Do we need to fix this?
 			if (angleToForward < angle) {
 				//right greater
 				motorRB.set(1);
@@ -356,19 +357,20 @@ public class Robot extends IterativeRobot {
 			sumY += (double)avgY.get(i);
 			sumZ += (double)avgZ.get(i);
 		}
+		
 		exX = sumX / avgX.size();
 		exY = sumY / avgY.size();
 		exZ = sumZ / avgZ.size();
 		
-		SmartDashboard.putNumber("test x", exX * 9.8);
-		SmartDashboard.putNumber("test y", exY * 9.8);
-		SmartDashboard.putNumber("test z", exZ * 9.8);
+		//I moved your SmartDashboard outputs to the dashboardOutput() function. --Carter
+
 	}
 	
 	public void updateController() {		//updates all controller features
 		/**I don't know why you made a whole bunch of port variables when numbers are faster, but hey! You do you. - Thomas*/
 		//i concur --Carter
 		//should we merge this part with the 'variables we're using' section starting with Thomas' blue comment ("Button ports, however...")? --Muneo
+		//@Muneo no, the "variables we're using" section defines the global variables. This function actually gives numbers to those variables. I can explain it on Monday. --Carter
 		
 		//left joystick update
 		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);		//returns a value [-1,1]
@@ -441,6 +443,10 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
 		//SmartDashboard.putString("Switch Scale Switch", gameData);
+		//Data from calibrate()
+		SmartDashboard.putNumber("test x", exX * 9.8);
+		SmartDashboard.putNumber("test y", exY * 9.8);
+		SmartDashboard.putNumber("test z", exZ * 9.8);
 	
 	}
 	
@@ -530,7 +536,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addObject("Start Left", startL); //We should probably figure out what this pre-generated code does at some point - Thomas
+		m_chooser.addObject("Start Left", startL); //This lets us choose which auto mode we're doing
 		m_chooser.addObject("Start Middle", startM);
 		m_chooser.addObject("Start Right", startR);
 		SmartDashboard.putData("Auto choices", m_chooser);
@@ -555,7 +561,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		m_autoSelected = m_chooser.getSelected();
-		// autoSelected = SmartDashboard.getString("Auto Selector",
+		// autoSelected = SmartDashboard.getString("Auto Selector"),
 		// defaultAuto);
 		System.out.println("Auto selected: " + m_autoSelected);
 		gameData = DriverStation.getInstance().getGameSpecificMessage(); 
@@ -573,20 +579,27 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		/*
+		 * Right now, in the middle it can go to either, on the left it can go to the left, and right on the right
+		 * In the middle, it goes left with 90 degree turns
+		 * It goes Right at an angle
+		 * On the right, It goes forwards next to the switch, turns towards the switch, drives into the switch
+		 * On the left it has 3 90 degree turns.
+		 */
 		switch (m_autoSelected){
 			case startL:
 				switch (gameData.substring(0,1)) {
 					case "L":
-						//move forward
-						moveDistance(2.5146,0);
-						//turn right
-						moveDistance(1.4732,-90);
-						//turn left
-						moveDistance(0.254,90);
-						break;
+							//move forward
+							moveDistance(2.5146,0);
+							//turn right
+							moveDistance(1.4732, 270);
+							//turn left
+							moveDistance(0.254, 0);
+							break;
 					case "R":
 						//move forward
-						moveDistance(3.048,0);
+						moveDistance(4.3,0);
 						break;
 					default:
 						break;
@@ -596,12 +609,15 @@ public class Robot extends IterativeRobot {
 					case "L":
 						//Move forward
 						moveDistance(1.524,0);
-						//Turn left 90 degrees and move
+						//Turn to 90(left) degrees and move
 						moveDistance(2.413,90);
-						//Turn right 90 degrees and move
-						moveDistance(1.778, -90);
+						//Turn to 0 Degrees
+						moveDistance(1.778, 0);
 						break;
 					case "R":
+						moveDistance(1.63, 0);			//move forward 1.63 m
+						moveDistance(0.91, 315);			//move at a 315 degree for 1.63 m
+						moveDistance(0.76, 0);
 						break;
 					default:
 						break;
@@ -620,7 +636,8 @@ public class Robot extends IterativeRobot {
 				}
 					
 			default:
-				//going in a square hopefully
+				//going in a square hopefully, to test IMU (gyro/accel)
+				
 				/*
 				if(autoStep%2==0 && autoStep<8) {
 					motorRB.set(0.5);
