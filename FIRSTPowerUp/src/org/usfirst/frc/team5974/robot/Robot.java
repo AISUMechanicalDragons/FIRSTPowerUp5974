@@ -590,13 +590,13 @@ public class Robot extends IterativeRobot {
 			case startL:
 				switch (gameData.substring(0,1)) {
 					case "L":
-							//move forward
-							moveDistance(2.5146,0);
-							//turn right
-							moveDistance(1.4732, 270);
-							//turn left
-							moveDistance(0.254, 0);
-							break;
+						//move forward
+						moveDistance(2.5146,0);
+						//turn right
+						moveDistance(1.4732, 270);
+						//turn left
+						moveDistance(0.254, 0);
+						break;
 					case "R":
 						//move forward
 						moveDistance(4.3,0);
