@@ -579,6 +579,13 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		/*
+		 * Right now, in the middle it can go to either, on the left it can go to the left, and right on the right
+		 * In the middle, it goes left with 90 degree turns
+		 * It goes Right at an angle
+		 * On the right, It goes forwards next to the switch, turns towards the switch, drives into the switch
+		 * On the left it has 3 90 degree turns.
+		 */
 		switch (m_autoSelected){
 			case startL:
 				switch (gameData.substring(0,1)) {
@@ -586,13 +593,13 @@ public class Robot extends IterativeRobot {
 							//move forward
 							moveDistance(2.5146,0);
 							//turn right
-							moveDistance(1.4732,-90);
+							moveDistance(1.4732, 270);
 							//turn left
-							moveDistance(0.254,90);
+							moveDistance(0.254, 0);
 							break;
 					case "R":
 						//move forward
-						moveDistance(3.048,0);
+						moveDistance(4.3,0);
 						break;
 					default:
 						break;
@@ -602,10 +609,10 @@ public class Robot extends IterativeRobot {
 					case "L":
 						//Move forward
 						moveDistance(1.524,0);
-						//Turn left 90 degrees and move
+						//Turn to 90(left) degrees and move
 						moveDistance(2.413,90);
-						//Turn right 90 degrees and move
-						moveDistance(1.778, -90);
+						//Turn to 0 Degrees
+						moveDistance(1.778, 0);
 						break;
 					case "R":
 						moveDistance(1.63, 0);			//move forward 1.63 m
