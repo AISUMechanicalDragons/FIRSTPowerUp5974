@@ -163,6 +163,8 @@ public class Robot extends IterativeRobot {
 	double dT = 0; //time difference (t1-t0)
 	double t0 = 0; //time start
 	double t1 = 0; //time end
+	double startX = posX;
+	double startY = posY;
 	
 	//this is the variable that gives us switch and scale sides in format LRL or RRL, etc
 	String gameData;

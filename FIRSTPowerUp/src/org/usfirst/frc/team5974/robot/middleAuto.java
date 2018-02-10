@@ -33,7 +33,7 @@ public class middleAuto extends Command {
 	}
 		
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
 	
 
