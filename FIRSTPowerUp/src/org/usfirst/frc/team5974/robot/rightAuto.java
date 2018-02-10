@@ -1,20 +1,6 @@
 package org.usfirst.frc.team5974.robot;
 
-//import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
-//import edu.wpi.first.wpilibj.Joystick;							//Controller
-//import edu.wpi.first.wpilibj.Timer;								//Timer
-//import edu.wpi.first.wpilibj.Spark;								//Motor Controller
-//import edu.wpi.first.wpilibj.VictorSP;
-//import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.*;									//everything tbh
-import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-
-import java.util.ArrayList;		//arraylist
 
 
 public class rightAuto extends Command {
@@ -42,7 +28,7 @@ public class rightAuto extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
 
 }

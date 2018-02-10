@@ -17,9 +17,15 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import java.util.ArrayList;		//arraylist
 
 
-public class leftAuto extends Robot {
+public class leftAuto extends Command {
 
 	public leftAuto() {
+		
+	}
+	public void initialize() {
+		
+	}
+	protected void execute() {	
 		if (gameData.charAt(0) == 'L'){
 			//move forward
 			moveDistance(2.5146,0);
