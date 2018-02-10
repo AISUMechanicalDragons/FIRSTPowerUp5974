@@ -346,6 +346,11 @@ public class Robot extends IterativeRobot {
 	}
 	public void calibrate(int num) { //Calibrates gyro and creates excess acceleration values
 		updateGyro();
+		
+		avgX.clear();
+		avgY.clear();
+		avgZ.clear();
+		
 		for (int i=0; i < num; i++) {
 			avgX.add(IMU.getAccelX());
 			avgY.add(IMU.getAccelY());
@@ -362,7 +367,6 @@ public class Robot extends IterativeRobot {
 		exY = sumY / avgY.size();
 		exZ = sumZ / avgZ.size();
 		
-		//I moved your SmartDashboard outputs to the dashboardOutput() function. --Carter
 
 	}
 	
@@ -717,6 +721,9 @@ public class Robot extends IterativeRobot {
 		} 
 		else {
 			arcadeDrive();
+		}
+		if (buttonA) {
+			calibrate(10);
 		}
 	}
 
