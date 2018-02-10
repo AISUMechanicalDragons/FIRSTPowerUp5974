@@ -19,20 +19,29 @@ import java.util.ArrayList;		//arraylist
 
 public class rightAuto extends Command {
 
+	Robot robot = new Robot();
+	
 	public rightAuto() {
-		if (gameData.charAt(0)== 'L') {
-			moveDistance(4.3, 0);		//move forward 4.3 m
+		//super("rightAuto");
+	}
+	
+	public void initialize() {
+
+	}
+	
+	protected void execute() {
+		if (robot.gameData.charAt(0)== 'L') {
+			robot.moveDistance(4.3, 0);		//move forward 4.3 m
 		}
 		else {
-			moveDistance(4.3, 0);		//move forward 4.3 m
-			moveDistance(0.78, 90);			//rotate towards switch and move .78 m towards it
+			robot.moveDistance(4.3, 0);		//move forward 4.3 m
+			robot.moveDistance(0.78, 90);			//rotate towards switch and move .78 m towards it
 		}
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
