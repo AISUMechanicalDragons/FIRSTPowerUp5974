@@ -85,6 +85,7 @@ import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import org.usfirst.frc.team5974.robot.Remote;
 
 import java.util.ArrayList;		//arraylist
 
@@ -112,52 +113,10 @@ public class Robot extends IterativeRobot {
 	Spark motorGL = new Spark(4);
 	Spark motorGR = new Spark(5);
 	
-	//Variables we're using
-	Joystick controller = new Joystick(0);			//controller
+	Remote remote = new Remote();
+	
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
-
 	
-	double joystickLXAxis;			//left joystick x-axis
-	double joystickLYAxis;			//left joystick y-axis
-	double joystickRXAxis;			//right joystick x-axis
-	double joystickRYAxis;			//right joystick y-axis
-	double triggerL;				//left trigger
-	double triggerR;				//right trigger
-	boolean bumperL;				//left bumper
-	boolean bumperR;				//right bumper
-	boolean buttonX;				//x button
-	boolean buttonY;				//y button
-	boolean buttonA;				//a button
-	boolean buttonB;				//b button
-	int dPad;					    //d-pad
-	boolean joystickLPress;		    //left joystick button press
-	boolean joystickRPress;		    //right joystick button press
-	boolean buttonStart;			//start button
-	boolean buttonBack;			    //back button
-	
-	/**Button ports, however, do start at 1 with one being the 'A' button. - Thomas*/
-	int portButtonX = 3;
-	int portButtonY = 4;
-	int portButtonA = 1;
-	int portButtonB = 2;
-	
-	int portJoystickLPress = 9;
-	int portJoystickRPress = 10;
-	
-	int portJoystickLXAxis = 0;
-	int portJoystickLYAxis = 1;
-	int portJoystickRXAxis = 4;
-	int portJoystickRYAxis = 5;
-	
-	int portTriggerL = 2;
-	int portTriggerR = 3;
-	int portBumperL = 5;
-	int portBumperR = 6;
-	
-	int portButtonBack = 7;
-	int portButtonStart = 8;
-	
-	int portDPad = 0;
 	
 	double angleToForward = 0;
 	
@@ -165,10 +124,8 @@ public class Robot extends IterativeRobot {
 	
 	//double robotSpeed;	//robot speed (fast/slow mode)
 	double GameTime;
-	boolean tankDriveBool = true;	//drive mode: true = tank drive, false = arcade drive
-	boolean fastBool = false;		//speed mode: true = fast mode, false = slow mode
 	double forkliftHeight;
-	boolean grabberInBool = true;	//grabber: true = in, false = out
+	
 	int autoStep = 0; //which step of the process we're on in autonomous
 	
 	//position arrays
@@ -218,15 +175,7 @@ public class Robot extends IterativeRobot {
 	
 	double counter = 0;
 	
-	public boolean checkButton(boolean button, boolean toggle, int port) {		//When the button is pushed, once it is released, its toggle is changed
-		if (button) {
-			toggle = !toggle;
-			while (button) {		//TODO while loop causes problems
-				button = controller.getRawButton(port);
-			}
-		}
-		return toggle;
-	}
+	
 	
 	public void rotateTo(double angle) {		//rotates robot to angle based on IMU and d-pad
 		
@@ -297,18 +246,7 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	public void joystickDeadZone() {		//sets dead zone for joysticks		//TODO test this
-		if (joystickLXAxis <= 0.075 && joystickLXAxis >= -0.075) {
-			joystickLXAxis = 0;
-		} if (joystickLYAxis <= 0.075 && joystickLYAxis >= -0.075) {
-			joystickLYAxis = 0;
-		}
-		if (joystickRXAxis <= 0.075 && joystickRXAxis >= -0.075) {
-			joystickRXAxis = 0;
-		} if (joystickRYAxis <= 0.075 && joystickRYAxis >= -0.075) {
-			joystickRYAxis = 0;
-		}
-	}
+	
 	
 	public void updateGyro() {		//set IMU.getAngle() (-inf,inf) output to a non-looping value [0,360)
 		angleToForward = IMU.getAngleZ();
@@ -368,59 +306,11 @@ public class Robot extends IterativeRobot {
 		exY = sumY / avgY.size();
 		exZ = sumZ / avgZ.size();
 		
-
 	}
 	
-	public void updateController() {		//updates all controller features
-		/**I don't know why you made a whole bunch of port variables when numbers are faster, but hey! You do you. - Thomas*/
-		//i concur --Carter
-		
-		//left joystick update
-		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);		//returns a value [-1,1]
-		joystickLYAxis = controller.getRawAxis(portJoystickLYAxis);		//returns a value [-1,1]
-		joystickLPress = controller.getRawButton(portJoystickLPress);	//returns a value {0,1}
-		
-		//right joystick update
-		joystickRXAxis = controller.getRawAxis(portJoystickRXAxis);		//returns a value [-1,1]
-		joystickRYAxis = controller.getRawAxis(portJoystickRYAxis);		//returns a value [-1,1]
-		joystickRPress = controller.getRawButton(portJoystickRPress);	//returns a value {0,1}
-		
-		//trigger updates
-		triggerL = controller.getRawAxis(portTriggerL);		//returns a value [0,1]
-		triggerR = controller.getRawAxis(portTriggerR);		//returns a value [0,1]
-		
-		//bumper updates
-		bumperL = controller.getRawButton(portBumperL);		//returns a value {0,1}
-		bumperR = controller.getRawButton(portBumperR);		//returns a value {0,1}
-		
-		//button updates
-		buttonX = controller.getRawButton(portButtonX);		//returns a value {0,1}
-		buttonY = controller.getRawButton(portButtonY);		//returns a value {0,1}
-		buttonA = controller.getRawButton(portButtonA);		//returns a value {0,1}
-		buttonB = controller.getRawButton(portButtonB);		//returns a value {0,1}
-		
-		buttonBack = controller.getRawButton(portButtonBack);	//returns a value {0,1}
-		buttonStart = controller.getRawButton(portButtonStart);	//returns a value {0,1}
-		
-		//toggle checks
-		tankDriveBool = checkButton(buttonX, tankDriveBool, portButtonX);		//toggles boolean if button is pressed
-		fastBool = checkButton(buttonB, fastBool, portButtonB);					//toggles boolean if button is pressed
-		
-		
-		//d-pad/POV updates
-		dPad = controller.getPOV(portDPad);		//returns a value {-1,0,45,90,135,180,225,270,315}
-
-		//d-pad/POV turns
-		if (dPad != -1) {
-			dPad = 360 - dPad; //Converts the clockwise dPad rotation into a Gyro-readable counterclockwise rotation.
-			rotateTo(dPad);
-		}
-		
-		joystickDeadZone();
-	}
 	
 	public void update() {	//updates all update functions tee
-		updateController();
+		remote.updateController();
 		updateTimer();
 		updateTrifecta();
 		updateGyro();
@@ -442,8 +332,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Speed", velY);
 		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
 		SmartDashboard.putNumber("Angle to Forwards Graph", angleToForward);
-		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
-		SmartDashboard.putBoolean("Fast Mode", fastBool);
+		SmartDashboard.putBoolean("Tank Drive Style", remote.tankDriveBool);
+		SmartDashboard.putBoolean("Fast Mode", remote.fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
 		//SmartDashboard.putString("Switch Scale Switch", gameData);
 		//Data from calibrate()
@@ -456,16 +346,16 @@ public class Robot extends IterativeRobot {
 	public void tankDrive() {	//tank drive: left joystick controls left wheels, right joystick controls right wheels
 		//right motors = right joystick y-axis
 		//left motors = left joystick y-axis
-		if (fastBool) {
-			motorRB.set(joystickRYAxis);
-			motorRF.set(joystickRYAxis);
-			motorLB.set(-joystickLYAxis);
-			motorLF.set(-joystickLYAxis);
+		if (remote.fastBool) {
+			motorRB.set(remote.joystickRYAxis);
+			motorRF.set(remote.joystickRYAxis);
+			motorLB.set(-remote.joystickLYAxis);
+			motorLF.set(-remote.joystickLYAxis);
 		} else {
-			motorRB.set(joystickRYAxis/2);
-			motorRF.set(joystickRYAxis/2);
-			motorLB.set(-joystickLYAxis/2);
-			motorLF.set(-joystickLYAxis/2);
+			motorRB.set(remote.joystickRYAxis/2);
+			motorRF.set(remote.joystickRYAxis/2);
+			motorLB.set(-remote.joystickLYAxis/2);
+			motorLF.set(-remote.joystickLYAxis/2);
 		}
 	}
 	
@@ -473,23 +363,23 @@ public class Robot extends IterativeRobot {
 		//right wheels have less power the farther right the left joystick is and more power the farther left
 		//left wheels have less power the farther left the left joystick is and more power the farther right
 		//X-axis input is halved
-		if (fastBool) {
-			motorRB.set((joystickLYAxis + joystickLXAxis/2));
-			motorRF.set((joystickLYAxis + joystickLXAxis/2));
-			motorLB.set(-(joystickLYAxis - joystickLXAxis/2));
-			motorLF.set(-(joystickLYAxis - joystickLXAxis/2));
+		if (remote.fastBool) {
+			motorRB.set((remote.joystickLYAxis + remote.joystickLXAxis/2));
+			motorRF.set((remote.joystickLYAxis + remote.joystickLXAxis/2));
+			motorLB.set(-(remote.joystickLYAxis - remote.joystickLXAxis/2));
+			motorLF.set(-(remote.joystickLYAxis - remote.joystickLXAxis/2));
 		} else {
-			motorRB.set((joystickLYAxis + joystickLXAxis/2)/2);
-			motorRF.set((joystickLYAxis + joystickLXAxis/2)/2);
-			motorLB.set(-(joystickLYAxis - joystickLXAxis/2)/2);
-			motorLF.set(-(joystickLYAxis - joystickLXAxis/2)/2);
+			motorRB.set((remote.joystickLYAxis + remote.joystickLXAxis/2)/2);
+			motorRF.set((remote.joystickLYAxis + remote.joystickLXAxis/2)/2);
+			motorLB.set(-(remote.joystickLYAxis - remote.joystickLXAxis/2)/2);
+			motorLF.set(-(remote.joystickLYAxis - remote.joystickLXAxis/2)/2);
 		}
 	}
 	
 	public void grab() {	//grabbers in/out based on bumper bools  
 		//move left grabber wheels
-		if (bumperL) {
-			if (grabberInBool) {
+		if (remote.bumperL) {
+			if (remote.grabberInBool) {
 				motorGL.set(1);
 			} else {
 				motorGL.set(-1);
@@ -499,8 +389,8 @@ public class Robot extends IterativeRobot {
 		}
 		
 		//move right grabber wheels
-		if (bumperR) {
-			if (grabberInBool) {
+		if (remote.bumperR) {
+			if (remote.grabberInBool) {
 				motorGR.set(-1);
 			} else {
 				motorGR.set(1);
@@ -737,11 +627,11 @@ public class Robot extends IterativeRobot {
 	
 	public void teleopInit() {
 		//Rumble controller for half a second
-		controller.setRumble(Joystick.RumbleType.kRightRumble, 0.5);
-		controller.setRumble(Joystick.RumbleType.kLeftRumble, 0.5);
+		remote.controller.setRumble(Joystick.RumbleType.kRightRumble, 0.5);
+		remote.controller.setRumble(Joystick.RumbleType.kLeftRumble, 0.5);
 		Timer.delay(0.5);
-		controller.setRumble(Joystick.RumbleType.kRightRumble, 0);
-		controller.setRumble(Joystick.RumbleType.kLeftRumble, 0);
+		remote.controller.setRumble(Joystick.RumbleType.kRightRumble, 0);
+		remote.controller.setRumble(Joystick.RumbleType.kLeftRumble, 0);
 		
 		timer.start();
 	}
@@ -757,13 +647,13 @@ public class Robot extends IterativeRobot {
 		//dashboard outputs
 		dashboardOutput();
 		
-		if (tankDriveBool) {
+		if (remote.tankDriveBool) {
 			tankDrive();
 		} 
 		else {
 			arcadeDrive();
 		}
-		if (buttonA) {
+		if (remote.buttonA) {
 			calibrate(10);
 		}
 	}
