@@ -113,6 +113,8 @@ public class Robot extends IterativeRobot {
 	Spark motorGL = new Spark(4);
 	Spark motorGR = new Spark(5);
 	
+	Remote remote = new Remote();
+	
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
 	
 	
@@ -304,13 +306,11 @@ public class Robot extends IterativeRobot {
 		exY = sumY / avgY.size();
 		exZ = sumZ / avgZ.size();
 		
-
 	}
 	
 	
-	
 	public void update() {	//updates all update functions tee
-		updateController();
+		remote.updateController();
 		updateTimer();
 		updateTrifecta();
 		updateGyro();
@@ -332,8 +332,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Speed", velY);
 		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
 		SmartDashboard.putNumber("Angle to Forwards Graph", angleToForward);
-		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
-		SmartDashboard.putBoolean("Fast Mode", fastBool);
+		SmartDashboard.putBoolean("Tank Drive Style", remote.tankDriveBool);
+		SmartDashboard.putBoolean("Fast Mode", remote.fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
 		//SmartDashboard.putString("Switch Scale Switch", gameData);
 		//Data from calibrate()
@@ -346,16 +346,16 @@ public class Robot extends IterativeRobot {
 	public void tankDrive() {	//tank drive: left joystick controls left wheels, right joystick controls right wheels
 		//right motors = right joystick y-axis
 		//left motors = left joystick y-axis
-		if (fastBool) {
-			motorRB.set(joystickRYAxis);
-			motorRF.set(joystickRYAxis);
-			motorLB.set(-joystickLYAxis);
-			motorLF.set(-joystickLYAxis);
+		if (remote.fastBool) {
+			motorRB.set(remote.joystickRYAxis);
+			motorRF.set(remote.joystickRYAxis);
+			motorLB.set(-remote.joystickLYAxis);
+			motorLF.set(-remote.joystickLYAxis);
 		} else {
-			motorRB.set(joystickRYAxis/2);
-			motorRF.set(joystickRYAxis/2);
-			motorLB.set(-joystickLYAxis/2);
-			motorLF.set(-joystickLYAxis/2);
+			motorRB.set(remote.joystickRYAxis/2);
+			motorRF.set(remote.joystickRYAxis/2);
+			motorLB.set(-remote.joystickLYAxis/2);
+			motorLF.set(-remote.joystickLYAxis/2);
 		}
 	}
 	
@@ -363,23 +363,23 @@ public class Robot extends IterativeRobot {
 		//right wheels have less power the farther right the left joystick is and more power the farther left
 		//left wheels have less power the farther left the left joystick is and more power the farther right
 		//X-axis input is halved
-		if (fastBool) {
-			motorRB.set((joystickLYAxis + joystickLXAxis/2));
-			motorRF.set((joystickLYAxis + joystickLXAxis/2));
-			motorLB.set(-(joystickLYAxis - joystickLXAxis/2));
-			motorLF.set(-(joystickLYAxis - joystickLXAxis/2));
+		if (remote.fastBool) {
+			motorRB.set((remote.joystickLYAxis + remote.joystickLXAxis/2));
+			motorRF.set((remote.joystickLYAxis + remote.joystickLXAxis/2));
+			motorLB.set(-(remote.joystickLYAxis - remote.joystickLXAxis/2));
+			motorLF.set(-(remote.joystickLYAxis - remote.joystickLXAxis/2));
 		} else {
-			motorRB.set((joystickLYAxis + joystickLXAxis/2)/2);
-			motorRF.set((joystickLYAxis + joystickLXAxis/2)/2);
-			motorLB.set(-(joystickLYAxis - joystickLXAxis/2)/2);
-			motorLF.set(-(joystickLYAxis - joystickLXAxis/2)/2);
+			motorRB.set((remote.joystickLYAxis + remote.joystickLXAxis/2)/2);
+			motorRF.set((remote.joystickLYAxis + remote.joystickLXAxis/2)/2);
+			motorLB.set(-(remote.joystickLYAxis - remote.joystickLXAxis/2)/2);
+			motorLF.set(-(remote.joystickLYAxis - remote.joystickLXAxis/2)/2);
 		}
 	}
 	
 	public void grab() {	//grabbers in/out based on bumper bools  
 		//move left grabber wheels
-		if (bumperL) {
-			if (grabberInBool) {
+		if (remote.bumperL) {
+			if (remote.grabberInBool) {
 				motorGL.set(1);
 			} else {
 				motorGL.set(-1);
@@ -389,8 +389,8 @@ public class Robot extends IterativeRobot {
 		}
 		
 		//move right grabber wheels
-		if (bumperR) {
-			if (grabberInBool) {
+		if (remote.bumperR) {
+			if (remote.grabberInBool) {
 				motorGR.set(-1);
 			} else {
 				motorGR.set(1);
@@ -627,11 +627,11 @@ public class Robot extends IterativeRobot {
 	
 	public void teleopInit() {
 		//Rumble controller for half a second
-		controller.setRumble(Joystick.RumbleType.kRightRumble, 0.5);
-		controller.setRumble(Joystick.RumbleType.kLeftRumble, 0.5);
+		remote.controller.setRumble(Joystick.RumbleType.kRightRumble, 0.5);
+		remote.controller.setRumble(Joystick.RumbleType.kLeftRumble, 0.5);
 		Timer.delay(0.5);
-		controller.setRumble(Joystick.RumbleType.kRightRumble, 0);
-		controller.setRumble(Joystick.RumbleType.kLeftRumble, 0);
+		remote.controller.setRumble(Joystick.RumbleType.kRightRumble, 0);
+		remote.controller.setRumble(Joystick.RumbleType.kLeftRumble, 0);
 		
 		timer.start();
 	}
@@ -647,13 +647,13 @@ public class Robot extends IterativeRobot {
 		//dashboard outputs
 		dashboardOutput();
 		
-		if (tankDriveBool) {
+		if (remote.tankDriveBool) {
 			tankDrive();
 		} 
 		else {
 			arcadeDrive();
 		}
-		if (buttonA) {
+		if (remote.buttonA) {
 			calibrate(10);
 		}
 	}

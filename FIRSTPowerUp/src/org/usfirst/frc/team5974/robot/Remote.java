@@ -7,6 +7,8 @@ public class Remote {
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
 	
+	Robot robot = new Robot();
+	
 	double joystickLXAxis;			//left joystick x-axis
 	double joystickLYAxis;			//left joystick y-axis
 	double joystickRXAxis;			//right joystick x-axis
@@ -119,7 +121,7 @@ public class Remote {
 		//d-pad/POV turns
 		if (dPad != -1) {
 			dPad = 360 - dPad; //Converts the clockwise dPad rotation into a Gyro-readable counterclockwise rotation.
-			rotateTo(dPad);
+			robot.rotateTo(dPad);
 		}
 		
 		joystickDeadZone();
