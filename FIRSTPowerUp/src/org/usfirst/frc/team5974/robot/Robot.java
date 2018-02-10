@@ -774,6 +774,66 @@ public class Robot extends IterativeRobot {
 	//This function is not in use. We could use it to test individual mechanisms. It functions like a second teleop. - Thomas
 	@Override
 	public void testPeriodic() {
-		gearBoxTest();
+		int testNum = 1;		//which test code will run
+		switch(testNum) {
+			case(0):
+				gearBoxTest();
+				break;
+			case(1):			//left start
+				switch (gameData.substring(0,1)) {
+					case "L":
+						//Move forward
+						moveDistance(1.524,0);
+						//Turn to 90(left) degrees and move
+						moveDistance(2.413,90);
+						//Turn to 0 Degrees
+						moveDistance(1.778, 0);
+						break;
+					case "R":
+						moveDistance(1.63, 0);			//move forward 1.63 m
+						moveDistance(0.91, 315);			//move at a 315 degree for 1.63 m
+						moveDistance(0.76, 0);
+						break;
+					default:
+						break;
+				}
+				break;
+			case(2):			//middle start
+				switch (gameData.substring(0,1)) {
+					case "L":
+						//Move forward
+						moveDistance(1.524,0);
+						//Turn to 90(left) degrees and move
+						moveDistance(2.413,90);
+						//Turn to 0 Degrees
+						moveDistance(1.778, 0);
+						break;
+					case "R":
+						moveDistance(1.63, 0);			//move forward 1.63 m
+						moveDistance(0.91, 315);			//move at a 315 degree for 1.63 m
+						moveDistance(0.76, 0);
+						break;
+					default:
+						break;
+				}
+				break;
+			case(3):			//right start
+				switch (gameData.substring(0,1)) {
+					case "L":
+						moveDistance(4.3, 0);		//move forward 4.3 m
+						break;
+					case "R":
+						moveDistance(4.3, 0);		//move forward 4.3 m
+						moveDistance(0.78, 90);			//rotate towards switch and move .78 m towards it
+						break;
+					default:
+						break;
+				}
+				break;
+		}
+		motorRF.set(0);
+		motorRB.set(0);
+		motorLF.set(0);
+		motorLB.set(0);
 	}	
 }
