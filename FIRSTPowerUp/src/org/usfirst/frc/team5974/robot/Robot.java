@@ -85,6 +85,7 @@ import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import org.usfirst.frc.team5974.robot.Remote;
 
 import java.util.ArrayList;		//arraylist
 
@@ -121,10 +122,8 @@ public class Robot extends IterativeRobot {
 	
 	//double robotSpeed;	//robot speed (fast/slow mode)
 	double GameTime;
-	boolean tankDriveBool = true;	//drive mode: true = tank drive, false = arcade drive
-	boolean fastBool = false;		//speed mode: true = fast mode, false = slow mode
 	double forkliftHeight;
-	boolean grabberInBool = true;	//grabber: true = in, false = out
+	
 	int autoStep = 0; //which step of the process we're on in autonomous
 	
 	//position arrays
@@ -174,15 +173,7 @@ public class Robot extends IterativeRobot {
 	
 	double counter = 0;
 	
-	public boolean checkButton(boolean button, boolean toggle, int port) {		//When the button is pushed, once it is released, its toggle is changed
-		if (button) {
-			toggle = !toggle;
-			while (button) {		//TODO while loop causes problems
-				button = controller.getRawButton(port);
-			}
-		}
-		return toggle;
-	}
+	
 	
 	public void rotateTo(double angle) {		//rotates robot to angle based on IMU and d-pad
 		
@@ -253,18 +244,7 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	public void joystickDeadZone() {		//sets dead zone for joysticks		//TODO test this
-		if (joystickLXAxis <= 0.075 && joystickLXAxis >= -0.075) {
-			joystickLXAxis = 0;
-		} if (joystickLYAxis <= 0.075 && joystickLYAxis >= -0.075) {
-			joystickLYAxis = 0;
-		}
-		if (joystickRXAxis <= 0.075 && joystickRXAxis >= -0.075) {
-			joystickRXAxis = 0;
-		} if (joystickRYAxis <= 0.075 && joystickRYAxis >= -0.075) {
-			joystickRYAxis = 0;
-		}
-	}
+	
 	
 	public void updateGyro() {		//set IMU.getAngle() (-inf,inf) output to a non-looping value [0,360)
 		angleToForward = IMU.getAngleZ();
@@ -327,53 +307,7 @@ public class Robot extends IterativeRobot {
 
 	}
 	
-	public void updateController() {		//updates all controller features
-		/**I don't know why you made a whole bunch of port variables when numbers are faster, but hey! You do you. - Thomas*/
-		//i concur --Carter
-		
-		//left joystick update
-		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);		//returns a value [-1,1]
-		joystickLYAxis = controller.getRawAxis(portJoystickLYAxis);		//returns a value [-1,1]
-		joystickLPress = controller.getRawButton(portJoystickLPress);	//returns a value {0,1}
-		
-		//right joystick update
-		joystickRXAxis = controller.getRawAxis(portJoystickRXAxis);		//returns a value [-1,1]
-		joystickRYAxis = controller.getRawAxis(portJoystickRYAxis);		//returns a value [-1,1]
-		joystickRPress = controller.getRawButton(portJoystickRPress);	//returns a value {0,1}
-		
-		//trigger updates
-		triggerL = controller.getRawAxis(portTriggerL);		//returns a value [0,1]
-		triggerR = controller.getRawAxis(portTriggerR);		//returns a value [0,1]
-		
-		//bumper updates
-		bumperL = controller.getRawButton(portBumperL);		//returns a value {0,1}
-		bumperR = controller.getRawButton(portBumperR);		//returns a value {0,1}
-		
-		//button updates
-		buttonX = controller.getRawButton(portButtonX);		//returns a value {0,1}
-		buttonY = controller.getRawButton(portButtonY);		//returns a value {0,1}
-		buttonA = controller.getRawButton(portButtonA);		//returns a value {0,1}
-		buttonB = controller.getRawButton(portButtonB);		//returns a value {0,1}
-		
-		buttonBack = controller.getRawButton(portButtonBack);	//returns a value {0,1}
-		buttonStart = controller.getRawButton(portButtonStart);	//returns a value {0,1}
-		
-		//toggle checks
-		tankDriveBool = checkButton(buttonX, tankDriveBool, portButtonX);		//toggles boolean if button is pressed
-		fastBool = checkButton(buttonB, fastBool, portButtonB);					//toggles boolean if button is pressed
-		
-		
-		//d-pad/POV updates
-		dPad = controller.getPOV(portDPad);		//returns a value {-1,0,45,90,135,180,225,270,315}
-
-		//d-pad/POV turns
-		if (dPad != -1) {
-			dPad = 360 - dPad; //Converts the clockwise dPad rotation into a Gyro-readable counterclockwise rotation.
-			rotateTo(dPad);
-		}
-		
-		joystickDeadZone();
-	}
+	
 	
 	public void update() {	//updates all update functions tee
 		updateController();
