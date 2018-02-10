@@ -83,6 +83,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
 import edu.wpi.first.wpilibj.*;									//everything tbh
 import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
+
 import java.util.ArrayList;		//arraylist
 
 /**
@@ -94,11 +97,9 @@ import java.util.ArrayList;		//arraylist
  */
 
 public class Robot extends IterativeRobot {
-	private static final String startL = "Start L";
-	private static final String startM = "Start M";
-	private static final String startR = "Start R";
-	private String m_autoSelected;
-	private SendableChooser<String> m_chooser = new SendableChooser<>();
+	Command autonomousCommand;
+	SendableChooser autoChooser;
+	//public static OI oi;
 	
 
 	//Also, sometimes one side is inverted. If it is, we need to change our drive code to reflect that.
@@ -530,16 +531,57 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
+	/*public void leftAuto() {
+		if (gameData.charAt(0) == 'L'){
+				//move forward
+				moveDistance(2.5146,0);
+				//turn right
+				moveDistance(1.4732, 270);
+				//turn left
+				moveDistance(0.254, 0);
+		}
+		else {
+			//move forward
+			moveDistance(4.3,0);
+			
+		}
+	}
+	public void middleAuto() {
+		if (gameData.charAt(0) == 'L') {
+			//Move forward
+			moveDistance(1.524,0);
+			//Turn to 90(left) degrees and move
+			moveDistance(2.413,90);
+			//Turn to 0 Degrees
+			moveDistance(1.778, 0);
+		}
+		else {
+			moveDistance(1.63, 0);			//move forward 1.63 m
+			moveDistance(0.91, 315);			//move at a 315 degree for 1.63 m
+			moveDistance(0.76, 0);
+		}
+	}
+	public void rightAuto() {
+		if (gameData.charAt(0)== 'L') {
+			moveDistance(4.3, 0);		//move forward 4.3 m
+		}
+		else {
+			moveDistance(4.3, 0);		//move forward 4.3 m
+			moveDistance(0.78, 90);			//rotate towards switch and move .78 m towards it
+		}
+			
+	}
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addObject("Start Left", startL); //This lets us choose which auto mode we're doing
-		m_chooser.addObject("Start Middle", startM);
-		m_chooser.addObject("Start Right", startR);
-		SmartDashboard.putData("Auto choices", m_chooser);
+		autoChooser = new SendableChooser();
+		autoChooser.addDefault("Start Left", new leftAuto()); //This lets us choose which auto mode we're doing
+		autoChooser.addObject("Start Middle", new middleAuto());
+		autoChooser.addObject("Start Right", new rightAuto());
+		SmartDashboard.putData("Auto choices", autoChooser);
 		//Our code
 		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
@@ -560,11 +602,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autoSelected = m_chooser.getSelected();
+		autonomousCommand = (Command) autoChooser.getSelected();
+		autonomousCommand.start();
 		// autoSelected = SmartDashboard.getString("Auto Selector"),
 		// defaultAuto);
-		System.out.println("Auto selected: " + m_autoSelected);
-		gameData = DriverStation.getInstance().getGameSpecificMessage(); 
+		//gameData = DriverStation.getInstance().getGameSpecificMessage(); 
+		String gameData = "LRL";
 		/*Gives 3 characters telling your switch and scale sides.
 		 *The first one is your switch.
 		 *The second is the scale.
@@ -579,6 +622,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		Scheduler.getInstance().run();
 		/*
 		 * Right now, in the middle it can go to either, on the left it can go to the left, and right on the right
 		 * In the middle, it goes left with 90 degree turns
@@ -586,9 +630,9 @@ public class Robot extends IterativeRobot {
 		 * On the right, It goes forwards next to the switch, turns towards the switch, drives into the switch
 		 * On the left it has 3 90 degree turns.
 		 */
-		switch (m_autoSelected){
-			case startL:
-				switch (gameData.substring(0,1)) {
+		/*switch (m_autoSelected){
+			//case startL:
+				//switch (gameData.substring(0,1)) {
 					case "L":
 						//move forward
 						moveDistance(2.5146,0);
@@ -634,8 +678,8 @@ public class Robot extends IterativeRobot {
 					default:
 						break;
 				}
-					
-			default:
+			*/		
+			// default:
 				//going in a square hopefully, to test IMU (gyro/accel)
 				
 				/*
@@ -675,11 +719,8 @@ public class Robot extends IterativeRobot {
 					autoStep++;
 					angleCache = 72;
 				}
-				 
-				break;
-		}
+	}
 					
-		}
 		/*To use gameData,example
 		 * if(gameData.charAt(0) == 'L')     //if alliance switch is on left side at character 0 (The first character)
 		 * { //blah blahblah what to do if switch is on left yeah
