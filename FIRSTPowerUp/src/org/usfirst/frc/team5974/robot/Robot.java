@@ -97,8 +97,8 @@ import java.util.ArrayList;		//arraylist
  */
 
 public class Robot extends IterativeRobot {
-	Command autonomousCommand;
-	SendableChooser<Object> autoChooser;
+	//Command autonomousCommand;
+	//SendableChooser<Object> autoChooser;
 	//public static OI oi;
 	
 
@@ -579,11 +579,11 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		autoChooser = new SendableChooser<>();
-		autoChooser.addDefault("Start Left", new leftAuto()); //This lets us choose which auto mode we're doing
-		autoChooser.addObject("Start Middle", new middleAuto());
-		autoChooser.addObject("Start Right", new rightAuto());
-		SmartDashboard.putData("Auto choices", autoChooser);
+		//autoChooser = new SendableChooser<Object>();
+		//autoChooser.addDefault("Start Left", new leftAuto()); //This lets us choose which auto mode we're doing
+		//autoChooser.addObject("Start Middle", new middleAuto());
+		//autoChooser.addObject("Start Right", new rightAuto());
+		//SmartDashboard.putData("Auto choices", autoChooser);
 		//Our code
 		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
@@ -604,8 +604,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = (Command) autoChooser.getSelected();
-		autonomousCommand.start();
+		//autonomousCommand = (Command) autoChooser.getSelected();
+		//autonomousCommand.start();
 		// autoSelected = SmartDashboard.getString("Auto Selector"),
 		// defaultAuto);
 		//gameData = DriverStation.getInstance().getGameSpecificMessage(); 
@@ -624,7 +624,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
+		//Scheduler.getInstance().run();
 		/*
 		 * Right now, in the middle it can go to either, on the left it can go to the left, and right on the right
 		 * In the middle, it goes left with 90 degree turns
@@ -632,7 +632,7 @@ public class Robot extends IterativeRobot {
 		 * On the right, It goes forwards next to the switch, turns towards the switch, drives into the switch
 		 * On the left it has 3 90 degree turns.
 		 */
-		/*switch (m_autoSelected){
+		switch (m_autoSelected){
 			//case startL:
 				//switch (gameData.substring(0,1)) {
 					case "L":
@@ -680,7 +680,7 @@ public class Robot extends IterativeRobot {
 					default:
 						break;
 				}
-			*/		
+					
 			// default:
 				//going in a square hopefully, to test IMU (gyro/accel)
 				
