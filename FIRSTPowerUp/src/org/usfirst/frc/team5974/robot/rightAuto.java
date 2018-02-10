@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import java.util.ArrayList;		//arraylist
 
 
-public class rightAuto extends Robot {
+public class rightAuto extends Command {
 
 	public rightAuto() {
 		if (gameData.charAt(0)== 'L') {
