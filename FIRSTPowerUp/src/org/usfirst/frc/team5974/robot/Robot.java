@@ -330,9 +330,9 @@ public class Robot extends IterativeRobot {
 	
 	public void updateTrifecta() {	//updates pos, vel, and accel
 		//accel variables updated from IMU
-		accelX = (IMU.getAccelX()) * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
-		accelY = (IMU.getAccelY()) * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
-		accelZ = (IMU.getAccelZ()) * 9.8;
+		accelX = (IMU.getAccelX() - exX) * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
+		accelY = (IMU.getAccelY() - exY) * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
+		accelZ = (IMU.getAccelZ() - exZ) * 9.8;
 		
 		//velocity updated by acceleration integral
 		velX += accelX * dT;
@@ -369,8 +369,6 @@ public class Robot extends IterativeRobot {
 	public void updateController() {		//updates all controller features
 		/**I don't know why you made a whole bunch of port variables when numbers are faster, but hey! You do you. - Thomas*/
 		//i concur --Carter
-		//should we merge this part with the 'variables we're using' section starting with Thomas' blue comment ("Button ports, however...")? --Muneo
-		//@Muneo no, the "variables we're using" section defines the global variables. This function actually gives numbers to those variables. I can explain it on Monday. --Carter
 		
 		//left joystick update
 		joystickLXAxis = controller.getRawAxis(portJoystickLXAxis);		//returns a value [-1,1]
