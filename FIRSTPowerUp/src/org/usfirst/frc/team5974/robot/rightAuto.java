@@ -30,4 +30,10 @@ public class rightAuto extends Command {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	protected boolean isFinished() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
