@@ -649,7 +649,7 @@ public class Robot extends IterativeRobot {
 						break;
 					default:
 						break;
-				}
+				//}
 			case startM:
 				switch (gameData.substring(0,1)) {
 					case "L":
