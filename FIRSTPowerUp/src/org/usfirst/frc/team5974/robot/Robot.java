@@ -650,7 +650,7 @@ public class Robot extends IterativeRobot {
 					default:
 						break;
 				}
-			case startM:
+			//case startM:
 				switch (gameData.substring(0,1)) {
 					case "L":
 						//Move forward
@@ -668,7 +668,7 @@ public class Robot extends IterativeRobot {
 					default:
 						break;
 				}
-			case startR:
+			//case startR:
 				switch (gameData.substring(0,1)) {
 					case "L":
 						moveDistance(4.3, 0);		//move forward 4.3 m
