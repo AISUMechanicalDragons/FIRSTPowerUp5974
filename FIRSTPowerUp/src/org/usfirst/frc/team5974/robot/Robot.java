@@ -378,7 +378,7 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	public void grab() {	//grabbers in/out based on bumper bools  
+	/*public void grab() {	//grabbers in/out based on bumper bools  
 		//move left grabber wheels
 		if (remote.bumperL) {
 			if (remote.grabberInBool) {
@@ -400,7 +400,7 @@ public class Robot extends IterativeRobot {
 		} else {
 			motorGR.set(0);
 		}
-	}
+	}*/
 	
 	//this function is to break in the gear box
 	public void gearBoxTest(){
