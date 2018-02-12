@@ -632,7 +632,7 @@ public class Robot extends IterativeRobot {
 		 * On the right, It goes forwards next to the switch, turns towards the switch, drives into the switch
 		 * On the left it has 3 90 degree turns.
 		 */
-		switch (m_autoSelected){
+		/*switch (autoSelected){
 			//case startL:
 				//switch (gameData.substring(0,1)) {
 					case "L":
@@ -649,10 +649,9 @@ public class Robot extends IterativeRobot {
 						break;
 					default:
 						break;
-				//}
-			case startM:
 				}
-			//case startM:
+
+			case startM:
 				switch (gameData.substring(0,1)) {
 					case "L":
 						//Move forward
@@ -670,7 +669,7 @@ public class Robot extends IterativeRobot {
 					default:
 						break;
 				}
-			//case startR:
+			case startR:
 				switch (gameData.substring(0,1)) {
 					case "L":
 						moveDistance(4.3, 0);		//move forward 4.3 m
@@ -706,7 +705,7 @@ public class Robot extends IterativeRobot {
 				}
 				*/ 
 				// Alternate - 90,180,270,360
-				if(autoStep%2==0){
+				/*if(autoStep%2==0){
 					motorRB.set(0.5);
 					motorRF.set(0.5);
 					motorLB.set(-0.5);
@@ -722,7 +721,7 @@ public class Robot extends IterativeRobot {
 					rotateTo(90*(autoStep/2)+(1/2)); //this goes 90,180,270,360 for autoStep of 1,3,5,7
 					autoStep++;
 					angleCache = 72;
-				}
+				}*/
 	}
 					
 		/*To use gameData,example
