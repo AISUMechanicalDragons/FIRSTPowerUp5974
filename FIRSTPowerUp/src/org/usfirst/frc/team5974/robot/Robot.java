@@ -186,7 +186,7 @@ public class Robot extends IterativeRobot {
 	double accelY = 0;
 	double accelZ = 0;
 	
-	boolean check = false;				//this should be deleted once the tests have been conducted
+	boolean test = false;				//this should be deleted once the tests have been conducted
 	
 	ArrayList avgX = new ArrayList();	//List of X accelerations to be averaged
 	ArrayList avgY = new ArrayList();	//List of Y accelerations to be averaged
@@ -199,6 +199,7 @@ public class Robot extends IterativeRobot {
 	double exX = 0;	//Excess X acceleration
 	double exY = 0;	//Excess X acceleration
 	double exZ = 0;	//Excess X acceleration
+	
 
 	//time variables [see updateTimer()]
 	Timer timer = new Timer();
@@ -348,6 +349,10 @@ public class Robot extends IterativeRobot {
 	public void calibrate(int num) { //Calibrates gyro and creates excess acceleration values
 		updateGyro();
 		
+		sumX = 0;	//Sum of avgX
+		sumY = 0;	//Sum of avgY
+		sumZ = 0;	//Sum of avgZ
+		
 		avgX.clear();
 		avgY.clear();
 		avgZ.clear();
@@ -368,6 +373,10 @@ public class Robot extends IterativeRobot {
 		exY = sumY / avgY.size();
 		exZ = sumZ / avgZ.size();
 		
+		//Data from calibrate()
+		SmartDashboard.putNumber("test x", exX * 9.8);
+		SmartDashboard.putNumber("test y", exY * 9.8);
+		SmartDashboard.putNumber("test z", exZ * 9.8);
 
 	}
 	
@@ -446,10 +455,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
 		//SmartDashboard.putString("Switch Scale Switch", gameData);
-		//Data from calibrate()
-		SmartDashboard.putNumber("test x", exX * 9.8);
-		SmartDashboard.putNumber("test y", exY * 9.8);
-		SmartDashboard.putNumber("test z", exZ * 9.8);
+		
 	
 	}
 	
@@ -768,7 +774,11 @@ public class Robot extends IterativeRobot {
 			arcadeDrive();
 		}
 		if (buttonA) {
-			calibrate(10);
+			test = true;
+			while (test) {
+				calibrate(10);
+				test = false;
+			}
 		}
 	}
 
