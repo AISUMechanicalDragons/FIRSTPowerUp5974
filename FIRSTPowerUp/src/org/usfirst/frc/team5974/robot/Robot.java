@@ -109,8 +109,16 @@ public class Robot extends IterativeRobot {
 	VictorSP motorLB = new VictorSP(3); //motor left back // THIS IS INVERTED; USE NEGATIVES TO GO FORWARDS
 	VictorSP motorLF = new VictorSP(2); //motor left front // THIS IS INVERTED; USE NEGATIVES TO GO FORWARDS
 	
+	//Placeholders for now - once electrical knows which ports these are on, we'll change them
+	//Grabber wheel left
 	Spark motorGL = new Spark(4);
+	//Grabber wheel right
 	Spark motorGR = new Spark(5);
+	//Lift motor
+	Spark motorLift = new Spark(6);
+	//Climber motor
+	Spark motorClimb = new Spark(7);
+	
 	
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
@@ -656,10 +664,7 @@ public class Robot extends IterativeRobot {
 					default:
 						break;
 				}
-<<<<<<< HEAD
-
-=======
->>>>>>> branch 'master' of http://github.com/AISUMechanicalDragons/FIRSTPowerUp5974
+				
 			case startM:
 				switch (gameData.substring(0,1)) {
 					case "L":
