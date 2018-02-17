@@ -97,8 +97,13 @@ import java.util.ArrayList;		//arraylist
  */
 
 public class Robot extends IterativeRobot {
+<<<<<<< HEAD
 	//Command autonomousCommand;
 	//SendableChooser<Object> autoChooser;
+=======
+	Command autonomousCommand;
+	SendableChooser<String> autoChooser;
+>>>>>>> branch 'master' of https://github.com/AISUMechanicalDragons/FIRSTPowerUp5974.git
 	//public static OI oi;
 	
 
@@ -550,6 +555,14 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void robotInit() {
+<<<<<<< HEAD
+=======
+		autoChooser = new SendableChooser<String>();
+		/*autoChooser.addDefault("Start Left", new leftAuto()); //This lets us choose which auto mode we're doing
+		autoChooser.addObject("Start Middle", new middleAuto());
+		autoChooser.addObject("Start Right", new rightAuto());
+		SmartDashboard.putData("Auto choices", autoChooser);*/
+>>>>>>> branch 'master' of https://github.com/AISUMechanicalDragons/FIRSTPowerUp5974.git
 		//Our code
 		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
