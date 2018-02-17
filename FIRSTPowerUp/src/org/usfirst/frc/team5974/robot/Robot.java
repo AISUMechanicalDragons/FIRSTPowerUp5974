@@ -597,7 +597,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		String start = "R";//R for right, FR for far right, L for far left
+		String start = autonomousCommand; //If this even works. lol
+		//String start = "R";//R for right, FR for far right, L for far left
 		//Starting Far Right
 		if (start == "FR") {
 			if(autoStep==0) {
