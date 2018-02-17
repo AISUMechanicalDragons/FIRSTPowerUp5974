@@ -97,8 +97,13 @@ import java.util.ArrayList;		//arraylist
  */
 
 public class Robot extends IterativeRobot {
+<<<<<<< HEAD
 	Command autonomousCommand;
 	SendableChooser<String> autoChooser;
+=======
+	//Command autonomousCommand;
+	//SendableChooser<Object> autoChooser;
+>>>>>>> branch 'master' of https://github.com/AISUMechanicalDragons/FIRSTPowerUp5974.git
 	//public static OI oi;
 	
 
@@ -109,8 +114,16 @@ public class Robot extends IterativeRobot {
 	VictorSP motorLB = new VictorSP(3); //motor left back // THIS IS INVERTED; USE NEGATIVES TO GO FORWARDS
 	VictorSP motorLF = new VictorSP(2); //motor left front // THIS IS INVERTED; USE NEGATIVES TO GO FORWARDS
 	
+	//Placeholders for now - once electrical knows which ports these are on, we'll change them
+	//Grabber wheel left
 	Spark motorGL = new Spark(4);
+	//Grabber wheel right
 	Spark motorGR = new Spark(5);
+	//Lift motor
+	Spark motorLift = new Spark(6);
+	//Climber motor
+	Spark motorClimb = new Spark(7);
+	
 	
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
@@ -186,7 +199,7 @@ public class Robot extends IterativeRobot {
 	double accelY = 0;
 	double accelZ = 0;
 	
-	boolean check = false;				//this should be deleted once the tests have been conducted
+	boolean test = false;				//this should be deleted once the tests have been conducted
 	
 	ArrayList avgX = new ArrayList();	//List of X accelerations to be averaged
 	ArrayList avgY = new ArrayList();	//List of Y accelerations to be averaged
@@ -199,6 +212,7 @@ public class Robot extends IterativeRobot {
 	double exX = 0;	//Excess X acceleration
 	double exY = 0;	//Excess X acceleration
 	double exZ = 0;	//Excess X acceleration
+	
 
 	//time variables [see updateTimer()]
 	Timer timer = new Timer();
@@ -331,9 +345,9 @@ public class Robot extends IterativeRobot {
 	
 	public void updateTrifecta() {	//updates pos, vel, and accel
 		//accel variables updated from IMU
-		accelX = (IMU.getAccelX() - exX) * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
-		accelY = (IMU.getAccelY() - exY) * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
-		accelZ = (IMU.getAccelZ() - exZ) * 9.8;
+		accelX = (IMU.getAccelX() - 0) * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
+		accelY = (IMU.getAccelY() - 0) * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
+		accelZ = (IMU.getAccelZ() - 0) * 9.8;
 		
 		//velocity updated by acceleration integral
 		velX += accelX * dT;
@@ -347,6 +361,10 @@ public class Robot extends IterativeRobot {
 	}
 	public void calibrate(int num) { //Calibrates gyro and creates excess acceleration values
 		updateGyro();
+		
+		sumX = 0;	//Sum of avgX
+		sumY = 0;	//Sum of avgY
+		sumZ = 0;	//Sum of avgZ
 		
 		avgX.clear();
 		avgY.clear();
@@ -368,6 +386,10 @@ public class Robot extends IterativeRobot {
 		exY = sumY / avgY.size();
 		exZ = sumZ / avgZ.size();
 		
+		//Data from calibrate()
+		SmartDashboard.putNumber("test x", exX * 9.8);
+		SmartDashboard.putNumber("test y", exY * 9.8);
+		SmartDashboard.putNumber("test z", exZ * 9.8);
 
 	}
 	
@@ -446,10 +468,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
 		//SmartDashboard.putString("Switch Scale Switch", gameData);
-		//Data from calibrate()
-		SmartDashboard.putNumber("test x", exX * 9.8);
-		SmartDashboard.putNumber("test y", exY * 9.8);
-		SmartDashboard.putNumber("test z", exZ * 9.8);
+		
 	
 	}
 	
@@ -579,11 +598,19 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+<<<<<<< HEAD
 		autoChooser = new SendableChooser<String>();
 		autoChooser.addDefault("Start Left", new leftAuto()); //This lets us choose which auto mode we're doing
 		autoChooser.addObject("Start Middle", new middleAuto());
 		autoChooser.addObject("Start Right", new rightAuto());
 		SmartDashboard.putData("Auto choices", autoChooser);
+=======
+		//autoChooser = new SendableChooser<Object>();
+		//autoChooser.addDefault("Start Left", new leftAuto()); //This lets us choose which auto mode we're doing
+		//autoChooser.addObject("Start Middle", new middleAuto());
+		//autoChooser.addObject("Start Right", new rightAuto());
+		//SmartDashboard.putData("Auto choices", autoChooser);
+>>>>>>> branch 'master' of https://github.com/AISUMechanicalDragons/FIRSTPowerUp5974.git
 		//Our code
 		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
@@ -604,8 +631,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = (Command) autoChooser.getSelected();
-		autonomousCommand.start();
+		//autonomousCommand = (Command) autoChooser.getSelected();
+		//autonomousCommand.start();
 		// autoSelected = SmartDashboard.getString("Auto Selector"),
 		// defaultAuto);
 		//gameData = DriverStation.getInstance().getGameSpecificMessage(); 
@@ -624,7 +651,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
+		//Scheduler.getInstance().run();
 		/*
 		 * Right now, in the middle it can go to either, on the left it can go to the left, and right on the right
 		 * In the middle, it goes left with 90 degree turns
@@ -632,7 +659,7 @@ public class Robot extends IterativeRobot {
 		 * On the right, It goes forwards next to the switch, turns towards the switch, drives into the switch
 		 * On the left it has 3 90 degree turns.
 		 */
-		/*switch (m_autoSelected){
+		/*switch (autoSelected){
 			//case startL:
 				//switch (gameData.substring(0,1)) {
 					case "L":
@@ -650,6 +677,7 @@ public class Robot extends IterativeRobot {
 					default:
 						break;
 				}
+				
 			case startM:
 				switch (gameData.substring(0,1)) {
 					case "L":
@@ -680,7 +708,7 @@ public class Robot extends IterativeRobot {
 					default:
 						break;
 				}
-			*/		
+					
 			// default:
 				//going in a square hopefully, to test IMU (gyro/accel)
 				
@@ -704,7 +732,7 @@ public class Robot extends IterativeRobot {
 				}
 				*/ 
 				// Alternate - 90,180,270,360
-				if(autoStep%2==0){
+				/*if(autoStep%2==0){
 					motorRB.set(0.5);
 					motorRF.set(0.5);
 					motorLB.set(-0.5);
@@ -720,7 +748,7 @@ public class Robot extends IterativeRobot {
 					rotateTo(90*(autoStep/2)+(1/2)); //this goes 90,180,270,360 for autoStep of 1,3,5,7
 					autoStep++;
 					angleCache = 72;
-				}
+				}*/
 	}
 					
 		/*To use gameData,example
@@ -764,7 +792,11 @@ public class Robot extends IterativeRobot {
 			arcadeDrive();
 		}
 		if (buttonA) {
-			calibrate(10);
+			test = true;
+			while (test) {
+				calibrate(10);
+				test = false;
+			}
 		}
 	}
 
