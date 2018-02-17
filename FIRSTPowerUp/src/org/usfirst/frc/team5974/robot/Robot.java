@@ -98,7 +98,7 @@ import java.util.ArrayList;		//arraylist
 
 public class Robot extends IterativeRobot {
 	Command autonomousCommand;
-	SendableChooser autoChooser;
+	SendableChooser<String> autoChooser;
 	//public static OI oi;
 	
 
@@ -579,7 +579,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		autoChooser = new SendableChooser();
+		autoChooser = new SendableChooser<String>();
 		autoChooser.addDefault("Start Left", new leftAuto()); //This lets us choose which auto mode we're doing
 		autoChooser.addObject("Start Middle", new middleAuto());
 		autoChooser.addObject("Start Right", new rightAuto());
