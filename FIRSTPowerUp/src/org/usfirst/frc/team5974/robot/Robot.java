@@ -587,12 +587,14 @@ public class Robot extends IterativeRobot {
 					motorRF.set(0.25);
 					motorLB.set(-0.25);
 					motorLF.set(-0.25);
+					//Go forward for 5 seconds
 				}
 				else {
 					motorRB.set(0);
 					motorRF.set(0);
 					motorLB.set(0);
 					motorLF.set(0);
+					//stop going
 				}
 			}
 		}
