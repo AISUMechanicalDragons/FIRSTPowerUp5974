@@ -524,7 +524,7 @@ public class Robot extends IterativeRobot {
 		if (bumperL) {
 			motorClimb.set(1);
 		}
-		if (bumperR) {
+		else if (bumperR) {
 			motorClimb.set(-1);
 		}
 		else {
