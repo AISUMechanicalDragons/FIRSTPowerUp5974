@@ -547,6 +547,7 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void robotInit() {
+		SendableChooser<String> autoChooser = new SendableChooser<String>();	
 		//Our code
 		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
