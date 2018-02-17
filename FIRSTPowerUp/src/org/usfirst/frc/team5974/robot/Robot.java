@@ -114,7 +114,7 @@ public class Robot extends IterativeRobot {
 	//Lift motor
 	Spark motorLift = new Spark(6);
 	//Climber motor
-	Spark motorClimb = new Spark(7);
+	Spark motorClimb = new Spark(8);
 	
 	
 	//Variables we're using
@@ -520,6 +520,17 @@ public class Robot extends IterativeRobot {
 			motorGR.set(0);
 		}
 	}
+	public void climb() {
+		if (bumperL) {
+			motorClimb.set(1);
+		}
+		if (bumperR) {
+			motorClimb.set(-1);
+		}
+		else {
+			motorClimb.set(0);
+		}
+	}
 	
 	//this function is to break in the gear box
 	public void gearBoxTest(){
@@ -720,6 +731,7 @@ public class Robot extends IterativeRobot {
 				test = false;
 			}
 		}
+		climb();
 	}
 
 	/**
