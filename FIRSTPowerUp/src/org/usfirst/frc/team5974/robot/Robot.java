@@ -97,13 +97,8 @@ import java.util.ArrayList;		//arraylist
  */
 
 public class Robot extends IterativeRobot {
-<<<<<<< HEAD
-	Command autonomousCommand;
-	SendableChooser<String> autoChooser;
-=======
 	//Command autonomousCommand;
 	//SendableChooser<Object> autoChooser;
->>>>>>> branch 'master' of https://github.com/AISUMechanicalDragons/FIRSTPowerUp5974.git
 	//public static OI oi;
 	
 
@@ -552,65 +547,9 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	/*public void leftAuto() {
-		if (gameData.charAt(0) == 'L'){
-				//move forward
-				moveDistance(2.5146,0);
-				//turn right
-				moveDistance(1.4732, 270);
-				//turn left
-				moveDistance(0.254, 0);
-		}
-		else {
-			//move forward
-			moveDistance(4.3,0);
-			
-		}
-	}
-	public void middleAuto() {
-		if (gameData.charAt(0) == 'L') {
-			//Move forward
-			moveDistance(1.524,0);
-			//Turn to 90(left) degrees and move
-			moveDistance(2.413,90);
-			//Turn to 0 Degrees
-			moveDistance(1.778, 0);
-		}
-		else {
-			moveDistance(1.63, 0);			//move forward 1.63 m
-			moveDistance(0.91, 315);			//move at a 315 degree for 1.63 m
-			moveDistance(0.76, 0);
-		}
-	}
-	public void rightAuto() {
-		if (gameData.charAt(0)== 'L') {
-			moveDistance(4.3, 0);		//move forward 4.3 m
-		}
-		else {
-			moveDistance(4.3, 0);		//move forward 4.3 m
-			moveDistance(0.78, 90);			//rotate towards switch and move .78 m towards it
-		}
-			
-	}
-	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
-	 */
+	
 	@Override
 	public void robotInit() {
-<<<<<<< HEAD
-		autoChooser = new SendableChooser<String>();
-		autoChooser.addDefault("Start Left", new leftAuto()); //This lets us choose which auto mode we're doing
-		autoChooser.addObject("Start Middle", new middleAuto());
-		autoChooser.addObject("Start Right", new rightAuto());
-		SmartDashboard.putData("Auto choices", autoChooser);
-=======
-		//autoChooser = new SendableChooser<Object>();
-		//autoChooser.addDefault("Start Left", new leftAuto()); //This lets us choose which auto mode we're doing
-		//autoChooser.addObject("Start Middle", new middleAuto());
-		//autoChooser.addObject("Start Right", new rightAuto());
-		//SmartDashboard.putData("Auto choices", autoChooser);
->>>>>>> branch 'master' of https://github.com/AISUMechanicalDragons/FIRSTPowerUp5974.git
 		//Our code
 		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
@@ -631,17 +570,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		//autonomousCommand = (Command) autoChooser.getSelected();
-		//autonomousCommand.start();
-		// autoSelected = SmartDashboard.getString("Auto Selector"),
-		// defaultAuto);
-		//gameData = DriverStation.getInstance().getGameSpecificMessage(); 
-		String gameData = "LRL";
-		/*Gives 3 characters telling your switch and scale sides.
-		 *The first one is your switch.
-		 *The second is the scale.
-		 *The third one is your opponent's switch
-		*/
+		timer.start();
 
 		
 	}
@@ -651,104 +580,23 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		//Scheduler.getInstance().run();
-		/*
-		 * Right now, in the middle it can go to either, on the left it can go to the left, and right on the right
-		 * In the middle, it goes left with 90 degree turns
-		 * It goes Right at an angle
-		 * On the right, It goes forwards next to the switch, turns towards the switch, drives into the switch
-		 * On the left it has 3 90 degree turns.
-		 */
-		/*switch (autoSelected){
-			//case startL:
-				//switch (gameData.substring(0,1)) {
-					case "L":
-						//move forward
-						moveDistance(2.5146,0);
-						//turn right
-						moveDistance(1.4732, 270);
-						//turn left
-						moveDistance(0.254, 0);
-						break;
-					case "R":
-						//move forward
-						moveDistance(4.3,0);
-						break;
-					default:
-						break;
-				}
-				
-			case startM:
-				switch (gameData.substring(0,1)) {
-					case "L":
-						//Move forward
-						moveDistance(1.524,0);
-						//Turn to 90(left) degrees and move
-						moveDistance(2.413,90);
-						//Turn to 0 Degrees
-						moveDistance(1.778, 0);
-						break;
-					case "R":
-						moveDistance(1.63, 0);			//move forward 1.63 m
-						moveDistance(0.91, 315);			//move at a 315 degree for 1.63 m
-						moveDistance(0.76, 0);
-						break;
-					default:
-						break;
-				}
-			case startR:
-				switch (gameData.substring(0,1)) {
-					case "L":
-						moveDistance(4.3, 0);		//move forward 4.3 m
-						break;
-					case "R":
-						moveDistance(4.3, 0);		//move forward 4.3 m
-						moveDistance(0.78, 90);			//rotate towards switch and move .78 m towards it
-						break;
-					default:
-						break;
-				}
-					
-			// default:
-				//going in a square hopefully, to test IMU (gyro/accel)
-				
-				/*
-				if(autoStep%2==0 && autoStep<8) {
-					motorRB.set(0.5);
-					motorRF.set(0.5);
-					motorLB.set(-0.5);
-					motorLF.set(-0.5);
-					Timer.delay(0.5);
-					motorRB.set(0);
-					motorRF.set(0);
-					motorLB.set(0);
-					motorLF.set(0);
-					autoStep++;
-				}
-				if(autoStep%2==1 && autoStep<8) {
-					//should this go 90,180,270,360? or can I just say "go another 90 degrees" each time?
-					rotateTo(90);
-					autoStep++;
-				}
-				*/ 
-				// Alternate - 90,180,270,360
-				/*if(autoStep%2==0){
-					motorRB.set(0.5);
-					motorRF.set(0.5);
-					motorLB.set(-0.5);
-					motorLF.set(-0.5);
-					Timer.delay(0.5);
-					motorRB.set(0);
-					motorRF.set(0);
-					motorLB.set(0);
-					motorLF.set(0);
-					autoStep++;
-				}
-				if(autoStep%2==1){
-					rotateTo(90*(autoStep/2)+(1/2)); //this goes 90,180,270,360 for autoStep of 1,3,5,7
-					autoStep++;
-					angleCache = 72;
-				}*/
+		//This is for starting on the left or the right
+		if (timer.get() < 10) {
+			motorRB.set(0.25);
+			motorRF.set(0.25);
+			motorLB.set(-0.25);
+			motorLF.set(-0.25);
+		}
+		else {
+			motorRB.set(0);
+			motorRF.set(0);
+			motorLB.set(0);
+			motorLF.set(0);
+			if(gameData.charAt(0) == 'L') {/**Change this to R if we start on the right side**/
+				//TODO Put in lift up and/or drop box code here
+			}
+		}
+		
 	}
 					
 		/*To use gameData,example
