@@ -97,7 +97,8 @@ import java.util.ArrayList;		//arraylist
  */
 
 public class Robot extends IterativeRobot {
-	
+	String autonomousCommand;
+	SendableChooser<String> autoChooser;
 
 	//Also, sometimes one side is inverted. If it is, we need to change our drive code to reflect that.
 	/**Note that we have something along the lines of six VictorSP motor controllers and four Sparks. Also note that the ports start at 0 not 1. - Thomas*/
@@ -558,12 +559,12 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void robotInit() {
-		SendableChooser<String> autoChooser = new SendableChooser<String>();
+		autoChooser = new SendableChooser<String>();
 		autoChooser.addDefault("Far Right","FR");
 		autoChooser.addObject("Right", "R");
 		autoChooser.addObject("Left", "L");
 		autoChooser.addObject("Far Left", "FL");
-		//Our code
+		SmartDashboard.putData("Auto Mode: ",autoChooser);
 		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
 		IMU.reset();
@@ -584,8 +585,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		timer.start();
-
-		
+		autonomousCommand = autoChooser.getSelected();
+		//Theoretically, this will output what we've chosen in the SmartDashboard as a string?
+		//Not really sure how it works though.
+		System.out.println(autonomousCommand);
+		//If this is a thing, we won't have to change 'start' in autonomousPeriodic and recompile
 	}
 
 	/**
