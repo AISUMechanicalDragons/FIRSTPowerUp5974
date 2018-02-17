@@ -558,7 +558,11 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void robotInit() {
-		SendableChooser<String> autoChooser = new SendableChooser<String>();	
+		SendableChooser<String> autoChooser = new SendableChooser<String>();
+		autoChooser.addDefault("Far Right","FR");
+		autoChooser.addObject("Right", "R");
+		autoChooser.addObject("Left", "L");
+		autoChooser.addObject("Far Left", "FL");
 		//Our code
 		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
