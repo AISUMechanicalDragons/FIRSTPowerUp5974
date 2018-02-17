@@ -580,21 +580,21 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		//This is for starting on the left or the right,or far left and right
 		if(autoStep==0) {
-		if (timer.get() < 10) {
-			motorRB.set(0.25);
-			motorRF.set(0.25);
-			motorLB.set(-0.25);
-			motorLF.set(-0.25);
-		}
-		else {
-			motorRB.set(0);
-			motorRF.set(0);
-			motorLB.set(0);
-			motorLF.set(0);
-			if(gameData.charAt(0) == 'L') {/**Change this to R if we start on the right side, comment out if we're on the far right or left side**/
-				//TODO Put in lift up and/or drop box code here
-			autoStep++;
+			if (timer.get() < 10) {
+				motorRB.set(0.25);
+				motorRF.set(0.25);
+				motorLB.set(-0.25);
+				motorLF.set(-0.25);
 			}
+			else {
+				motorRB.set(0);
+				motorRF.set(0);
+				motorLB.set(0);
+				motorLF.set(0);
+				if(gameData.charAt(0) == 'L') {/**Change this to R if we start on the right side, comment out if we're on the far right or left side**/
+					//TODO Put in lift up and/or drop box code here
+				autoStep++;
+				}
 		}
 		}
 	}
