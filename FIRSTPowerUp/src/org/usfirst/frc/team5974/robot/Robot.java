@@ -223,7 +223,7 @@ public class Robot extends IterativeRobot {
 	 */
 	
 	double counter = 0;
-	
+
 	public boolean checkButton(boolean button, boolean toggle, int port) {		//When the button is pushed, once it is released, its toggle is changed
 		if (button) {
 			toggle = !toggle;
@@ -579,6 +579,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		//This is for starting on the left or the right
+		if(autoStep==0) {
 		if (timer.get() < 10) {
 			motorRB.set(0.25);
 			motorRF.set(0.25);
@@ -592,9 +593,10 @@ public class Robot extends IterativeRobot {
 			motorLF.set(0);
 			if(gameData.charAt(0) == 'L') {/**Change this to R if we start on the right side**/
 				//TODO Put in lift up and/or drop box code here
+				autoStep++;
 			}
 		}
-		
+		}
 	}
 					
 		/*To use gameData,example
