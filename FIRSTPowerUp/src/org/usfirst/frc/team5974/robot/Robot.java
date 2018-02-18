@@ -531,10 +531,10 @@ public class Robot extends IterativeRobot {
 		}
 		else {
 			if (triggerR > 0 && triggerL == 0) {
-				motorLift.set(1);
+				motorLift.set(triggerR);
 			}
 			else if (triggerL > 0 && triggerR == 0) {
-				motorLift.set(-1);
+				motorLift.set(triggerL);
 			}
 			else {
 				motorLift.set(0);
