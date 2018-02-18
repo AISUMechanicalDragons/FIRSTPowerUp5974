@@ -121,6 +121,8 @@ public class Robot extends IterativeRobot {
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
+	DigitalInput limitSwitchTop;
+	DigitalInput limitSwitchBottom;
 
 	
 	double joystickLXAxis;			//left joystick x-axis
@@ -577,6 +579,9 @@ public class Robot extends IterativeRobot {
 		IMU.calibrate();
 		IMU.reset();
 		calibrate(10);
+		//Limit switch init
+		DigitalInput limitSwitchTop = new DigitalInput(0);
+		DigitalInput limitSwitchBottom = new DigitalInput(1);
 	}
 
 	/**
