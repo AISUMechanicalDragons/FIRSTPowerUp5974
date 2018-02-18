@@ -521,23 +521,22 @@ public class Robot extends IterativeRobot {
 	}
 	public void verticalMovement() {
 		if (climbMode == true) {
-			if (triggerR > 0 && triggerL == 0) {
+			if (triggerR > 0 && triggerL == 0 && limitSwitchTop.get() == false) {
 				climbPower = triggerR;
 			}
-			if (triggerL > 0 && triggerR == 0) {
+			else if (triggerL > 0 && triggerR == 0 && limitSwitchBottom.get() == false) {
 				climbPower = (-1 * triggerL);
 			}
-		
+			/*else if (limitSwitchTop.get()||limitSwitchBottom.get()) {
+				climbPower=Math.min(climbPower, 0); //idk why, but the docs said to do it this way
+			}*/
 			else {
 				climbPower = 0;
-			}
-			if(limitSwitchTop.get()||limitSwitchBottom.get()) {
-				climbPower=Math.min(climbPower, 0); //idk why, but the docs said to do it this way
 			}
 			motorClimb.set(climbPower);
 		}
 		else {
-			//Are we putting in limit switches here?
+			//Are we putting in limit switches here? //TODO no. Not yet anyways. -Thomas
 			if (triggerR > 0 && triggerL == 0) {
 				motorLift.set(triggerR);
 			}
