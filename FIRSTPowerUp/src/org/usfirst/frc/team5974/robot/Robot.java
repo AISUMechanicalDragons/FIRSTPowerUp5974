@@ -114,9 +114,10 @@ public class Robot extends IterativeRobot {
 	Spark motorGR = new Spark(5);
 	//Lift motor
 	Spark motorLift = new Spark(6);
+	double liftPower = 0;
 	//Climber motor
 	Spark motorClimb = new Spark(8);
-	
+	double climbPower = 0;
 	
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
@@ -521,17 +522,22 @@ public class Robot extends IterativeRobot {
 	public void verticalMovement() {
 		if (climbMode == true) {
 			if (triggerR > 0 && triggerL == 0) {
-				motorClimb.set(triggerR);
+				climbPower = triggerR;
 			}
 			if (triggerL > 0 && triggerR == 0) {
-				motorClimb.set(-triggerL);
+				climbPower = (-1 * triggerL);
 			}
 		
 			else {
-				motorClimb.set(0);
+				climbPower = 0;
 			}
+			if(limitSwitchTop.get()||limitSwitchBottom.get()) {
+				climbPower=Math.min(climbPower, 0); //idk why, but the docs said to do it this way
+			}
+			motorClimb.set(climbPower);
 		}
 		else {
+			//Are we putting in limit switches here?
 			if (triggerR > 0 && triggerL == 0) {
 				motorLift.set(triggerR);
 			}
