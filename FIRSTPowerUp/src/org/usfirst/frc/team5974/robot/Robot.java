@@ -585,8 +585,8 @@ public class Robot extends IterativeRobot {
 		IMU.reset();
 		calibrate(10);
 		//Limit switch init
-		DigitalInput limitSwitchTop = new DigitalInput(0);
-		DigitalInput limitSwitchBottom = new DigitalInput(1);
+		limitSwitchTop = new DigitalInput(0);
+		limitSwitchBottom = new DigitalInput(1);
 	}
 
 	/**
