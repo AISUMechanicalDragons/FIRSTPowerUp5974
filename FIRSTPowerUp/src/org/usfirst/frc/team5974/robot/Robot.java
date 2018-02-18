@@ -192,6 +192,7 @@ public class Robot extends IterativeRobot {
 	double accelY = 0;
 	double accelZ = 0;
 	
+	boolean climbMode;
 	boolean test = false;				//this should be deleted once the tests have been conducted
 	
 	ArrayList avgX = new ArrayList();	//List of X accelerations to be averaged
@@ -500,36 +501,44 @@ public class Robot extends IterativeRobot {
 	
 	public void grab() {	//grabbers in/out based on bumper bools  
 		//move left grabber wheels
-		if (bumperL) {
-			if (grabberInBool) {
-				motorGL.set(1);
-			} else {
+		if (climbMode == false) {
+			if (bumperL) {
 				motorGL.set(-1);
-			}
-		} else {
-			motorGL.set(0);
-		}
-		
-		//move right grabber wheels
-		if (bumperR) {
-			if (grabberInBool) {
 				motorGR.set(-1);
-			} else {
+			} 
+			else if (bumperR) {
+				motorGL.set(1);
 				motorGR.set(1);
+			}	
+			else {
+				motorGL.set(0);
+				motorGR.set(0);
 			}
-		} else {
-			motorGR.set(0);
 		}
 	}
-	public void climb() {
-		if (bumperL) {
-			motorClimb.set(1);
-		}
-		else if (bumperR) {
-			motorClimb.set(-1);
+	public void verticalMovement() {
+		if (climbMode == true) {
+			if (triggerR > 0 && triggerL == 0) {
+				motorClimb.set(triggerR);
+			}
+			if (triggerL > 0 && triggerR == 0) {
+				motorClimb.set(-triggerL);
+			}
+		
+			else {
+				motorClimb.set(0);
+			}
 		}
 		else {
-			motorClimb.set(0);
+			if (triggerR > 0 && triggerL == 0) {
+				motorLift.set(1);
+			}
+			else if (triggerL > 0 && triggerR == 0) {
+				motorLift.set(-1);
+			}
+			else {
+				motorLift.set(0);
+			}
 		}
 	}
 	
@@ -563,7 +572,6 @@ public class Robot extends IterativeRobot {
 		autoChooser.addDefault("Far Right","FR");
 		autoChooser.addObject("Right", "R");
 		autoChooser.addObject("Left", "L");
-		autoChooser.addObject("Far Left", "FL");
 		SmartDashboard.putData("Auto Mode: ",autoChooser);
 		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		IMU.calibrate();
@@ -633,7 +641,20 @@ public class Robot extends IterativeRobot {
 					motorLB.set(0);
 					motorLF.set(0);
 					if(gameData.charAt(0) == 'R') {
-						//TODO Put in lift up and/or drop box code here
+						if(timer.get()< 7) {
+							motorLift.set(.25);
+						}
+						else {
+							motorLift.set(0);
+						}
+						if (timer.get() < 10 && timer.get() > 7) {
+							motorGL.set(1);
+							motorGR.set(1);
+						}
+						else {
+							motorGL.set(0);
+							motorGR.set(0);
+						}
 					}
 					autoStep++;
 				}
@@ -742,7 +763,8 @@ public class Robot extends IterativeRobot {
 				test = false;
 			}
 		}
-		climb();
+		verticalMovement();
+		grab();
 	}
 
 	/**
