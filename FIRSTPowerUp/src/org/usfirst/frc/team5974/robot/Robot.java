@@ -763,6 +763,9 @@ public class Robot extends IterativeRobot {
 				test = false;
 			}
 		}
+		if (buttonY) {
+			climbMode = !climbMode;
+		}
 		verticalMovement();
 		grab();
 	}
