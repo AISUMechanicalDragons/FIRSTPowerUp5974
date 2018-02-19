@@ -114,7 +114,7 @@ public class Robot extends IterativeRobot {
 	//Grabber wheel right
 	Spark motorGR = new Spark(5);
 	//Lift motor
-	//Spark motorLift = new Spark(6);
+	Spark motorLift = new Spark(6);
 	double liftPower = 0;
 	//Climber motor
 	Spark motorClimb = new Spark(8);
@@ -550,7 +550,7 @@ public class Robot extends IterativeRobot {
 		}
 		else {
 			//Are we putting in limit switches here? //TODO no. Not yet anyways. -Thomas
-			/*if (triggerR > 0 && triggerL == 0) {
+			if (triggerR > 0 && triggerL == 0) {
 				motorLift.set(triggerR);
 			}
 			else if (triggerL > 0 && triggerR == 0) {
@@ -558,7 +558,7 @@ public class Robot extends IterativeRobot {
 			}
 			else {
 				motorLift.set(0);
-			}*/
+			}
 		}
 	}
 	
