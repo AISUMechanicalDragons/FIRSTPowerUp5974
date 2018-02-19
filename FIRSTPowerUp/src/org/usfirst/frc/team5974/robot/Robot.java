@@ -472,6 +472,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
+		SmartDashboard.putNumber("MM", strongBad.motorMultiplier);
 		//SmartDashboard.putString("Switch Scale Switch", gameData);
 		
 	
