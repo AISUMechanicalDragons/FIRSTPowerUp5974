@@ -482,29 +482,18 @@ public class Robot extends IterativeRobot {
 		//left motors = left joystick y-axis
 		
 		if (fastBool) {
-<<<<<<< HEAD
-			motorRB.set(-1 * joystickRYAxis*strongBad.motorMultiplier);
-			motorRF.set(-1 * joystickRYAxis*strongBad.motorMultiplier);
-			motorLB.set(joystickLYAxis*strongBad.motorMultiplier);
-			motorLF.set(joystickLYAxis*strongBad.motorMultiplier);
-=======
-			motorRB.set(joystickRYAxis);
-			motorRF.set(joystickRYAxis);
-			motorLB.set(-joystickLYAxis);
-			motorLF.set(-joystickLYAxis);
->>>>>>> branch 'master' of https://github.com/AISUMechanicalDragons/FIRSTPowerUp5974.git
+			motorRB.set(joystickRYAxis*strongBad.motorMultiplier);
+			motorRF.set(joystickRYAxis*strongBad.motorMultiplier);
+			motorLB.set(-1*joystickLYAxis*strongBad.motorMultiplier);
+			motorLF.set(-1*joystickLYAxis*strongBad.motorMultiplier);
+
+
 		} else {
-<<<<<<< HEAD
-			motorRB.set(-1*strongBad.motorMultiplier * (joystickRYAxis/2));
-			motorRF.set(-1*strongBad.motorMultiplier * (joystickRYAxis/2));
-			motorLB.set(strongBad.motorMultiplier*joystickLYAxis/2);
-			motorLF.set(strongBad.motorMultiplier*joystickLYAxis/2);
-=======
-			motorRB.set(joystickRYAxis/2);
-			motorRF.set(joystickRYAxis/2);
-			motorLB.set(-joystickLYAxis/2);
-			motorLF.set(-joystickLYAxis/2);
->>>>>>> branch 'master' of https://github.com/AISUMechanicalDragons/FIRSTPowerUp5974.git
+			motorRB.set(strongBad.motorMultiplier * (joystickRYAxis/2));
+			motorRF.set(strongBad.motorMultiplier * (joystickRYAxis/2));
+			motorLB.set(-1*strongBad.motorMultiplier*joystickLYAxis/2);
+			motorLF.set(-1*strongBad.motorMultiplier*joystickLYAxis/2);
+
 		}
 	}
 	
