@@ -85,8 +85,9 @@ import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-
-import java.util.ArrayList;		//arraylist
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import java.util.ArrayList;	//arraylist
+import org.usfirst.frc.team5974.robot.segwayBalance;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -124,6 +125,7 @@ public class Robot extends IterativeRobot {
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
 	DigitalInput limitSwitchTop;
 	DigitalInput limitSwitchBottom;
+	
 
 	
 	double joystickLXAxis;			//left joystick x-axis
@@ -221,6 +223,8 @@ public class Robot extends IterativeRobot {
 	//this is the variable that gives us switch and scale sides in format LRL or RRL, etc
 	String gameData;
 	String robotStartPosition;
+	
+	segwayBalance strongBad = new segwayBalance();
 	/* robot starting position
 	 * L: left-most robot
 	 * M: middle robot
@@ -271,6 +275,8 @@ public class Robot extends IterativeRobot {
 		}
 		
 	}
+	
+
 	
 	public void moveDistance(double distance, double angle) {		// move "distance" pointing along "angle" (in respect to forward)
 		double startX = posX;
@@ -328,6 +334,7 @@ public class Robot extends IterativeRobot {
 		} else if (angleToForward < 0) {
 			angleToForward += 360;
 		}
+		strongBad.inputAngle = IMU.getAngleY();
 	}
 	
 	
@@ -423,7 +430,8 @@ public class Robot extends IterativeRobot {
 		
 		//toggle checks
 		tankDriveBool = checkButton(buttonX, tankDriveBool, portButtonX);		//toggles boolean if button is pressed
-		fastBool = checkButton(buttonB, fastBool, portButtonB);					//toggles boolean if button is pressed
+		fastBool = checkButton(buttonB, fastBool, portButtonB);//toggles boolean if button is pressed
+		
 		
 		
 		//d-pad/POV updates
@@ -472,16 +480,17 @@ public class Robot extends IterativeRobot {
 	public void tankDrive() {	//tank drive: left joystick controls left wheels, right joystick controls right wheels
 		//right motors = right joystick y-axis
 		//left motors = left joystick y-axis
+		
 		if (fastBool) {
-			motorRB.set(-1 * joystickRYAxis);
-			motorRF.set(-1 * joystickRYAxis);
-			motorLB.set(joystickLYAxis);
-			motorLF.set(joystickLYAxis);
+			motorRB.set(-1 * joystickRYAxis*strongBad.motorMultiplier);
+			motorRF.set(-1 * joystickRYAxis*strongBad.motorMultiplier);
+			motorLB.set(joystickLYAxis*strongBad.motorMultiplier);
+			motorLF.set(joystickLYAxis*strongBad.motorMultiplier);
 		} else {
-			motorRB.set(-1 * (joystickRYAxis/2));
-			motorRF.set(-1 * (joystickRYAxis/2));
-			motorLB.set(joystickLYAxis/2);
-			motorLF.set(joystickLYAxis/2);
+			motorRB.set(-1*strongBad.motorMultiplier * (joystickRYAxis/2));
+			motorRF.set(-1*strongBad.motorMultiplier * (joystickRYAxis/2));
+			motorLB.set(strongBad.motorMultiplier*joystickLYAxis/2);
+			motorLF.set(strongBad.motorMultiplier*joystickLYAxis/2);
 		}
 	}
 	
