@@ -113,7 +113,7 @@ public class Robot extends IterativeRobot {
 	//Grabber wheel right
 	Spark motorGR = new Spark(5);
 	//Lift motor
-	Spark motorLift = new Spark(6);
+	//Spark motorLift = new Spark(6);
 	double liftPower = 0;
 	//Climber motor
 	Spark motorClimb = new Spark(8);
@@ -256,16 +256,16 @@ public class Robot extends IterativeRobot {
 			updateGyro();
 			if (cw <= ccw) {
 				updateGyro();
-				motorRB.set(0.25);
-				motorRF.set(0.25);
-				motorLB.set(0.25);
-				motorLF.set(0.25);
-			} else {
-				updateGyro();
 				motorRB.set(-0.25);
 				motorRF.set(-0.25);
 				motorLB.set(-0.25);
 				motorLF.set(-0.25);
+			} else {
+				updateGyro();
+				motorRB.set(0.25);
+				motorRF.set(0.25);
+				motorLB.set(0.25);
+				motorLF.set(0.25);
 			}
 			updateGyro();
 		}
@@ -280,20 +280,20 @@ public class Robot extends IterativeRobot {
 		//I thought while loops broke things? Do we need to fix this? [Yes. -Thomas]
 			if (angleToForward < angle) {
 				//right greater
-				motorRB.set(-0.25);
-				motorRF.set(-0.25);
-				motorLB.set(0.1);
-				motorLF.set(0.1);
+				motorRB.set(0.25);
+				motorRF.set(0.25);
+				motorLB.set(-0.1);
+				motorLF.set(-0.1);
 			} else if (angleToForward > angle) {
-				motorRB.set(-0.1);
-				motorRF.set(-0.1);
-				motorLB.set(0.25);
-				motorLF.set(0.25);
+				motorRB.set(0.1);
+				motorRF.set(0.1);
+				motorLB.set(-0.25);
+				motorLF.set(-0.25);
 			} else {
-				motorRB.set(-0.25);
-				motorRF.set(-0.25);
-				motorLB.set(0.25);
-				motorLF.set(0.25);
+				motorRB.set(0.25);
+				motorRF.set(0.25);
+				motorLB.set(-0.25);
+				motorLF.set(-0.25);
 			}
 		}
 	}
@@ -473,15 +473,15 @@ public class Robot extends IterativeRobot {
 		//right motors = right joystick y-axis
 		//left motors = left joystick y-axis
 		if (fastBool) {
-			motorRB.set(-1 * joystickRYAxis);
-			motorRF.set(-1 * joystickRYAxis);
-			motorLB.set(joystickLYAxis);
-			motorLF.set(joystickLYAxis);
+			motorRB.set(joystickRYAxis);
+			motorRF.set(joystickRYAxis);
+			motorLB.set(-joystickLYAxis);
+			motorLF.set(-joystickLYAxis);
 		} else {
-			motorRB.set(-1 * (joystickRYAxis/2));
-			motorRF.set(-1 * (joystickRYAxis/2));
-			motorLB.set(joystickLYAxis/2);
-			motorLF.set(joystickLYAxis/2);
+			motorRB.set(joystickRYAxis/2);
+			motorRF.set(joystickRYAxis/2);
+			motorLB.set(-joystickLYAxis/2);
+			motorLF.set(-joystickLYAxis/2);
 		}
 	}
 	
@@ -490,15 +490,15 @@ public class Robot extends IterativeRobot {
 		//left wheels have less power the farther left the left joystick is and more power the farther right
 		//X-axis input is halved
 		if (fastBool) {
-			motorRB.set(-1 * (joystickLYAxis + joystickLXAxis/2));
-			motorRF.set(-1 * (joystickLYAxis + joystickLXAxis/2));
-			motorLB.set((joystickLYAxis - joystickLXAxis/2));
-			motorLF.set((joystickLYAxis - joystickLXAxis/2));
+			motorRB.set((joystickLYAxis + joystickLXAxis/2));
+			motorRF.set((joystickLYAxis + joystickLXAxis/2));
+			motorLB.set(-(joystickLYAxis - joystickLXAxis/2));
+			motorLF.set(-(joystickLYAxis - joystickLXAxis/2));
 		} else {
-			motorRB.set(-1* (joystickLYAxis + joystickLXAxis/2)/2);
-			motorRF.set(-1 * (joystickLYAxis + joystickLXAxis/2)/2);
-			motorLB.set((joystickLYAxis - joystickLXAxis/2)/2);
-			motorLF.set((joystickLYAxis - joystickLXAxis/2)/2);
+			motorRB.set((joystickLYAxis + joystickLXAxis/2)/2);
+			motorRF.set((joystickLYAxis + joystickLXAxis/2)/2);
+			motorLB.set(-(joystickLYAxis - joystickLXAxis/2)/2);
+			motorLF.set(-(joystickLYAxis - joystickLXAxis/2)/2);
 		}
 	}
 	
@@ -521,10 +521,10 @@ public class Robot extends IterativeRobot {
 	}
 	public void verticalMovement() {
 		if (climbMode == true) {
-			if (triggerR > 0 && triggerL == 0 && limitSwitchTop.get() == false) {
+			if (triggerR > 0 && triggerL == 0 && limitSwitchBottom.get() == false) {
 				climbPower = triggerR;
 			}
-			else if (triggerL > 0 && triggerR == 0 && limitSwitchBottom.get() == false) {
+			else if (triggerL > 0 && triggerR == 0 && limitSwitchTop.get() == false) {
 				climbPower = (-1 * triggerL);
 			}
 			/*else if (limitSwitchTop.get()||limitSwitchBottom.get()) {
@@ -537,7 +537,7 @@ public class Robot extends IterativeRobot {
 		}
 		else {
 			//Are we putting in limit switches here? //TODO no. Not yet anyways. -Thomas
-			if (triggerR > 0 && triggerL == 0) {
+			/*if (triggerR > 0 && triggerL == 0) {
 				motorLift.set(triggerR);
 			}
 			else if (triggerL > 0 && triggerR == 0) {
@@ -545,7 +545,7 @@ public class Robot extends IterativeRobot {
 			}
 			else {
 				motorLift.set(0);
-			}
+			}*/
 		}
 	}
 	
@@ -554,10 +554,10 @@ public class Robot extends IterativeRobot {
 		if (counter < 6) {
 			timerTest.start();
 			if (480 >= timerTest.get()) {
-				motorRB.set(-1);
-				motorRF.set(-1);
-				motorLB.set(-1);
-				motorLF.set(-1);
+				motorRB.set(1);
+				motorRF.set(1);
+				motorLB.set(1);
+				motorLF.set(1);
 			}
 			else if (timerTest.get() > 480 && 600 >= timerTest.get()) {
 				motorRB.set(0);
@@ -621,10 +621,10 @@ public class Robot extends IterativeRobot {
 		if (start == "FR") {
 			if(autoStep==0) {
 				if (timer.get() < 5) {
-					motorRB.set(-0.25);
-					motorRF.set(-0.25);
-					motorLB.set(0.25);
-					motorLF.set(0.25);
+					motorRB.set(0.25);
+					motorRF.set(0.25);
+					motorLB.set(-0.25);
+					motorLF.set(-0.25);
 					//Go forward for 5 seconds
 				}
 				else {
@@ -640,10 +640,10 @@ public class Robot extends IterativeRobot {
 			//Starting on the right, aligned with the switch
 			if(autoStep==0) {
 				if (timer.get() < 5) {
-					motorRB.set(-0.25);
-					motorRF.set(-0.25);
-					motorLB.set(0.25);
-					motorLF.set(0.25);
+					motorRB.set(0.25);
+					motorRF.set(0.25);
+					motorLB.set(-0.25);
+					motorLF.set(-0.25);
 				}
 				else {
 					motorRB.set(0);
@@ -651,12 +651,12 @@ public class Robot extends IterativeRobot {
 					motorLB.set(0);
 					motorLF.set(0);
 					if(gameData.charAt(0) == 'R') {
-						if(timer.get()< 7) {
+						/*if(timer.get()< 7) {
 							motorLift.set(.25);
 						}
 						else {
 							motorLift.set(0);
-						}
+						}*/
 						if (timer.get() < 10 && timer.get() > 7) {
 							motorGL.set(1);
 							motorGR.set(1);
@@ -674,10 +674,10 @@ public class Robot extends IterativeRobot {
 		//This is for starting on the left
 			if(autoStep == 0) {
 				if (timer.get() < 5) {
-					motorRB.set(-0.25);
-					motorRF.set(-0.25);
-					motorLB.set(0.25);
-					motorLF.set(0.25);
+					motorRB.set(0.25);
+					motorRF.set(0.25);
+					motorLB.set(-0.25);
+					motorLF.set(-0.25);
 				}
 				else {
 					motorRB.set(0);
@@ -687,10 +687,10 @@ public class Robot extends IterativeRobot {
 					if(gameData.charAt(0) == 'L') {/**Change this to R if we start on the right side, comment out if we're on the far right or left side**/
 						rotateTo(270);
 						if (timer.get()<15) {
-							motorRB.set(-0.25);
-							motorRF.set(-0.25);
-							motorLB.set(0.25);
-							motorLF.set(0.25);
+							motorRB.set(0.25);
+							motorRF.set(0.25);
+							motorLB.set(-0.25);
+							motorLF.set(-0.25);
 						
 						}
 						else {
@@ -710,10 +710,10 @@ public class Robot extends IterativeRobot {
 			if (start == "FR") {
 				if(autoStep==0) {
 					if (timer.get() < 5) {
-						motorRB.set(-0.25);
-						motorRF.set(-0.25);
-						motorLB.set(0.25);
-						motorLF.set(0.25);
+						motorRB.set(0.25);
+						motorRF.set(0.25);
+						motorLB.set(-0.25);
+						motorLF.set(-0.25);
 					}
 					else {
 						motorRB.set(0);
