@@ -122,7 +122,7 @@ public class Robot extends IterativeRobot {
 	
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
-	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
+	public ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
 	DigitalInput limitSwitchTop;
 	DigitalInput limitSwitchBottom;
 	
@@ -170,6 +170,8 @@ public class Robot extends IterativeRobot {
 	
 	int portDPad = 0;
 	
+	public double inputAngle;
+	
 	double angleToForward = 0;
 	
 	double angleCache = 0;
@@ -212,6 +214,8 @@ public class Robot extends IterativeRobot {
 	double exY = 0;	//Excess X acceleration
 	double exZ = 0;	//Excess X acceleration
 	
+	double pitch;
+	double yaw;
 
 	//time variables [see updateTimer()]
 	Timer timer = new Timer();
@@ -335,7 +339,9 @@ public class Robot extends IterativeRobot {
 			angleToForward += 360;
 		}
 		strongBad.inputAngle = IMU.getPitch();
-		strongBad.setSetpoint(IMU.getPitch());
+		pitch = IMU.getPitch();
+		yaw = IMU.getYaw();
+		
 	}
 	
 	
@@ -474,6 +480,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
 		SmartDashboard.putNumber("MM", strongBad.motorMultiplier);
+		SmartDashboard.putNumber("Pitch",pitch);
+		SmartDashboard.putNumber("Yaw", yaw);
 		//SmartDashboard.putString("Switch Scale Switch", gameData);
 		
 	
@@ -602,6 +610,7 @@ public class Robot extends IterativeRobot {
 		limitSwitchTop = new DigitalInput(0);
 		limitSwitchBottom = new DigitalInput(1);
 		strongBad.enable();
+		strongBad.setSetpoint(IMU.getPitch());
 	}
 
 	/**
@@ -770,7 +779,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		update();
-		//grab();
 		
 		//dashboard outputs
 		dashboardOutput();

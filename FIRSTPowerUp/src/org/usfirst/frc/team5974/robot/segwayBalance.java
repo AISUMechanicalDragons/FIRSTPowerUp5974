@@ -7,6 +7,7 @@ public class segwayBalance  extends PIDSubsystem{
 	double inputAngle;
 	public double motorMultiplier;
 	
+	
 	public segwayBalance() {
 		super("segwayBalance", 2.0, 0.0, 0.0);// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
 		setAbsoluteTolerance(0.05);
