@@ -22,10 +22,10 @@ public class segwayBalance  extends PIDSubsystem{
 
     protected void usePIDOutput(double output) {
     	if (output < 180)	{
-    		motorMultiplier = (1)//((-2.0/45)*output)+1);
+    		motorMultiplier = (((-2.0/45)*output)+1);
     	}
     	else{
-    		motorMultiplier = (1)//(-2.0/45)*(-(360-output))+1); // this is where the computed output value fromthe PIDController is applied to the motor
+    		motorMultiplier = ((-2.0/45)*(-(360-output))+1); // this is where the computed output value fromthe PIDController is applied to the motor
 
     	}
     }

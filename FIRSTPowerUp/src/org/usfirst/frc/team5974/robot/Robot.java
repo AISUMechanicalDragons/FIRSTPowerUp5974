@@ -334,7 +334,8 @@ public class Robot extends IterativeRobot {
 		} else if (angleToForward < 0) {
 			angleToForward += 360;
 		}
-		strongBad.inputAngle = IMU.getAngleY();
+		strongBad.inputAngle = IMU.getPitch();
+		strongBad.setSetpoint(IMU.getPitch());
 	}
 	
 	
@@ -600,6 +601,7 @@ public class Robot extends IterativeRobot {
 		//Limit switch init
 		limitSwitchTop = new DigitalInput(0);
 		limitSwitchBottom = new DigitalInput(1);
+		strongBad.enable();
 	}
 
 	/**
