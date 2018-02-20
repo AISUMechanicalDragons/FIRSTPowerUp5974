@@ -333,14 +333,14 @@ public class Robot extends IterativeRobot {
 	
 	public void updateGyro() {		//set IMU.getAngle() (-inf,inf) output to a non-looping value [0,360)
 		angleToForward = IMU.getAngleZ();
+		strongBad.inputAngle = IMU.getPitch();
+		pitch = IMU.getPitch();
+		yaw = IMU.getYaw();
 		if (angleToForward >= 360) {
 			angleToForward -= 360;
 		} else if (angleToForward < 0) {
 			angleToForward += 360;
 		}
-		strongBad.inputAngle = IMU.getPitch();
-		pitch = IMU.getPitch();
-		yaw = IMU.getYaw();
 		
 	}
 	
@@ -563,7 +563,7 @@ public class Robot extends IterativeRobot {
 				motorLift.set(triggerR);
 			}
 			else if (triggerL > 0 && triggerR == 0) {
-				motorLift.set(triggerL);
+				motorLift.set(-triggerL);
 			}
 			else {
 				motorLift.set(0);

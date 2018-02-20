@@ -11,7 +11,7 @@ public class segwayBalance  extends PIDSubsystem{
 	public segwayBalance() {
 		super("segwayBalance", 1.0, 0.0, 0.0);// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
 		setAbsoluteTolerance(0.05);
-		getPIDController().setContinuous(true);
+		getPIDController().setContinuous(false);
 	}
 	
     public void initDefaultCommand() {
