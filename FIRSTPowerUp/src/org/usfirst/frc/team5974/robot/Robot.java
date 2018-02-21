@@ -202,9 +202,9 @@ public class Robot extends IterativeRobot {
 	boolean climbMode;
 	boolean test = false;				//this should be deleted once the tests have been conducted
 	
-	ArrayList avgX = new ArrayList();	//List of X accelerations to be averaged
-	ArrayList avgY = new ArrayList();	//List of Y accelerations to be averaged
-	ArrayList avgZ = new ArrayList();	//List of Z accelerations to be averaged
+	ArrayList<Double> avgX = new ArrayList<Double>();	//List of X accelerations to be averaged
+	ArrayList<Double> avgY = new ArrayList<Double>();	//List of Y accelerations to be averaged
+	ArrayList<Double> avgZ = new ArrayList<Double>();	//List of Z accelerations to be averaged
 	
 	int sumX = 0;	//Sum of avgX
 	int sumY = 0;	//Sum of avgY
@@ -216,6 +216,8 @@ public class Robot extends IterativeRobot {
 	
 	double pitch;
 	double yaw;
+	double angleY;
+	double angleX;
 
 	//time variables [see updateTimer()]
 	Timer timer = new Timer();
@@ -228,12 +230,14 @@ public class Robot extends IterativeRobot {
 	String gameData;
 	String robotStartPosition;
 	
-	segwayBalance strongBad = new segwayBalance();
+
 	/* robot starting position
 	 * L: left-most robot
 	 * M: middle robot
 	 * R: right-most robot
 	 */
+	
+	segwayBalance strongBad = new segwayBalance();
 	
 	double counter = 0;
 
@@ -250,6 +254,7 @@ public class Robot extends IterativeRobot {
 	public void rotateTo(double angle) {		//rotates robot to angle based on IMU and d-pad
 		
 		angleCache = angle;
+		updateGyro();
 		
 		//int goTo = angleCache; //lazy programming at its finest lmao //okay yeah no I'm fixing this
 		//clockwise degrees to goTo angle
@@ -333,15 +338,25 @@ public class Robot extends IterativeRobot {
 	
 	public void updateGyro() {		//set IMU.getAngle() (-inf,inf) output to a non-looping value [0,360)
 		angleToForward = IMU.getAngleZ();
-		strongBad.inputAngle = IMU.getPitch();
-		pitch = IMU.getPitch();
-		yaw = IMU.getYaw();
 		if (angleToForward >= 360) {
 			angleToForward -= 360;
 		} else if (angleToForward < 0) {
 			angleToForward += 360;
 		}
 		
+	}
+	public void updateTilt() {
+
+		strongBad.inputAngle = IMU.getAngleY();
+		angleY = IMU.getAngleY();
+		angleX = IMU.getAngleX();
+		pitch = IMU.getPitch();
+		yaw = IMU.getYaw();
+		System.out.println(strongBad.motorMultiplier);
+		System.out.println(angleY);
+		System.out.println(angleX);
+		System.out.println(pitch);
+		System.out.println(yaw);
 	}
 	
 	
@@ -459,6 +474,7 @@ public class Robot extends IterativeRobot {
 		updateTrifecta();
 		updateGyro();
 		updateGameTime();
+		updateTilt();
 	}
 	
 	public void dashboardOutput() {			//sends and displays data on dashboard
@@ -482,6 +498,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("MM", strongBad.motorMultiplier);
 		SmartDashboard.putNumber("Pitch",pitch);
 		SmartDashboard.putNumber("Yaw", yaw);
+		SmartDashboard.putNumber("Y-Axis Rotation", angleY);
+		SmartDashboard.putNumber("X-Axis Rotation", angleX);
 		//SmartDashboard.putString("Switch Scale Switch", gameData);
 		
 	
@@ -503,6 +521,8 @@ public class Robot extends IterativeRobot {
 			motorRF.set(strongBad.motorMultiplier * (joystickRYAxis/2));
 			motorLB.set(-1*strongBad.motorMultiplier*joystickLYAxis/2);
 			motorLF.set(-1*strongBad.motorMultiplier*joystickLYAxis/2);
+			System.out.println(strongBad.motorMultiplier);
+			SmartDashboard.putNumber("MM2", strongBad.motorMultiplier);
 
 		}
 	}
@@ -782,6 +802,8 @@ public class Robot extends IterativeRobot {
 		
 		//dashboard outputs
 		dashboardOutput();
+		
+		
 		
 		if (tankDriveBool) {
 			tankDrive();
