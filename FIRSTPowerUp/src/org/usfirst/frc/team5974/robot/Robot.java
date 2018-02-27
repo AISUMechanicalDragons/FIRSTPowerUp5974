@@ -62,6 +62,8 @@ Controls by Action:
 
 package org.usfirst.frc.team5974.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+
 /** TODO list:
  * 
  * Encoder
@@ -81,13 +83,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
 //import edu.wpi.first.wpilibj.VictorSP;
 //import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.*;									//everything tbh
-import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
+//import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import java.util.ArrayList;	//arraylist
 import org.usfirst.frc.team5974.robot.segwayBalance;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro; //gyro over SPI
+import edu.wpi.first.wpilibj.ADXL362; //accel over SPI
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -122,7 +127,11 @@ public class Robot extends IterativeRobot {
 	
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
-	public ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
+	//public ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
+	ADXL362 xl = new ADXL362(Range.k2G); //accelerometer
+	//no idea what the k2g thing is but that's what the cool kids were doing on github
+	ADXRS450_Gyro gyro = new ADXRS450_Gyro(); //gyro
+	
 	DigitalInput limitSwitchTop;
 	DigitalInput limitSwitchBottom;
 	
@@ -337,7 +346,8 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void updateGyro() {		//set IMU.getAngle() (-inf,inf) output to a non-looping value [0,360)
-		angleToForward = IMU.getAngleZ();
+		//angleToForward = IMU.getAngleZ();
+		angleToForward = gyro.getAngle();
 		if (angleToForward >= 360) {
 			angleToForward -= 360;
 		} else if (angleToForward < 0) {
@@ -345,6 +355,7 @@ public class Robot extends IterativeRobot {
 		}
 		
 	}
+	/*
 	public void updateTilt() {
 
 		strongBad.inputAngle = IMU.getAngleY();
@@ -358,6 +369,7 @@ public class Robot extends IterativeRobot {
 		System.out.println(pitch);
 		System.out.println(yaw);
 	}
+	*/
 	
 	
 	public void updateTimer() {		//sets change in time between the current running of a periodic function and the previous running
@@ -371,9 +383,9 @@ public class Robot extends IterativeRobot {
 	
 	public void updateTrifecta() {	//updates pos, vel, and accel
 		//accel variables updated from IMU
-		accelX = (IMU.getAccelX() - 0) * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
-		accelY = (IMU.getAccelY() - 0) * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
-		accelZ = (IMU.getAccelZ() - 0) * 9.8;
+		accelX = (xl.getX()-0) * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
+		accelY = (xl.getY()-0) * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
+		accelZ = (xl.getZ()-0) * 9.8;
 		
 		//velocity updated by acceleration integral
 		velX += accelX * dT;
@@ -397,9 +409,9 @@ public class Robot extends IterativeRobot {
 		avgZ.clear();
 		
 		for (int i=0; i < num; i++) {
-			avgX.add(IMU.getAccelX());
-			avgY.add(IMU.getAccelY());
-			avgZ.add(IMU.getAccelZ());
+			avgX.add(xl.getX());
+			avgY.add(xl.getY());
+			avgZ.add(xl.getZ());
 		}
 		
 		for (int i=0; i < avgX.size(); i++) {
@@ -474,7 +486,7 @@ public class Robot extends IterativeRobot {
 		updateTrifecta();
 		updateGyro();
 		updateGameTime();
-		updateTilt();
+		//updateTilt();
 	}
 	
 	public void dashboardOutput() {			//sends and displays data on dashboard
@@ -623,14 +635,17 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Left", "L");
 		SmartDashboard.putData("Auto Mode: ",autoChooser);
 		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
-		IMU.calibrate();
-		IMU.reset();
+		//IMU.calibrate();
+		//xl doesn't seem to have a calibrate function?? idk
+		gyro.calibrate();
+		//IMU.reset();
 		calibrate(10);
 		//Limit switch init
 		limitSwitchTop = new DigitalInput(0);
 		limitSwitchBottom = new DigitalInput(1);
-		strongBad.enable();
-		strongBad.setSetpoint(IMU.getPitch());
+		//strongBad.enable();
+		//strongBad.setSetpoint(IMU.getPitch());
+		//gyro only has z axis
 	}
 
 	/**
