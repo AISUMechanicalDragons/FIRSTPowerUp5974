@@ -512,10 +512,10 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
 		//SmartDashboard.putNumber("MM", strongBad.motorMultiplier);
-		SmartDashboard.putNumber("Pitch",pitch);
-		SmartDashboard.putNumber("Yaw", yaw);
-		SmartDashboard.putNumber("Y-Axis Rotation", angleY);
-		SmartDashboard.putNumber("X-Axis Rotation", angleX);
+		//SmartDashboard.putNumber("Pitch",pitch);
+		//SmartDashboard.putNumber("Yaw", yaw);
+		//SmartDashboard.putNumber("Y-Axis Rotation", angleY);
+		//SmartDashboard.putNumber("X-Axis Rotation", angleX);
 		SmartDashboard.putBoolean("Climb Mode", climbMode);
 		//SmartDashboard.putString("Switch Scale Switch", gameData);
 		
@@ -563,6 +563,7 @@ public class Robot extends IterativeRobot {
 	
 	public void grab() {	//grabbers in/out based on bumper bools  
 		//move left grabber wheels
+		//Left Bumper In right Bumper Out
 		if (climbMode == false) {
 			if (bumperL) {
 				motorGL.set(1);
@@ -703,7 +704,7 @@ public class Robot extends IterativeRobot {
 		else if (start == "R") {
 			//Starting on the right, aligned with the switch
 			if(autoStep==0) {
-				if (timer.get() < 5) {
+				if (timer.get() < 3) {
 					motorRB.set(0.25);
 					motorRF.set(0.25);
 					motorLB.set(-0.25);
@@ -715,14 +716,14 @@ public class Robot extends IterativeRobot {
 					motorLB.set(0);
 					motorLF.set(0);
 					if(gameData.charAt(0) == 'R') {
-						/*if(timer.get()< 7) {
+						if(timer.get()< 6) {
 							motorLift.set(.25);
 						}
 						else {
 							motorLift.set(0);
-						}*/
-						if (timer.get() < 10 && timer.get() > 7) {
-							motorGL.set(1);
+						}
+						if (timer.get() < 15 && timer.get() > 7) {
+							motorGL.set(-1);
 							motorGR.set(1);
 						}
 						else {
@@ -735,9 +736,9 @@ public class Robot extends IterativeRobot {
 			}
 		}
 		else if (start == "L") {
-		//This is for starting on the left
+		//This is for starting on the far left
 			if(autoStep == 0) {
-				if (timer.get() < 5) {
+				if (timer.get() < 3) {
 					motorRB.set(0.25);
 					motorRF.set(0.25);
 					motorLB.set(-0.25);
@@ -750,7 +751,7 @@ public class Robot extends IterativeRobot {
 					motorLF.set(0);
 					if(gameData.charAt(0) == 'L') {/**Change this to R if we start on the right side, comment out if we're on the far right or left side**/
 						rotateTo(270);
-						if (timer.get()<15) {
+						if (timer.get()<10 && timer.get() > 5) {
 							motorRB.set(0.25);
 							motorRF.set(0.25);
 							motorLB.set(-0.25);
@@ -762,7 +763,21 @@ public class Robot extends IterativeRobot {
 							motorRF.set(0);
 							motorLB.set(0);
 							motorLF.set(0);
-							//TODO Put in lift up and/or drop box code here
+						
+						}
+						if(timer.get()< 7 && timer.get() > 5) {
+							motorLift.set(.25);
+						}
+						else {
+							motorLift.set(0);
+						}
+						if (timer.get() < 15 && timer.get() > 8) {
+							motorGL.set(-1);
+							motorGR.set(1);
+						}
+						else {
+							motorGL.set(0);
+							motorGR.set(0);
 						}
 					}
 					autoStep++;
@@ -771,7 +786,7 @@ public class Robot extends IterativeRobot {
 		}
 		else {
 			//Default Code
-			if (start == "FR") {
+			if (true) {
 				if(autoStep==0) {
 					if (timer.get() < 5) {
 						motorRB.set(0.25);
