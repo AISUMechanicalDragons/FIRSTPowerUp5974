@@ -751,7 +751,7 @@ public class Robot extends IterativeRobot {
 					motorLF.set(0);
 					if(gameData.charAt(0) == 'L') {/**Change this to R if we start on the right side, comment out if we're on the far right or left side**/
 						rotateTo(270);
-						if (timer.get()<10 && timer.get() > 5) {
+						if (timer.get()<7 && timer.get() > 5) {
 							motorRB.set(0.25);
 							motorRF.set(0.25);
 							motorLB.set(-0.25);
