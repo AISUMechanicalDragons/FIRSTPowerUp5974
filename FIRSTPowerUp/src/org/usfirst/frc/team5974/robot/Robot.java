@@ -7,7 +7,6 @@
 
 /*
 Controls by Action:
-
 	Arcade Drive:
 		-Left joystick:
 			Rotate
@@ -30,7 +29,6 @@ Controls by Action:
 	Toggle Drive Style: (arcade/tank)
 		-X button
 				
-
 			
 	Quick Turns:
 		-D-pad:
@@ -85,9 +83,8 @@ import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import java.util.ArrayList;	//arraylist
-import org.usfirst.frc.team5974.robot.segwayBalance;
+
+import java.util.ArrayList;		//arraylist
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -125,7 +122,6 @@ public class Robot extends IterativeRobot {
 	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
 	DigitalInput limitSwitchTop;
 	DigitalInput limitSwitchBottom;
-	
 
 	
 	double joystickLXAxis;			//left joystick x-axis
@@ -223,8 +219,6 @@ public class Robot extends IterativeRobot {
 	//this is the variable that gives us switch and scale sides in format LRL or RRL, etc
 	String gameData;
 	String robotStartPosition;
-	
-	segwayBalance strongBad = new segwayBalance();
 	/* robot starting position
 	 * L: left-most robot
 	 * M: middle robot
@@ -275,8 +269,6 @@ public class Robot extends IterativeRobot {
 		}
 		
 	}
-	
-
 	
 	public void moveDistance(double distance, double angle) {		// move "distance" pointing along "angle" (in respect to forward)
 		double startX = posX;
@@ -334,7 +326,6 @@ public class Robot extends IterativeRobot {
 		} else if (angleToForward < 0) {
 			angleToForward += 360;
 		}
-		strongBad.inputAngle = IMU.getAngleY();
 	}
 	
 	
@@ -430,8 +421,7 @@ public class Robot extends IterativeRobot {
 		
 		//toggle checks
 		tankDriveBool = checkButton(buttonX, tankDriveBool, portButtonX);		//toggles boolean if button is pressed
-		fastBool = checkButton(buttonB, fastBool, portButtonB);//toggles boolean if button is pressed
-		
+		fastBool = checkButton(buttonB, fastBool, portButtonB);					//toggles boolean if button is pressed
 		
 		
 		//d-pad/POV updates
@@ -480,20 +470,16 @@ public class Robot extends IterativeRobot {
 	public void tankDrive() {	//tank drive: left joystick controls left wheels, right joystick controls right wheels
 		//right motors = right joystick y-axis
 		//left motors = left joystick y-axis
-		
 		if (fastBool) {
-			motorRB.set(joystickRYAxis*strongBad.motorMultiplier);
-			motorRF.set(joystickRYAxis*strongBad.motorMultiplier);
-			motorLB.set(-1*joystickLYAxis*strongBad.motorMultiplier);
-			motorLF.set(-1*joystickLYAxis*strongBad.motorMultiplier);
-
-
+			motorRB.set(joystickRYAxis);
+			motorRF.set(joystickRYAxis);
+			motorLB.set(-joystickLYAxis);
+			motorLF.set(-joystickLYAxis);
 		} else {
-			motorRB.set(strongBad.motorMultiplier * (joystickRYAxis/2));
-			motorRF.set(strongBad.motorMultiplier * (joystickRYAxis/2));
-			motorLB.set(-1*strongBad.motorMultiplier*joystickLYAxis/2);
-			motorLF.set(-1*strongBad.motorMultiplier*joystickLYAxis/2);
-
+			motorRB.set(joystickRYAxis/2);
+			motorRF.set(joystickRYAxis/2);
+			motorLB.set(-joystickLYAxis/2);
+			motorLF.set(-joystickLYAxis/2);
 		}
 	}
 	
@@ -633,10 +619,10 @@ public class Robot extends IterativeRobot {
 		if (start == "FR") {
 			if(autoStep==0) {
 				if (timer.get() < 5) {
-					motorRB.set(0.25);
-					motorRF.set(0.25);
-					motorLB.set(-0.25);
-					motorLF.set(-0.25);
+					motorRB.set(-0.5);
+					motorRF.set(-0.5);
+					motorLB.set(0.5);
+					motorLF.set(0.5);
 					//Go forward for 5 seconds
 				}
 				else {
@@ -652,10 +638,10 @@ public class Robot extends IterativeRobot {
 			//Starting on the right, aligned with the switch
 			if(autoStep==0) {
 				if (timer.get() < 5) {
-					motorRB.set(0.25);
-					motorRF.set(0.25);
-					motorLB.set(-0.25);
-					motorLF.set(-0.25);
+					motorRB.set(-0.5);
+					motorRF.set(-0.5);
+					motorLB.set(0.5);
+					motorLF.set(0.5);
 				}
 				else {
 					motorRB.set(0);
@@ -686,10 +672,10 @@ public class Robot extends IterativeRobot {
 		//This is for starting on the left
 			if(autoStep == 0) {
 				if (timer.get() < 5) {
-					motorRB.set(0.25);
-					motorRF.set(0.25);
-					motorLB.set(-0.25);
-					motorLF.set(-0.25);
+					motorRB.set(-0.5);
+					motorRF.set(-0.5);
+					motorLB.set(0.5);
+					motorLF.set(0.5);
 				}
 				else {
 					motorRB.set(0);
@@ -699,10 +685,10 @@ public class Robot extends IterativeRobot {
 					if(gameData.charAt(0) == 'L') {/**Change this to R if we start on the right side, comment out if we're on the far right or left side**/
 						rotateTo(270);
 						if (timer.get()<15) {
-							motorRB.set(0.25);
-							motorRF.set(0.25);
-							motorLB.set(-0.25);
-							motorLF.set(-0.25);
+							motorRB.set(-0.5);
+							motorRF.set(-0.5);
+							motorLB.set(0.5);
+							motorLF.set(0.5);
 						
 						}
 						else {
@@ -722,10 +708,10 @@ public class Robot extends IterativeRobot {
 			if (start == "FR") {
 				if(autoStep==0) {
 					if (timer.get() < 5) {
-						motorRB.set(0.25);
-						motorRF.set(0.25);
-						motorLB.set(-0.25);
-						motorLF.set(-0.25);
+						motorRB.set(-0.5);
+						motorRF.set(-0.5);
+						motorLB.set(0.5);
+						motorLF.set(0.5);
 					}
 					else {
 						motorRB.set(0);
