@@ -345,7 +345,7 @@ public class Robot extends IterativeRobot {
 		}
 		
 	}
-	public void updateTilt() {
+	/*public void updateTilt() {
 
 		strongBad.inputAngle = IMU.getAngleY();
 		angleY = IMU.getAngleY();
@@ -357,7 +357,7 @@ public class Robot extends IterativeRobot {
 		System.out.println(angleX);
 		System.out.println(pitch);
 		System.out.println(yaw);
-	}
+	}*/
 	
 	
 	public void updateTimer() {		//sets change in time between the current running of a periodic function and the previous running
@@ -474,7 +474,7 @@ public class Robot extends IterativeRobot {
 		updateTrifecta();
 		updateGyro();
 		updateGameTime();
-		updateTilt();
+		//updateTilt();
 	}
 	
 	public void dashboardOutput() {			//sends and displays data on dashboard
@@ -495,11 +495,12 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
-		SmartDashboard.putNumber("MM", strongBad.motorMultiplier);
+		//SmartDashboard.putNumber("MM", strongBad.motorMultiplier);
 		SmartDashboard.putNumber("Pitch",pitch);
 		SmartDashboard.putNumber("Yaw", yaw);
 		SmartDashboard.putNumber("Y-Axis Rotation", angleY);
 		SmartDashboard.putNumber("X-Axis Rotation", angleX);
+		SmartDashboard.putBoolean("Climb Mode", climbMode);
 		//SmartDashboard.putString("Switch Scale Switch", gameData);
 		
 	
@@ -510,19 +511,19 @@ public class Robot extends IterativeRobot {
 		//left motors = left joystick y-axis
 		
 		if (fastBool) {
-			motorRB.set(joystickRYAxis*strongBad.motorMultiplier);
-			motorRF.set(joystickRYAxis*strongBad.motorMultiplier);
-			motorLB.set(-1*joystickLYAxis*strongBad.motorMultiplier);
-			motorLF.set(-1*joystickLYAxis*strongBad.motorMultiplier);
+			motorRB.set(joystickRYAxis);
+			motorRF.set(joystickRYAxis);
+			motorLB.set(-1*joystickLYAxis);
+			motorLF.set(-1*joystickLYAxis);
 
 
 		} else {
-			motorRB.set(strongBad.motorMultiplier * (joystickRYAxis/2));
-			motorRF.set(strongBad.motorMultiplier * (joystickRYAxis/2));
-			motorLB.set(-1*strongBad.motorMultiplier*joystickLYAxis/2);
-			motorLF.set(-1*strongBad.motorMultiplier*joystickLYAxis/2);
-			System.out.println(strongBad.motorMultiplier);
-			SmartDashboard.putNumber("MM2", strongBad.motorMultiplier);
+			motorRB.set((joystickRYAxis/2));
+			motorRF.set((joystickRYAxis/2));
+			motorLB.set(-1*joystickLYAxis/2);
+			motorLF.set(-1*joystickLYAxis/2);
+			//System.out.println(strongBad.motorMultiplier);
+			//SmartDashboard.putNumber("MM2", strongBad.motorMultiplier);
 
 		}
 	}
@@ -548,11 +549,11 @@ public class Robot extends IterativeRobot {
 		//move left grabber wheels
 		if (climbMode == false) {
 			if (bumperL) {
-				motorGL.set(-1);
+				motorGL.set(1);
 				motorGR.set(-1);
 			} 
 			else if (bumperR) {
-				motorGL.set(1);
+				motorGL.set(-1);
 				motorGR.set(1);
 			}	
 			else {
@@ -564,10 +565,10 @@ public class Robot extends IterativeRobot {
 	public void verticalMovement() {
 		if (climbMode == true) {
 			if (triggerR > 0 && triggerL == 0 && limitSwitchBottom.get() == false) {
-				climbPower = triggerR;
+				climbPower = (triggerR);
 			}
-			else if (triggerL > 0 && triggerR == 0 && limitSwitchTop.get() == false) {
-				climbPower = (-1 * triggerL);
+			else if (triggerL > 0 && triggerR == 0 && limitSwitchTop.get() == true) {
+				climbPower = (-1*triggerL);
 			}
 			/*else if (limitSwitchTop.get()||limitSwitchBottom.get()) {
 				climbPower=Math.min(climbPower, 0); //idk why, but the docs said to do it this way
@@ -580,10 +581,10 @@ public class Robot extends IterativeRobot {
 		else {
 			//Are we putting in limit switches here? //TODO no. Not yet anyways. -Thomas
 			if (triggerR > 0 && triggerL == 0) {
-				motorLift.set(triggerR);
+				motorLift.set(-triggerR);
 			}
 			else if (triggerL > 0 && triggerR == 0) {
-				motorLift.set(-triggerL);
+				motorLift.set(triggerL);
 			}
 			else {
 				motorLift.set(0);
@@ -629,8 +630,8 @@ public class Robot extends IterativeRobot {
 		//Limit switch init
 		limitSwitchTop = new DigitalInput(0);
 		limitSwitchBottom = new DigitalInput(1);
-		strongBad.enable();
-		strongBad.setSetpoint(IMU.getPitch());
+		//strongBad.enable();
+		//strongBad.setSetpoint(IMU.getPitch());
 	}
 
 	/**
@@ -820,6 +821,11 @@ public class Robot extends IterativeRobot {
 		}
 		if (buttonY) {
 			climbMode = !climbMode;
+			controller.setRumble(Joystick.RumbleType.kRightRumble, 0.5);
+			controller.setRumble(Joystick.RumbleType.kLeftRumble, 0.5);
+			Timer.delay(0.5);
+			controller.setRumble(Joystick.RumbleType.kRightRumble, 0);
+			controller.setRumble(Joystick.RumbleType.kLeftRumble, 0);
 		}
 		verticalMovement();
 		grab();
