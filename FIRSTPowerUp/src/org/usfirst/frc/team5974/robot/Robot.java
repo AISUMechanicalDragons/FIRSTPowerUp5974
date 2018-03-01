@@ -83,8 +83,11 @@ import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 
 import java.util.ArrayList;		//arraylist
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.ADXL362;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -119,9 +122,12 @@ public class Robot extends IterativeRobot {
 	
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
-	ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
+	//ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
+	ADXL362 xl = new ADXL362(Range.k2G);
+	ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 	DigitalInput limitSwitchTop;
 	DigitalInput limitSwitchBottom;
+	//Servo armSwing = new Servo(9);
 
 	
 	double joystickLXAxis;			//left joystick x-axis
@@ -320,7 +326,8 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void updateGyro() {		//set IMU.getAngle() (-inf,inf) output to a non-looping value [0,360)
-		angleToForward = IMU.getAngleZ();
+		//angleToForward = IMU.getAngleZ();
+		angleToForward = gyro.getAngle();
 		if (angleToForward >= 360) {
 			angleToForward -= 360;
 		} else if (angleToForward < 0) {
@@ -340,9 +347,9 @@ public class Robot extends IterativeRobot {
 	
 	public void updateTrifecta() {	//updates pos, vel, and accel
 		//accel variables updated from IMU
-		accelX = (IMU.getAccelX() - 0) * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
-		accelY = (IMU.getAccelY() - 0) * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
-		accelZ = (IMU.getAccelZ() - 0) * 9.8;
+		accelX = (xl.getX() - 0) * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
+		accelY = (xl.getY() - 0) * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
+		accelZ = (xl.getZ() - 0) * 9.8;
 		
 		//velocity updated by acceleration integral
 		velX += accelX * dT;
@@ -366,9 +373,9 @@ public class Robot extends IterativeRobot {
 		avgZ.clear();
 		
 		for (int i=0; i < num; i++) {
-			avgX.add(IMU.getAccelX());
-			avgY.add(IMU.getAccelY());
-			avgZ.add(IMU.getAccelZ());
+			avgX.add(xl.getX());
+			avgY.add(xl.getY());
+			avgZ.add(xl.getZ());
 		}
 		
 		for (int i=0; i < avgX.size(); i++) {
@@ -463,6 +470,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
 		//SmartDashboard.putString("Switch Scale Switch", gameData);
+		//SmartDashboard.putNumber("Gyro Angle:", )
 		
 	
 	}
@@ -578,9 +586,10 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Right", "R");
 		autoChooser.addObject("Left", "L");
 		SmartDashboard.putData("Auto Mode: ",autoChooser);
-		CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
-		IMU.calibrate();
-		IMU.reset();
+		//CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
+		//IMU.calibrate();
+		//IMU.reset();
+		gyro.calibrate();
 		calibrate(10);
 		//Limit switch init
 		limitSwitchTop = new DigitalInput(0);
@@ -602,10 +611,9 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		timer.start();
 		autonomousCommand = autoChooser.getSelected();
-		//Theoretically, this will output what we've chosen in the SmartDashboard as a string?
-		//Not really sure how it works though.
+		//This outputs what we've chosen in the SmartDashboard as a string.
 		System.out.println(autonomousCommand);
-		//If this is a thing, we won't have to change 'start' in autonomousPeriodic and recompile
+		//armSwing.setAngle(90); //hopefully this will swing the arms down. not sure what angle it wants though
 	}
 
 	/**
@@ -613,7 +621,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		String start = autonomousCommand; //If this even works. lol
+		//For some reason, right is inverted in auto instead of left
+		String start = autonomousCommand; //from smartDashboard
 		//String start = "R";//R for right, FR for far right, L for far left
 		//Starting Far Right
 		if (start == "FR") {
