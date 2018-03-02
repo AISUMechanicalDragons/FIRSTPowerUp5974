@@ -41,8 +41,8 @@ Controls by Action:
  	Left Trigger: Climb down
  	Right Trigger: Climb up
  	
- 	Left Bumper: Grabber spin out
- 	Right Bumper: Grabber spin in
+ 	Left Bumper: Grabber spin in
+ 	Right Bumper: Grabber spin out
  	
  	Left Joystick: Tank/arcade drive
  	Right Joystick: Tank drive
@@ -560,12 +560,12 @@ public class Robot extends IterativeRobot {
 		//Left Bumper In right Bumper Out
 		if (climbMode == false) {
 			if (bumperL) {
-				motorGL.set(1);
-				motorGR.set(-1);
-			} 
-			else if (bumperR) {
 				motorGL.set(-1);
 				motorGR.set(1);
+			} 
+			else if (bumperR) {
+				motorGL.set(1);
+				motorGR.set(-1);
 			}	
 			else {
 				motorGL.set(0);
@@ -590,7 +590,7 @@ public class Robot extends IterativeRobot {
 			motorClimb.set(climbPower);
 		}
 		else {
-			//Are we putting in limit switches here? //TODO no. Not yet anyways. -Thomas
+			//Are we putting in limit switches here? //future:  no. Not yet anyways. -Thomas
 			if (triggerR > 0 && triggerL == 0) {
 				motorLift.set(-triggerR);
 			}
@@ -718,8 +718,8 @@ public class Robot extends IterativeRobot {
 							motorLift.set(0);
 						}
 						if (timer.get() < 15 && timer.get() > 7) {
-							motorGL.set(-1);
-							motorGR.set(1);
+							motorGL.set(1);
+							motorGR.set(-1);
 						}
 						else {
 							motorGL.set(0);
@@ -767,8 +767,8 @@ public class Robot extends IterativeRobot {
 							motorLift.set(0);
 						}
 						if (timer.get() < 15 && timer.get() > 8) {
-							motorGL.set(-1);
-							motorGR.set(1);
+							motorGL.set(1);
+							motorGR.set(-1);
 						}
 						else {
 							motorGL.set(0);
