@@ -60,6 +60,8 @@ Controls by Action:
 
 package org.usfirst.frc.team5974.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+
 /** TODO list:
  * 
  * Encoder
@@ -79,15 +81,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;		//Dashboard
 //import edu.wpi.first.wpilibj.VictorSP;
 //import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.*;									//everything tbh
-import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
+//import org.usfirst.frc.team5974.robot.ADIS16448_IMU;			//IMU
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
-
-import java.util.ArrayList;		//arraylist
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.ADXL362;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import java.util.ArrayList;	//arraylist
+import org.usfirst.frc.team5974.robot.segwayBalance;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro; //gyro over SPI
+import edu.wpi.first.wpilibj.ADXL362; //accel over SPI
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -114,7 +117,7 @@ public class Robot extends IterativeRobot {
 	//Grabber wheel right
 	Spark motorGR = new Spark(5);
 	//Lift motor
-	//Spark motorLift = new Spark(6);
+	Spark motorLift = new Spark(6);
 	double liftPower = 0;
 	//Climber motor
 	Spark motorClimb = new Spark(8);
@@ -122,9 +125,11 @@ public class Robot extends IterativeRobot {
 	
 	//Variables we're using
 	Joystick controller = new Joystick(0);			//controller
-	//ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
-	ADXL362 xl = new ADXL362(Range.k2G);
-	ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+	//public ADIS16448_IMU IMU = new ADIS16448_IMU();		//imu: accelerometer and gyro
+	ADXL362 xl = new ADXL362(Range.k2G); //accelerometer
+	//no idea what the k2g thing is but that's what the cool kids were doing on github
+	ADXRS450_Gyro gyro = new ADXRS450_Gyro(); //gyro
+
 	DigitalInput limitSwitchTop;
 	DigitalInput limitSwitchBottom;
 	//Servo armSwing = new Servo(9);
@@ -172,6 +177,8 @@ public class Robot extends IterativeRobot {
 	
 	int portDPad = 0;
 	
+	public double inputAngle;
+	
 	double angleToForward = 0;
 	
 	double angleCache = 0;
@@ -202,9 +209,9 @@ public class Robot extends IterativeRobot {
 	boolean climbMode;
 	boolean test = false;				//this should be deleted once the tests have been conducted
 	
-	ArrayList avgX = new ArrayList();	//List of X accelerations to be averaged
-	ArrayList avgY = new ArrayList();	//List of Y accelerations to be averaged
-	ArrayList avgZ = new ArrayList();	//List of Z accelerations to be averaged
+	ArrayList<Double> avgX = new ArrayList<Double>();	//List of X accelerations to be averaged
+	ArrayList<Double> avgY = new ArrayList<Double>();	//List of Y accelerations to be averaged
+	ArrayList<Double> avgZ = new ArrayList<Double>();	//List of Z accelerations to be averaged
 	
 	int sumX = 0;	//Sum of avgX
 	int sumY = 0;	//Sum of avgY
@@ -214,6 +221,10 @@ public class Robot extends IterativeRobot {
 	double exY = 0;	//Excess X acceleration
 	double exZ = 0;	//Excess X acceleration
 	
+	double pitch;
+	double yaw;
+	double angleY;
+	double angleX;
 
 	//time variables [see updateTimer()]
 	Timer timer = new Timer();
@@ -225,11 +236,14 @@ public class Robot extends IterativeRobot {
 	//this is the variable that gives us switch and scale sides in format LRL or RRL, etc
 	String gameData;
 	String robotStartPosition;
+
 	/* robot starting position
 	 * L: left-most robot
 	 * M: middle robot
 	 * R: right-most robot
 	 */
+	
+	segwayBalance strongBad = new segwayBalance();
 	
 	double counter = 0;
 
@@ -246,6 +260,7 @@ public class Robot extends IterativeRobot {
 	public void rotateTo(double angle) {		//rotates robot to angle based on IMU and d-pad
 		
 		angleCache = angle;
+		updateGyro();
 		
 		//int goTo = angleCache; //lazy programming at its finest lmao //okay yeah no I'm fixing this
 		//clockwise degrees to goTo angle
@@ -333,8 +348,28 @@ public class Robot extends IterativeRobot {
 		} else if (angleToForward < 0) {
 			angleToForward += 360;
 		}
+
 	}
-	
+
+	/*public void updateTilt() {
+=======
+	/*
+	public void updateTilt() {
+>>>>>>> branch 'master' of https://github.com/AISUMechanicalDragons/FIRSTPowerUp5974.git
+
+		strongBad.inputAngle = IMU.getAngleY();
+		angleY = IMU.getAngleY();
+		angleX = IMU.getAngleX();
+		pitch = IMU.getPitch();
+		yaw = IMU.getYaw();
+		System.out.println(strongBad.motorMultiplier);
+		System.out.println(angleY);
+		System.out.println(angleX);
+		System.out.println(pitch);
+		System.out.println(yaw);
+<<<<<<< HEAD
+	}*/
+
 	
 	public void updateTimer() {		//sets change in time between the current running of a periodic function and the previous running
 		t0 = t1;
@@ -347,6 +382,7 @@ public class Robot extends IterativeRobot {
 	
 	public void updateTrifecta() {	//updates pos, vel, and accel
 		//accel variables updated from IMU
+
 		accelX = (xl.getX() - 0) * 9.8 * Math.cos(angleToForward * (Math.PI / 180.0)); //convert from g's
 		accelY = (xl.getY() - 0) * 9.8 * Math.sin(angleToForward * (Math.PI / 180.0));
 		accelZ = (xl.getZ() - 0) * 9.8;
@@ -449,6 +485,7 @@ public class Robot extends IterativeRobot {
 		updateTrifecta();
 		updateGyro();
 		updateGameTime();
+		//updateTilt();
 	}
 	
 	public void dashboardOutput() {			//sends and displays data on dashboard
@@ -469,6 +506,12 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
+		//SmartDashboard.putNumber("MM", strongBad.motorMultiplier);
+		//SmartDashboard.putNumber("Pitch",pitch);
+		//SmartDashboard.putNumber("Yaw", yaw);
+		//SmartDashboard.putNumber("Y-Axis Rotation", angleY);
+		//SmartDashboard.putNumber("X-Axis Rotation", angleX);
+		SmartDashboard.putBoolean("Climb Mode", climbMode);
 		//SmartDashboard.putString("Switch Scale Switch", gameData);
 		//SmartDashboard.putNumber("Gyro Angle:", )
 		
@@ -483,11 +526,15 @@ public class Robot extends IterativeRobot {
 			motorRF.set(joystickRYAxis);
 			motorLB.set(-joystickLYAxis);
 			motorLF.set(-joystickLYAxis);
+
 		} else {
 			motorRB.set(joystickRYAxis/2);
 			motorRF.set(joystickRYAxis/2);
 			motorLB.set(-joystickLYAxis/2);
 			motorLF.set(-joystickLYAxis/2);
+			//System.out.println(strongBad.motorMultiplier);
+			//SmartDashboard.putNumber("MM2", strongBad.motorMultiplier);
+
 		}
 	}
 	
@@ -510,13 +557,14 @@ public class Robot extends IterativeRobot {
 	
 	public void grab() {	//grabbers in/out based on bumper bools  
 		//move left grabber wheels
+		//Left Bumper In right Bumper Out
 		if (climbMode == false) {
 			if (bumperL) {
-				motorGL.set(-1);
+				motorGL.set(1);
 				motorGR.set(-1);
 			} 
 			else if (bumperR) {
-				motorGL.set(1);
+				motorGL.set(-1);
 				motorGR.set(1);
 			}	
 			else {
@@ -528,10 +576,10 @@ public class Robot extends IterativeRobot {
 	public void verticalMovement() {
 		if (climbMode == true) {
 			if (triggerR > 0 && triggerL == 0 && limitSwitchBottom.get() == false) {
-				climbPower = triggerR;
+				climbPower = (triggerR);
 			}
-			else if (triggerL > 0 && triggerR == 0 && limitSwitchTop.get() == false) {
-				climbPower = (-1 * triggerL);
+			else if (triggerL > 0 && triggerR == 0 && limitSwitchTop.get() == true) {
+				climbPower = (-1*triggerL);
 			}
 			/*else if (limitSwitchTop.get()||limitSwitchBottom.get()) {
 				climbPower=Math.min(climbPower, 0); //idk why, but the docs said to do it this way
@@ -543,15 +591,15 @@ public class Robot extends IterativeRobot {
 		}
 		else {
 			//Are we putting in limit switches here? //TODO no. Not yet anyways. -Thomas
-			/*if (triggerR > 0 && triggerL == 0) {
-				motorLift.set(triggerR);
+			if (triggerR > 0 && triggerL == 0) {
+				motorLift.set(-triggerR);
 			}
 			else if (triggerL > 0 && triggerR == 0) {
 				motorLift.set(triggerL);
 			}
 			else {
 				motorLift.set(0);
-			}*/
+			}
 		}
 	}
 	
@@ -589,11 +637,16 @@ public class Robot extends IterativeRobot {
 		//CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		//IMU.calibrate();
 		//IMU.reset();
+		//xl doesn't have calibrate function
 		gyro.calibrate();
 		calibrate(10);
 		//Limit switch init
 		limitSwitchTop = new DigitalInput(0);
 		limitSwitchBottom = new DigitalInput(1);
+		//strongBad.enable();
+		//strongBad.setSetpoint(IMU.getPitch());
+		//gyro only has z axis
+
 	}
 
 	/**
@@ -602,12 +655,11 @@ public class Robot extends IterativeRobot {
 	 * chooser code works with the Java SmartDashboard. If you prefer the
 	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
 	 * getString line to get the auto name from the text box below the Gyro
-	 *
+	 * suicide
 	 * <p>You can add additional auto modes by adding additional comparisons to
 	 * the switch structure below with additional strings. If using the
 	 * SendableChooser make sure to add them to the chooser code above as well.
-	 */
-	@Override
+	 **/
 	public void autonomousInit() {
 		timer.start();
 		autonomousCommand = autoChooser.getSelected();
@@ -646,11 +698,12 @@ public class Robot extends IterativeRobot {
 		else if (start == "R") {
 			//Starting on the right, aligned with the switch
 			if(autoStep==0) {
-				if (timer.get() < 5) {
+				if (timer.get() < 3) {
 					motorRB.set(-0.5);
 					motorRF.set(-0.5);
 					motorLB.set(0.5);
 					motorLF.set(0.5);
+
 				}
 				else {
 					motorRB.set(0);
@@ -658,14 +711,14 @@ public class Robot extends IterativeRobot {
 					motorLB.set(0);
 					motorLF.set(0);
 					if(gameData.charAt(0) == 'R') {
-						/*if(timer.get()< 7) {
+						if(timer.get()< 6) {
 							motorLift.set(.25);
 						}
 						else {
 							motorLift.set(0);
-						}*/
-						if (timer.get() < 10 && timer.get() > 7) {
-							motorGL.set(1);
+						}
+						if (timer.get() < 15 && timer.get() > 7) {
+							motorGL.set(-1);
 							motorGR.set(1);
 						}
 						else {
@@ -678,9 +731,9 @@ public class Robot extends IterativeRobot {
 			}
 		}
 		else if (start == "L") {
-		//This is for starting on the left
+		//This is for starting on the far left
 			if(autoStep == 0) {
-				if (timer.get() < 5) {
+				if (timer.get() < 3) {
 					motorRB.set(-0.5);
 					motorRF.set(-0.5);
 					motorLB.set(0.5);
@@ -693,7 +746,7 @@ public class Robot extends IterativeRobot {
 					motorLF.set(0);
 					if(gameData.charAt(0) == 'L') {/**Change this to R if we start on the right side, comment out if we're on the far right or left side**/
 						rotateTo(270);
-						if (timer.get()<15) {
+						if (timer.get()>5 && timer.get()<7) {
 							motorRB.set(-0.5);
 							motorRF.set(-0.5);
 							motorLB.set(0.5);
@@ -705,7 +758,21 @@ public class Robot extends IterativeRobot {
 							motorRF.set(0);
 							motorLB.set(0);
 							motorLF.set(0);
-							//TODO Put in lift up and/or drop box code here
+						
+						}
+						if(timer.get()< 7 && timer.get() > 5) {
+							motorLift.set(.25);
+						}
+						else {
+							motorLift.set(0);
+						}
+						if (timer.get() < 15 && timer.get() > 8) {
+							motorGL.set(-1);
+							motorGR.set(1);
+						}
+						else {
+							motorGL.set(0);
+							motorGR.set(0);
 						}
 					}
 					autoStep++;
@@ -714,7 +781,7 @@ public class Robot extends IterativeRobot {
 		}
 		else {
 			//Default Code
-			if (start == "FR") {
+			if (true) {
 				if(autoStep==0) {
 					if (timer.get() < 5) {
 						motorRB.set(-0.5);
@@ -762,10 +829,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		update();
-		//grab();
 		
 		//dashboard outputs
 		dashboardOutput();
+		
+		
 		
 		if (tankDriveBool) {
 			tankDrive();
@@ -782,6 +850,11 @@ public class Robot extends IterativeRobot {
 		}
 		if (buttonY) {
 			climbMode = !climbMode;
+			controller.setRumble(Joystick.RumbleType.kRightRumble, 0.5);
+			controller.setRumble(Joystick.RumbleType.kLeftRumble, 0.5);
+			Timer.delay(0.5);
+			controller.setRumble(Joystick.RumbleType.kRightRumble, 0);
+			controller.setRumble(Joystick.RumbleType.kLeftRumble, 0);
 		}
 		verticalMovement();
 		grab();
