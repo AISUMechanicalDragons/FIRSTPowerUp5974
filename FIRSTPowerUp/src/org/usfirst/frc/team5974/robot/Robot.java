@@ -490,7 +490,7 @@ public class Robot extends IterativeRobot {
 	
 	public void dashboardOutput() {			//sends and displays data on dashboard
 		SmartDashboard.putNumber("Time Remaining", GameTime);
-		SmartDashboard.putNumber("x-position", posX);
+		/*SmartDashboard.putNumber("x-position", posX);
 		SmartDashboard.putNumber("y-position", posY);
 		SmartDashboard.putNumber("z-position", posZ);
 		SmartDashboard.putNumber("x-vel", velX);
@@ -502,7 +502,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("dT", dT);
 		SmartDashboard.putNumber("Speed", velY);
 		SmartDashboard.putNumber("Angle to Forwards", angleToForward);
-		SmartDashboard.putNumber("Angle to Forwards Graph", angleToForward);
+		SmartDashboard.putNumber("Angle to Forwards Graph", angleToForward);*/
 		SmartDashboard.putBoolean("Tank Drive Style", tankDriveBool);
 		SmartDashboard.putBoolean("Fast Mode", fastBool);
 		SmartDashboard.putNumber("Team Number", 5974);
@@ -634,6 +634,8 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Right", "R");
 		autoChooser.addObject("Left", "L");
 		SmartDashboard.putData("Auto Mode: ",autoChooser);
+		//gameData = DriverStation.getGameSpecificMessage();
+		
 		//CameraServer.getInstance().startAutomaticCapture().setResolution(1200, 900); //camera
 		//IMU.calibrate();
 		//IMU.reset();
@@ -665,6 +667,12 @@ public class Robot extends IterativeRobot {
 		autonomousCommand = autoChooser.getSelected();
 		//This outputs what we've chosen in the SmartDashboard as a string.
 		System.out.println(autonomousCommand);
+		if (DriverStation.getInstance().isFMSAttached()) {
+			gameData = DriverStation.getInstance().getGameSpecificMessage();
+		}
+		else {
+			gameData="RLR";
+		}
 		//armSwing.setAngle(90); //hopefully this will swing the arms down. not sure what angle it wants though
 	}
 
@@ -679,7 +687,7 @@ public class Robot extends IterativeRobot {
 		//Starting Far Right
 		if (start == "FR") {
 			if(autoStep==0) {
-				if (timer.get() < 5) {
+				if (timer.get() < 3) {
 					motorRB.set(-0.5);
 					motorRF.set(-0.5);
 					motorLB.set(0.5);
@@ -698,7 +706,7 @@ public class Robot extends IterativeRobot {
 		else if (start == "R") {
 			//Starting on the right, aligned with the switch
 			if(autoStep==0) {
-				if (timer.get() < 3) {
+				if (timer.get() < 2) {
 					motorRB.set(-0.5);
 					motorRF.set(-0.5);
 					motorLB.set(0.5);
@@ -710,30 +718,30 @@ public class Robot extends IterativeRobot {
 					motorRF.set(0);
 					motorLB.set(0);
 					motorLF.set(0);
-					if(gameData.charAt(0) == 'R') {
-						if(timer.get()< 6) {
-							motorLift.set(.25);
-						}
-						else {
-							motorLift.set(0);
-						}
-						if (timer.get() < 15 && timer.get() > 7) {
+				}
+				if(gameData.charAt(0) == 'R') {
+					if(timer.get()< 4) {
+						motorLift.set(.25);
+					}
+					else {
+						motorLift.set(0);
+					}
+					if (timer.get() < 15 && timer.get() > 7) {
 							motorGL.set(1);
 							motorGR.set(-1);
-						}
-						else {
-							motorGL.set(0);
-							motorGR.set(0);
-						}
+					}
+					else {
+						motorGL.set(0);
+						motorGR.set(0);
+					}
 					}
 					autoStep++;
-				}
 			}
 		}
 		else if (start == "L") {
 		//This is for starting on the far left
 			if(autoStep == 0) {
-				if (timer.get() < 3) {
+				if (timer.get() < 2.5) {
 					motorRB.set(-0.5);
 					motorRF.set(-0.5);
 					motorLB.set(0.5);
@@ -744,36 +752,34 @@ public class Robot extends IterativeRobot {
 					motorRF.set(0);
 					motorLB.set(0);
 					motorLF.set(0);
-					if(gameData.charAt(0) == 'L') {/**Change this to R if we start on the right side, comment out if we're on the far right or left side**/
-						rotateTo(270);
-						if (timer.get()>5 && timer.get()<7) {
-							motorRB.set(-0.5);
-							motorRF.set(-0.5);
-							motorLB.set(0.5);
-							motorLF.set(0.5);
-						
+				}
+				if(gameData.charAt(0) == 'L') {/**Change this to R if we start on the right side, comment out if we're on the far right or left side**/
+					rotateTo(270);
+					if (timer.get()>3 && timer.get()<4) {
+						motorRB.set(-0.5);
+						motorRF.set(-0.5);
+						motorLB.set(0.5);
+						motorLF.set(0.5);
 						}
-						else {
-							motorRB.set(0);
-							motorRF.set(0);
-							motorLB.set(0);
-							motorLF.set(0);
-						
-						}
-						if(timer.get()< 7 && timer.get() > 5) {
-							motorLift.set(.25);
-						}
-						else {
-							motorLift.set(0);
-						}
-						if (timer.get() < 15 && timer.get() > 8) {
-							motorGL.set(1);
-							motorGR.set(-1);
-						}
-						else {
-							motorGL.set(0);
-							motorGR.set(0);
-						}
+					else {
+						motorRB.set(0);
+						motorRF.set(0);
+						motorLB.set(0);
+						motorLF.set(0);
+					}
+					if(timer.get()< 4) {
+						motorLift.set(.25);
+					}
+					else {
+						motorLift.set(0);
+					}
+					if (timer.get() < 7 && timer.get() > 4) {
+						motorGL.set(1);
+						motorGR.set(-1);
+					}
+					else {
+						motorGL.set(0);
+						motorGR.set(0);
 					}
 					autoStep++;
 				}
@@ -783,7 +789,7 @@ public class Robot extends IterativeRobot {
 			//Default Code
 			if (true) {
 				if(autoStep==0) {
-					if (timer.get() < 5) {
+					if (timer.get() < 3) {
 						motorRB.set(-0.5);
 						motorRF.set(-0.5);
 						motorLB.set(0.5);
@@ -839,7 +845,7 @@ public class Robot extends IterativeRobot {
 			tankDrive();
 		} 
 		else {
-			arcadeDrive();
+			tankDrive();
 		}
 		if (buttonA) {
 			test = true;
